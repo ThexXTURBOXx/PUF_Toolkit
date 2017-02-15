@@ -20,7 +20,7 @@ $(TARGET): ${OBJECTS}
 	$(CC) $(OBJECTS) -o $@
 
 clean: 
-	rm -r $(OBJECTS)
+	rm -r $(OBJECTS) $(TARGET)
 
 
 	
