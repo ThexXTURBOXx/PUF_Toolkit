@@ -17,7 +17,10 @@ TARGET = PUF_BCH
 all: $(TARGET)
 
 $(TARGET): ${OBJECTS}
-	$(CC) $(OBJECTS) -o $@
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+
+%.o:%.cpp %.h 
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean: 
 	rm -r $(OBJECTS) $(TARGET)
