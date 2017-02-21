@@ -62,58 +62,58 @@ void DefineOffSetLength(struct Item *it1)
 						// Set the offSet
 						it1->offSet = atol(oSet);
 
-					while(true){
-						ClearScreen();
-						cout << "*******************************************************************************" << endl;
-						cout << "*                                                                             *" << endl;
-						cout << "*                 Define the 'length' of the used PUF-Response                *" << endl;
-						cout << "*                                                                             *" << endl;
-						cout << "*                 256 = use 256 bytes of the binary PUF-Response              *" << endl;
-						cout << "*                 'x' = use 'x' bytes of the binary PUF-Response              *" << endl;
-						cout << "*                                                                             *" << endl;
-						cout << "*******************************************************************************" << endl;
-						if(error) ErrorMessages(error, i);
-						error = 0;
-						cout << endl << "Type in the length in bytes (as decimal number): ";
-							if (fgets(iLength, sizeof(iLength), stdin)) {
-								/* fgets succeeds, scan for newline character */
-								p = strchr(iLength, '\n');
-									if (p) {
-										*p = '\0';
+				//	while(true){
+				//		ClearScreen();
+				//		cout << "*******************************************************************************" << endl;
+				//		cout << "*                                                                             *" << endl;
+				//		cout << "*                 Define the 'length' of the used PUF-Response                *" << endl;
+				//		cout << "*                                                                             *" << endl;
+				//		cout << "*                 256 = use 256 bytes of the binary PUF-Response              *" << endl;
+				//		cout << "*                 'x' = use 'x' bytes of the binary PUF-Response              *" << endl;
+				//		cout << "*                                                                             *" << endl;
+				//		cout << "*******************************************************************************" << endl;
+				//		if(error) ErrorMessages(error, i);
+				//		error = 0;
+				//		cout << endl << "Type in the length in bytes (as decimal number): ";
+				//			if (fgets(iLength, sizeof(iLength), stdin)) {
+				//				/* fgets succeeds, scan for newline character */
+				//				p = strchr(iLength, '\n');
+				//					if (p) {
+				//						*p = '\0';
 
-										//check input if only digits are used
-										for(i = 0; i < sizeof(iLength); i++){
-											if(iLength[i] != '\0' && !isdigit(iLength[i])){
-											   error = 1;
-											   break;
-											}
-											if(iLength[i] == '\0') i = sizeof(iLength);
-										}
+				//						//check input if only digits are used
+				//						for(i = 0; i < sizeof(iLength); i++){
+				//							if(iLength[i] != '\0' && !isdigit(iLength[i])){
+				//							   error = 1;
+				//							   break;
+				//							}
+				//							if(iLength[i] == '\0') i = sizeof(iLength);
+				//						}
 
-										if(error == 0 && atol(iLength) > 0){
-											// Set the length
-											it1->input_length = atol(iLength);
-											break;
-										}
-										else if(error == 0 && atol(iLength) == 0){
-										   error = 4;
-										}
-										}
-										else {
-										/* newline not found, flush stdin to end of line */
-											while (((ch = getchar()) != '\n')
-												&& !feof(stdin)
-												&& !ferror(stdin)
-											);
-											error = 2;
-										}
-									}
-									else {
-									/* fgets failed, handle error */
-									cin.clear();
-									error = 3;
-									}
-							}
+				//						if(error == 0 && atol(iLength) > 0){
+				//							// Set the length
+				//							it1->input_length = atol(iLength);
+				//							break;
+				//						}
+				//						else if(error == 0 && atol(iLength) == 0){
+				//						   error = 4;
+				//						}
+				//						}
+				//						else {
+				//						/* newline not found, flush stdin to end of line */
+				//							while (((ch = getchar()) != '\n')
+				//								&& !feof(stdin)
+				//								&& !ferror(stdin)
+				//							);
+				//							error = 2;
+				//						}
+				//					}
+				//					else {
+				//					/* fgets failed, handle error */
+				//					cin.clear();
+				//					error = 3;
+				//					}
+				//			}
 						}
 					}
 					else {
