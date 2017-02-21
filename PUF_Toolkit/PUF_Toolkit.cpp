@@ -69,13 +69,16 @@ void HammingWeight_Menu(struct Item *item)
                                 item->zeros = 0;
                                 item->ones = 0;
                                 error = HammingWeight(item, item->HW_ENTP_mode);
-                                if(!error) itoa(item->ones,item->result,10);
+                                if(!error) {
+                                    snprintf(item->result, 52, "%lu", item->ones); //itoa(item->ones,item->result,10);
+                                    printf("prankur value at item->result: %s\n", item->result);
+                                }
                                 else strcpy(item->result, "none");
                                 break;
                             case '2':
                                 cout << endl << " Processing : HammingWeight calculation" << endl << endl;
                                 error = HammingWeight(item, item->HW_ENTP_mode);
-                                if(!error) itoa(item->ones,item->result,10);
+                                if(!error) snprintf(item->result, 52, "%lu", item->ones);//itoa(item->ones,item->result,10);
                                 else strcpy(item->result, "none");
                                 break;
                             case '3':
