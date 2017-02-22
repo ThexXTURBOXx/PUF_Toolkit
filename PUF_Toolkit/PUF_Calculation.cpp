@@ -115,7 +115,7 @@ int HammingWeight(struct Item *item, int option)
         fseek(fd, item->offSet, SEEK_SET);
 
         //set the length to be read as the filesize - 2*offset
-        item->input_length = filesize - 2 * item->offSet;
+        item->input_length = filesize - item->offSet - item->offset_end;
         // Check if the chosen part of the PUF-Response is valid
         if((item->offSet+item->input_length) > filesize) return 13;
 

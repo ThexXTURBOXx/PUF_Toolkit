@@ -25,6 +25,7 @@ using namespace std;
 // Data structure definition
     struct Item {
         unsigned long offSet;
+        unsigned long offset_end;
         unsigned long input_length;
         char input_file_name[102];
         char output_file_name[102];

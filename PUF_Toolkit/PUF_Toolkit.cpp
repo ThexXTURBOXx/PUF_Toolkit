@@ -41,7 +41,7 @@ void HammingWeight_Menu(struct Item *item)
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet   = " << item->offSet                                << endl;
+                cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
                 cout << "                     Length   = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode     = single file                                    " << endl;
                 cout << "                                                                               " << endl;
@@ -148,7 +148,7 @@ void HammingWeight_Menu(struct Item *item)
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet          = " << item->offSet                         << endl;
+                cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
                 cout << "                     Length          = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode            = complete directory                      " << endl;
                 cout << "                                                                               " << endl;
@@ -281,7 +281,7 @@ void Entropy_Menu(struct Item *item)
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet   = " << item->offSet                                << endl;
+                cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
                 cout << "                     Length   = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode     = single file                                    " << endl;
                 cout << "                                                                               " << endl;
@@ -401,7 +401,7 @@ void Entropy_Menu(struct Item *item)
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet          = " << item->offSet                         << endl;
+                cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
                 cout << "                     Length          = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode            = complete directory                      " << endl;
                 cout << "                                                                               " << endl;
@@ -537,7 +537,7 @@ void IntraHD_Menu(struct Item *item)
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
-        cout << "                     OffSet          = " << item->offSet                         << endl;
+        cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
         cout << "                     Length          = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
         if(item->HD_mode == 0){
         cout << "                     Output-Style    = compact                                 " << endl;}
@@ -685,7 +685,7 @@ void InterHD_Menu(struct Item *item)
 								cout << "*                                                                             *" << endl;
 								cout << "*******************************************************************************" << endl;
 								cout << "          Settings:                                                            " << endl;
-								cout << "                     OffSet          = " << item->offSet                         << endl;
+								cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
 								cout << "                     Length          = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
 		if(item->HD_mode == 0)  cout << "                     Output-Style    = compact                                 " << endl;
 		if(item->HD_mode == 1)  cout << "                     Output-Style    = detailed                                " << endl;
@@ -845,7 +845,7 @@ void MinEntropy_Menu(struct Item *item)
 				cout << "*                                                                             *" << endl;
 				cout << "*******************************************************************************" << endl;
 				cout << "          Settings:                                                            " << endl;
-				cout << "                     OffSet   = " << item->offSet                                << endl;
+				cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
 				cout << "                     Length   = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
 				cout << "                     Pathname = " << item->input_path_name.at(0).c_str()         << endl;
 				cout << "                                                                               " << endl;
@@ -1052,6 +1052,7 @@ int Main_Menu()
 
 	// Set start values for the item struct
     it1.offSet = 0;
+    it1.offset_end = 0;
     it1.input_length = 0;
     strcpy(it1.input_file_name, "none");
     strcpy(it1.result, "none");
@@ -1096,7 +1097,7 @@ int Main_Menu()
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
-        cout << "                     OffSet   = " << it1.offSet                                  << endl;
+        cout << "                     OffSet, offset_end   = " << it1.offSet << ", " << it1.offset_end        << endl;
         cout << "                     Length   = " << it1.input_length << " byte (" << it1.input_length*8 << " bit)" << endl;
         cout << "*******************************************************************************" << endl;
 

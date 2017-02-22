@@ -130,6 +130,36 @@ void DefineOffSetLength(struct Item *it1)
 			cin.clear();
 			error = 3;
 		}
+        cout << endl << "Type in the offset_end in bytes (as decimal number): ";
+        if (fgets(oSet, sizeof(oSet), stdin)) {
+            /*fgets succeds scan for newline character*/
+            p = strchr(oSet, '\n');
+            if (p) {
+                *p = '\0';
+
+                //check input if only digits are allowed
+                for (i = 0; i < sizeof(oSet) - 1; i++) {
+                    if (oSet[i] != '\0' && !isdigit(oSet[i])) {
+                        error = 1;
+                        break;
+                    }
+                    if (oSet[i] == '\0') i = sizeof(oSet);
+                }
+                if (error == 0)
+                    it1->offset_end = atol(oSet);
+            }
+            else {
+                /*newline char not found*/
+                while (((ch = getchar()) != '\n') && !feof(stdin) &&
+                        !ferror(stdin));
+                error = 2;
+            }
+        }
+        else {
+            /*fgets failed, handle error*/
+            cin.clear();
+            error = 3;
+        }
 		if(!error) break;
 	}
 }
