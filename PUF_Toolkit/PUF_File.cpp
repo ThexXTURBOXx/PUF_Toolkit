@@ -110,7 +110,7 @@ int SaveFile(struct Item *item, int option)
                         file << "                                                                               " << endl;
         if(option == 3) file << "                          Input-Path:     '" << item->input_path_name.at(0).c_str() <<"'"      << endl;
         else            file << "                          Input file:     '" << item->input_file_name <<"'"      << endl;
-                        file << "                          OffSet:         " << item->offSet                      << endl;
+                        file << "                          OffSet:         " << item->offset_begin                      << endl;
                         file << "                          Length:         " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                         file << "                                                                               " << endl;
         if(option == 1) file << "                          Result:         " << item->ones                        << endl;

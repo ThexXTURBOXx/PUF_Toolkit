@@ -1,4 +1,5 @@
 #include "PUF_Calculation.h"
+#include <assert.h>
 
 /*
  * PUF-ToolKit - Calculation
@@ -111,13 +112,19 @@ int HammingWeight(struct Item *item, int option)
         filesize = ftell(fd);
         rewind(fd);
 
-        // Go to the offset position in the file
-        fseek(fd, item->offSet, SEEK_SET);
+        // Go to the offset_begin position in the file
+        fseek(fd, item->offset_begin, SEEK_SET);
 
-        //set the length to be read as the filesize - 2*offset
-        item->input_length = filesize - item->offSet - item->offset_end;
+        //check if both offset_begin dont exceed the filesize
+        if ((item->offset_begin + item->offset_end) > filesize) {
+            printf("offset_begin and offset_end exceeds filesize, set them again\n");
+            DefineOffSetLength(item);
+        }
+        //set the length to be read as the filesize - sum of offsets 
+        item->input_length = filesize - item->offset_begin - item->offset_end;
+        printf("input_length : %lu\n", item->input_length);
         // Check if the chosen part of the PUF-Response is valid
-        if((item->offSet+item->input_length) > filesize) return 13;
+        if((item->offset_begin+item->input_length) > filesize) return 13;
 
         // Get space to read in the input file
         inputData = (unsigned char *) malloc(sizeof(char) * item->input_length);
@@ -451,11 +458,11 @@ int IntraHD(struct Item *item, int option)
         file1_size = ftell(fd);
         rewind(fd);
 
-        // Get to the correct position in the file (defined by the offset)
-        fseek(fd, item->offSet, SEEK_SET);
+        // Get to the correct position in the file (defined by the offset_begin)
+        fseek(fd, item->offset_begin, SEEK_SET);
 
         // Check if the chosen part of the PUF-Response is valid
-        if((item->offSet+item->input_length) > file1_size) return 13;
+        if((item->offset_begin+item->input_length) > file1_size) return 13;
 
         // Get space to read in the input file of length input_length
         file1 = (unsigned char *) malloc(sizeof(char) * item->input_length);
@@ -473,11 +480,11 @@ int IntraHD(struct Item *item, int option)
             file2_size = ftell(fd2);
             rewind(fd2);
 
-            // Get to the correct position in the file (defined by the offset)
-            fseek(fd2, item->offSet, SEEK_SET);
+            // Get to the correct position in the file (defined by the offset_begin)
+            fseek(fd2, item->offset_begin, SEEK_SET);
 
             // Check if the chosen part of the PUF-Response is valid
-            if((item->offSet+item->input_length) > file2_size) return 13;
+            if((item->offset_begin+item->input_length) > file2_size) return 13;
 
             // Get space to read in the input file of length input_length
             file2 = (unsigned char *) malloc(sizeof(char) * item->input_length);
@@ -516,7 +523,7 @@ int IntraHD(struct Item *item, int option)
                             result_file << "                          Used Settings:                                       " << endl;
                             result_file << "                                                                               " << endl;
                             result_file << "                          Device folder: '" << item->input_path_name.at(0).c_str() <<"'" << endl;
-                            result_file << "                          OffSet:         " << item->offSet                      << endl;
+                            result_file << "                          offset_begin:         " << item->offset_begin                      << endl;
                             result_file << "                          Length:         " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                             result_file << "                                                                               " << endl;
                             result_file << "*******************************************************************************" << endl << endl;
@@ -689,11 +696,11 @@ int InterHD(struct Item *item, int option)
         file1_size = ftell(fd);
         rewind(fd);
 
-        // Get to the correct position in the file (defined by the offset)
-        fseek(fd, item->offSet, SEEK_SET);
+        // Get to the correct position in the file (defined by the offset_begin)
+        fseek(fd, item->offset_begin, SEEK_SET);
 
         // Check if the chosen part of the PUF-Response is valid
-        if((item->offSet+item->input_length) > file1_size) return 13;
+        if((item->offset_begin+item->input_length) > file1_size) return 13;
 
         // Get space to read in the input file of length input_length
         file1 = (unsigned char *) malloc(sizeof(char) * item->input_length);
@@ -711,11 +718,11 @@ int InterHD(struct Item *item, int option)
             file2_size = ftell(fd2);
             rewind(fd2);
 
-            // Get to the correct position in the file (defined by the offset)
-            fseek(fd2, item->offSet, SEEK_SET);
+            // Get to the correct position in the file (defined by the offset_begin)
+            fseek(fd2, item->offset_begin, SEEK_SET);
 
             // Check if the chosen part of the PUF-Response is valid
-            if((item->offSet+item->input_length) > file2_size) return 13;
+            if((item->offset_begin+item->input_length) > file2_size) return 13;
 
             // Get space to read in the input file of length input_length
             file2 = (unsigned char *) malloc(sizeof(char) * item->input_length);
@@ -759,7 +766,7 @@ int InterHD(struct Item *item, int option)
 							if(j == 0)  		result_file << "                          Device folder: '" << item->input_path_name.at(j).c_str() <<"'" << endl;
 							else        		result_file << "                                         '" << item->input_path_name.at(j).c_str() <<"'" << endl;
 						}
-												result_file << "                          OffSet:         " << item->offSet                      << endl;
+												result_file << "                          offset_begin:         " << item->offset_begin                      << endl;
 												result_file << "                          Length:         " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
 						if(option == 0)			result_file << "                          Output Style:   compact                              " << endl;
 						else if(option == 1) 	result_file << "                          Output Style:   detailed                             " << endl;
@@ -899,11 +906,11 @@ int MinEntropy(struct Item *item)
         file1_size = ftell(fd);
         rewind(fd);
 
-        // Get to the correct position in the file (defined by the offset)
-        fseek(fd, item->offSet, SEEK_SET);
+        // Get to the correct position in the file (defined by the offset_begin)
+        fseek(fd, item->offset_begin, SEEK_SET);
 
         // Check if the chosen part of the PUF-Response is valid
-        if((item->offSet+item->input_length) > file1_size) return 13;
+        if((item->offset_begin+item->input_length) > file1_size) return 13;
 
         // Get space to read in the input file of length input_length
         inputData = (unsigned char *) malloc(sizeof(char) * item->input_length);

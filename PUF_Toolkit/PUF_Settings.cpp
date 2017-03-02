@@ -12,12 +12,12 @@
 
 void DefineOffSetLength(struct Item *it1)
 /*
- * Function to get the 'offset' and 'length' as user input
+ * Function to get the 'offset_begin' and 'length' as user input
  *
  * Inputs:
  * item = pointer to the struct to store the necessary informations
  *
- * Offset = the amount of bytes (in decimal) that will be script from the beginning
+ * offset_begin = the amount of bytes (in decimal) that will be script from the beginning
  * Length = the mount of bytes that will be used (in decimal)
  */
 {
@@ -31,7 +31,7 @@ void DefineOffSetLength(struct Item *it1)
 		if (error != 0) ClearScreen();
 		cout << "*******************************************************************************" << endl;
 		cout << "*                                                                             *" << endl;
-		cout << "*                  Define the 'offset' for the PUF-Response:                  *" << endl;
+		cout << "*                  Define the 'offset_begin' for the PUF-Response:                  *" << endl;
 		cout << "*                                                                             *" << endl;
 		cout << "*                   0  = use complete binary PUF-Response                     *" << endl;
 		cout << "*                   1  = the first byte will be skipped                       *" << endl;
@@ -42,7 +42,7 @@ void DefineOffSetLength(struct Item *it1)
 		if(error) ErrorMessages(error, i);
 		error = 0;
 
-		cout << endl << "Type in the offset in bytes (as decimal number): ";
+		cout << endl << "Type in the offset_begin in bytes (as decimal number): ";
 		if (fgets(oSet, sizeof(oSet), stdin)) {
 			/* fgets succeeds, scan for newline character */
 			p = strchr(oSet, '\n');
@@ -59,8 +59,8 @@ void DefineOffSetLength(struct Item *it1)
 					}
 					if(error == 0){
 
-						// Set the offSet
-						it1->offSet = atol(oSet);
+						// Set the offset_begin
+						it1->offset_begin = atol(oSet);
 
 				//	while(true){
 				//		ClearScreen();

@@ -35,13 +35,13 @@ void HammingWeight_Menu(struct Item *item)
                 cout << "*                        1 : Set File                                         *" << endl;
                 cout << "*                        2 : Calculate Hamming Weight                         *" << endl;
                 cout << "*                        3 : Save result                                      *" << endl;
-                cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
+                cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
                 cout << "                     Length   = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode     = single file                                    " << endl;
                 cout << "                                                                               " << endl;
@@ -87,7 +87,7 @@ void HammingWeight_Menu(struct Item *item)
                                 else error = SaveFile(item,1);
                                 break;
                             case '4':
-                                cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                                cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                                 item->zeros = 0;
                                 item->ones = 0;
                                 error = 0;
@@ -142,13 +142,13 @@ void HammingWeight_Menu(struct Item *item)
                 cout << "*                        1 : Set Input-Path                                   *" << endl;
                 cout << "*                        2 : Set Output-Filename                              *" << endl;
                 cout << "*                        3 : Calculate Hamming Weight                         *" << endl;
-                cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
+                cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
                 cout << "                     Length          = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode            = complete directory                      " << endl;
                 cout << "                                                                               " << endl;
@@ -201,7 +201,7 @@ void HammingWeight_Menu(struct Item *item)
                                 }
                                 break;
                             case '4':
-                                cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                                cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                                 item->zeros = 0;
                                 item->ones = 0;
                                 error = 0;
@@ -275,13 +275,13 @@ void Entropy_Menu(struct Item *item)
                 cout << "*                        1 : Set File                                         *" << endl;
                 cout << "*                        2 : Calculate (Shannon) Entropy                      *" << endl;
                 cout << "*                        3 : Save result                                      *" << endl;
-                cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
+                cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
                 cout << "                     Length   = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode     = single file                                    " << endl;
                 cout << "                                                                               " << endl;
@@ -340,7 +340,7 @@ void Entropy_Menu(struct Item *item)
                                 else error = SaveFile(item,2);
                                 break;
                             case '4':
-                                cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                                cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                                 item->zeros = 0;
                                 item->ones = 0;
                                 item->entrp = 0;
@@ -395,13 +395,13 @@ void Entropy_Menu(struct Item *item)
                 cout << "*                        1 : Set Input-Path                                   *" << endl;
                 cout << "*                        2 : Set Output-Filename                              *" << endl;
                 cout << "*                        3 : Calculate (Shannon) Entropy                      *" << endl;
-                cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
+                cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
                 cout << "                     Length          = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode            = complete directory                      " << endl;
                 cout << "                                                                               " << endl;
@@ -460,7 +460,7 @@ void Entropy_Menu(struct Item *item)
                                 }
                                 break;
                             case '4':
-                                cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                                cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                                 item->zeros = 0;
                                 item->ones = 0;
                                 item->entrp = 0;
@@ -531,13 +531,13 @@ void IntraHD_Menu(struct Item *item)
         cout << "*                        2 : Set Output-Filename                              *" << endl;
         cout << "*                        3 : Calculate Intra-Hamming Distance                 *" << endl;
         cout << "*                        4 : View Result                                      *" << endl;
-        cout << "*                        5 : Change 'offset' & 'length'                       *" << endl;
+        cout << "*                        5 : Change 'offset_begin' & 'offset_end'                       *" << endl;
         cout << "*                        6 : Switch Output-Style                              *" << endl;
         cout << "*                        7 : Back                                             *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
-        cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
+        cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
         cout << "                     Length          = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
         if(item->HD_mode == 0){
         cout << "                     Output-Style    = compact                                 " << endl;}
@@ -598,7 +598,7 @@ void IntraHD_Menu(struct Item *item)
                         error = ViewFile(item, 1);
                         break;
                     case '5':
-                        cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                        cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                         item->zeros = 0;
                         item->ones = 0;
                         item->entrp = 0;
@@ -679,13 +679,13 @@ void InterHD_Menu(struct Item *item)
 								cout << "*                        2 : Set Output-Filename                              *" << endl;
 								cout << "*                        3 : Calculate Inter-Hamming Distance                 *" << endl;
 								cout << "*                        4 : View Result                                      *" << endl;
-								cout << "*                        5 : Change 'offset' & 'length'                       *" << endl;
+								cout << "*                        5 : Change 'offset_begin' & 'offset_end'                       *" << endl;
 								cout << "*                        6 : Switch Output-Style                              *" << endl;
 								cout << "*                        7 : Back                                             *" << endl;
 								cout << "*                                                                             *" << endl;
 								cout << "*******************************************************************************" << endl;
 								cout << "          Settings:                                                            " << endl;
-								cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
+								cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
 								cout << "                     Length          = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
 		if(item->HD_mode == 0)  cout << "                     Output-Style    = compact                                 " << endl;
 		if(item->HD_mode == 1)  cout << "                     Output-Style    = detailed                                " << endl;
@@ -748,7 +748,7 @@ void InterHD_Menu(struct Item *item)
                         error = ViewFile(item,1);
                         break;
                     case '5':
-                        cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                        cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                         item->zeros = 0;
                         item->ones = 0;
                         item->entrp = 0;
@@ -840,12 +840,12 @@ void MinEntropy_Menu(struct Item *item)
 				cout << "*                        1 : Set Path                                         *" << endl;
 				cout << "*                        2 : Calculate Min-Entropy (CTW)                      *" << endl;
 				cout << "*                        3 : Save result                                      *" << endl;
-				cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+				cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
 				cout << "*                        5 : Back                                             *" << endl;
 				cout << "*                                                                             *" << endl;
 				cout << "*******************************************************************************" << endl;
 				cout << "          Settings:                                                            " << endl;
-				cout << "                     OffSet, offset_end  = " << item->offSet << ", " << item->offset_end    << endl;
+				cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
 				cout << "                     Length   = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
 				cout << "                     Pathname = " << item->input_path_name.at(0).c_str()         << endl;
 				cout << "                                                                               " << endl;
@@ -907,7 +907,7 @@ void MinEntropy_Menu(struct Item *item)
                         else error = SaveFile(item,3);
                         break;
                     case '4':
-                        cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                        cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                         item->zeros = 0;
                         item->ones = 0;
                         item->entrp = 0;
@@ -1051,7 +1051,7 @@ int Main_Menu()
     struct Item it1;
 
 	// Set start values for the item struct
-    it1.offSet = 0;
+    it1.offset_begin = 0;
     it1.offset_end = 0;
     it1.input_length = 0;
     strcpy(it1.input_file_name, "none");
@@ -1072,10 +1072,10 @@ int Main_Menu()
     cout << "*                         Welcome to the PUF-Toolkit                          *" << endl;
     cout << "*                                                                             *" << endl;
 	cout << "******************************* Global Settings *******************************" << endl << endl;
-    cout << "                 The 'offset' and 'length' have to be defined.                 " << endl;
+    cout << "                 The 'offset_begin' and 'offset_end' have to be defined.                 " << endl;
     cout << "                 These settings will be used for all processing.               " << endl << endl;
 
-    // Get the 'offset' and 'length' to be used
+    // Get the 'offset_begin' and 'offset_end' to be used
 	DefineOffSetLength(&it1);
 
     while(true){
@@ -1092,12 +1092,12 @@ int Main_Menu()
         cout << "*                        4 : Inter-Hamming Distance                           *" << endl;
         cout << "*                        5 : Min-Entropy (CTW)                                *" << endl;
         cout << "*                        6 : Median and Average                               *" << endl;
-        cout << "*                        7 : Change 'offset' & 'length'                       *" << endl;
+        cout << "*                        7 : Change 'offset_begin' & 'offset_end'                       *" << endl;
         cout << "*                        8 : Exit Program                                     *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
-        cout << "                     OffSet, offset_end   = " << it1.offSet << ", " << it1.offset_end        << endl;
+        cout << "                     offset_begin, offset_end   = " << it1.offset_begin << ", " << it1.offset_end        << endl;
         cout << "                     Length   = " << it1.input_length << " byte (" << it1.input_length*8 << " bit)" << endl;
         cout << "*******************************************************************************" << endl;
 
@@ -1172,7 +1172,7 @@ int Main_Menu()
                             Median_AVG_Menu(&it1);
                             break;
                         case '7':
-                            cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                            cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                             error = 0;
                             ClearScreen();
                             DefineOffSetLength(&it1);
