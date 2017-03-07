@@ -38,7 +38,7 @@ using namespace std;
         char result[52];
         unsigned int HD_error_pos;
         unsigned int HD_mode;
-        unsigned int HW_ENTP_mode;
+        bool HW_ENTP_mode;
     } ;
 
 // Menu Functions

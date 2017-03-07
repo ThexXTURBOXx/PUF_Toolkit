@@ -10,6 +10,60 @@
  */
 
 
+void DefineMode(struct Item *it1)
+/*
+ * Function to set the mode to 0 - file or 1 - directory
+ */
+{
+    char oSet[12];
+    char *p;
+    unsigned int ch, i = 0;
+    unsigned int error = 0;
+
+    while (true) {
+    	if(error) ErrorMessages(error, i);
+    	error = 0;
+    	if (fgets(oSet, sizeof(oSet), stdin)) {
+    		/* fgets succeeds, scan for newline character */
+    		p = strchr(oSet, '\n');
+    			if (p) {
+    				*p = '\0';
+    
+    				//check input if only digits are used
+    				for(i = 0; i < sizeof(oSet)-1; i++){
+    					if(oSet[i] != '\0' && !isdigit(oSet[i])){
+    					   error = 1;
+    					   break;
+    					}
+    					if(oSet[i] == '\0') i = sizeof(oSet);
+    				}
+    				if(error == 0){
+    					// Set the mode
+    					ch = atol(oSet);
+                        if (ch != 0 && ch != 1)
+                            error = 1;
+                        else
+                            it1->HW_ENTP_mode = ch;
+                        printf("mode set to: %u\n", it1->HW_ENTP_mode);
+    				}
+    
+    			} else {
+    				/* newline not found, flush stdin to end of line */
+    				while (((ch = getchar()) != '\n')
+    					&& !feof(stdin)
+    					&& !ferror(stdin)
+    				);
+    				error = 2;
+    		    }
+        } else {
+    		/* fgets failed, handle error */
+    		cin.clear();
+    		error = 3;
+    	}
+        if (!error) break;
+    }
+}
+
 void DefineOffSetLength(struct Item *it1)
 /*
  * Function to get the 'offset_begin' and 'length' as user input
@@ -22,7 +76,7 @@ void DefineOffSetLength(struct Item *it1)
  */
 {
     char oSet[12];
-    char iLength[12];
+    //char iLength[12];
     char *p;
     unsigned int ch, i = 0;
     unsigned int error = 0;

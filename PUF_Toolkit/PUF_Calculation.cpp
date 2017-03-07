@@ -698,7 +698,9 @@ int InterHD(struct Item *item, int option)
 
         // Get to the correct position in the file (defined by the offset_begin)
         fseek(fd, item->offset_begin, SEEK_SET);
-
+        //set the length to be read as the filesize - sum of offsets
+        item->input_length = file1_size - item->offset_begin - item->offset_end;
+        printf("file1 input_length: %d\n", item->input_length);
         // Check if the chosen part of the PUF-Response is valid
         if((item->offset_begin+item->input_length) > file1_size) return 13;
 
@@ -720,7 +722,8 @@ int InterHD(struct Item *item, int option)
 
             // Get to the correct position in the file (defined by the offset_begin)
             fseek(fd2, item->offset_begin, SEEK_SET);
-
+            //set the length to be read as the filesize - sum of offsets
+            item->input_length = file2_size - item->offset_begin - item->offset_end;
             // Check if the chosen part of the PUF-Response is valid
             if((item->offset_begin+item->input_length) > file2_size) return 13;
 

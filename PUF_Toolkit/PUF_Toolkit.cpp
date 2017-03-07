@@ -1072,7 +1072,14 @@ int Main_Menu()
     cout << "*                         Welcome to the PUF-Toolkit                          *" << endl;
     cout << "*                                                                             *" << endl;
 	cout << "******************************* Global Settings *******************************" << endl << endl;
-    cout << "                 The 'offset_begin' and 'offset_end' have to be defined.                 " << endl;
+    cout << "                 Choose mode: 0 - file, 1 - Directory                          " << endl;
+    DefineMode(&it1);
+    if (it1.HW_ENTP_mode == 0)
+        DefineFilename(&it1, 1);
+    if (it1.HW_ENTP_mode == 1)
+        DefinePathname(&it1, 1);
+
+    cout << "                 The 'offset_begin' and 'offset_end' have to be defined.       " << endl;
     cout << "                 These settings will be used for all processing.               " << endl << endl;
 
     // Get the 'offset_begin' and 'offset_end' to be used
