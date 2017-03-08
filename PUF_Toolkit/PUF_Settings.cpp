@@ -9,6 +9,42 @@
  *
  */
 
+unsigned int SetInputLen(struct Item *item)
+/*
+ * Function to calculate the input_length based on the offsets
+ * make sure the offsets and it1->input_file_name are initialized before calling
+ * this function.
+ */
+{
+    FILE *fd;
+    unsigned long filesize;
+	// Open the specified file
+    if((fd = fopen(item->input_file_name, "rb")) == NULL) return 12;
+
+    // Get the filesize
+    fseek(fd, 0, SEEK_END);
+    filesize = ftell(fd);
+    rewind(fd);
+
+    // Go to the offset_begin position in the file
+    fseek(fd, item->offset_begin, SEEK_SET);
+
+    //check if both offset_begin dont exceed the filesize
+    do {
+        if ((item->offset_begin + item->offset_end) > filesize) {
+            printf("offset_begin and offset_end exceeds filesize, set them again\n");
+            DefineOffSetLength(item);
+        }
+    } while ((item->offset_begin + item->offset_end) > filesize);
+    //set the length to be read as the filesize - sum of offsets
+    item->input_length = filesize - item->offset_begin - item->offset_end;
+    printf("input_length : %lu\n", item->input_length);
+    // Check if the chosen part of the PUF-Response is valid
+    if((item->offset_begin+item->input_length) > filesize) return 13;
+
+    fclose(fd);
+    return 0;
+}
 
 void DefineMode(struct Item *it1)
 /*

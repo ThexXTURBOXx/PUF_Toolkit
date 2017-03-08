@@ -1085,6 +1085,10 @@ int Main_Menu()
     // Get the 'offset_begin' and 'offset_end' to be used
 	DefineOffSetLength(&it1);
 
+    //calculate the input_length based on the offset
+    error = SetInputLen(&it1);
+
+
     while(true){
         ClearScreen();
         cout << "*******************************************************************************" << endl;

@@ -95,7 +95,6 @@ int HammingWeight(struct Item *item, int option)
 {
     FILE *fd;
     unsigned char * inputData;
-    unsigned long filesize;
     unsigned int i;
     unsigned int error = 0;
 
@@ -104,28 +103,12 @@ int HammingWeight(struct Item *item, int option)
     item->zeros = 0;
 
     if(option == 0){
-		// Open the specified file
+
+        error = SetInputLen(item);
+	    // Open the specified file
         if((fd = fopen(item->input_file_name, "rb")) == NULL) return 12;
-
-        // Get the filesize
-        fseek(fd, 0, SEEK_END);
-        filesize = ftell(fd);
-        rewind(fd);
-
         // Go to the offset_begin position in the file
         fseek(fd, item->offset_begin, SEEK_SET);
-
-        //check if both offset_begin dont exceed the filesize
-        if ((item->offset_begin + item->offset_end) > filesize) {
-            printf("offset_begin and offset_end exceeds filesize, set them again\n");
-            DefineOffSetLength(item);
-        }
-        //set the length to be read as the filesize - sum of offsets 
-        item->input_length = filesize - item->offset_begin - item->offset_end;
-        printf("input_length : %lu\n", item->input_length);
-        // Check if the chosen part of the PUF-Response is valid
-        if((item->offset_begin+item->input_length) > filesize) return 13;
-
         // Get space to read in the input file
         inputData = (unsigned char *) malloc(sizeof(char) * item->input_length);
 
@@ -700,7 +683,7 @@ int InterHD(struct Item *item, int option)
         fseek(fd, item->offset_begin, SEEK_SET);
         //set the length to be read as the filesize - sum of offsets
         item->input_length = file1_size - item->offset_begin - item->offset_end;
-        printf("file1 input_length: %d\n", item->input_length);
+        printf("file1 input_length: %lu\n", item->input_length);
         // Check if the chosen part of the PUF-Response is valid
         if((item->offset_begin+item->input_length) > file1_size) return 13;
 

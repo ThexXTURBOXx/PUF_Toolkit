@@ -5,6 +5,7 @@
 
 
 // Setting Functions
+unsigned int SetInputLen(struct Item *item);
 void DefineMode(struct Item *it1);
 void DefineOffSetLength(struct Item *it1);
 void DefineFilename(struct Item *item, int option);
