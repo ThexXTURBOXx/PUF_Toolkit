@@ -430,6 +430,7 @@ int IntraHD(struct Item *item, int option)
     unsigned long file1_size;
     unsigned long file2_size;
     unsigned int i = 0;
+    unsigned int error = 0;
 
     for(it = list_of_files.begin();it != list_of_files.end(); ++it){
 
@@ -441,6 +442,8 @@ int IntraHD(struct Item *item, int option)
         file1_size = ftell(fd);
         rewind(fd);
 
+        strcpy(item->input_file_name, (*it).c_str());
+        error = SetInputLen(item);
         // Get to the correct position in the file (defined by the offset_begin)
         fseek(fd, item->offset_begin, SEEK_SET);
 
@@ -463,6 +466,8 @@ int IntraHD(struct Item *item, int option)
             file2_size = ftell(fd2);
             rewind(fd2);
 
+            strcpy(item->input_file_name, (*it2).c_str());
+            error = SetInputLen(item);
             // Get to the correct position in the file (defined by the offset_begin)
             fseek(fd2, item->offset_begin, SEEK_SET);
 
@@ -881,6 +886,7 @@ int MinEntropy(struct Item *item)
     unsigned long bit_size = 0;
     double a;
     double b;
+    unsigned int error = 0;
 
     for(it = list_of_files.begin();it != list_of_files.end(); ++it){
 
@@ -892,6 +898,8 @@ int MinEntropy(struct Item *item)
         file1_size = ftell(fd);
         rewind(fd);
 
+        strcpy(item->input_file_name, (*it).c_str());
+        error = SetInputLen(item);
         // Get to the correct position in the file (defined by the offset_begin)
         fseek(fd, item->offset_begin, SEEK_SET);
 
