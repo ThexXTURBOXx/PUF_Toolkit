@@ -1086,8 +1086,8 @@ int Main_Menu()
 	DefineOffSetLength(&it1);
 
     //calculate the input_length based on the offset
-    error = SetInputLen(&it1);
-
+    if (it1.HW_ENTP_mode == 0)
+        error = SetInputLen(&it1);
 
     while(true){
         ClearScreen();
@@ -1130,10 +1130,10 @@ int Main_Menu()
                             it1.zeros = 0;
                             it1.ones = 0;
                             it1.entrp = 0;
-                            it1.HW_ENTP_mode = 0;
+                            //it1.HW_ENTP_mode = 0;
                             strcpy(it1.result, "none");
                             strcpy(it1.output_file_name, "none");
-                            it1.input_path_name.at(0) = "none";
+                            //it1.input_path_name.at(0) = "none";
                             HammingWeight_Menu(&it1);
                             break;
                         case '2':
@@ -1142,10 +1142,10 @@ int Main_Menu()
                             it1.zeros = 0;
                             it1.ones = 0;
                             it1.entrp = 0;
-                            it1.HW_ENTP_mode = 0;
+                            //it1.HW_ENTP_mode = 0;
                             strcpy(it1.result, "none");
                             strcpy(it1.output_file_name, "none");
-                            it1.input_path_name.at(0) = "none";
+                            //it1.input_path_name.at(0) = "none";
                             Entropy_Menu(&it1);
                             break;
                         case '3':
@@ -1153,7 +1153,7 @@ int Main_Menu()
                             error = 0;
                             strcpy(it1.result, "none");
                             strcpy(it1.output_file_name, "none");
-                            it1.input_path_name.at(0) = "none";
+                            //it1.input_path_name.at(0) = "none";
                             it1.HD_mode = 0;
                             IntraHD_Menu(&it1);
                             break;
