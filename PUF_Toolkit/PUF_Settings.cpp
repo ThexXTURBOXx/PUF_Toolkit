@@ -121,7 +121,7 @@ void DefineOffSetLength(struct Item *it1)
 		if (error != 0) ClearScreen();
 		cout << "*******************************************************************************" << endl;
 		cout << "*                                                                             *" << endl;
-		cout << "*                  Define the 'offset_begin' for the PUF-Response:                  *" << endl;
+		cout << "*                  Define the 'offsets' for the PUF-Response:                 *" << endl;
 		cout << "*                                                                             *" << endl;
 		cout << "*                   0  = use complete binary PUF-Response                     *" << endl;
 		cout << "*                   1  = the first byte will be skipped                       *" << endl;
@@ -132,7 +132,7 @@ void DefineOffSetLength(struct Item *it1)
 		if(error) ErrorMessages(error, i);
 		error = 0;
 
-		cout << endl << "Type in the offset_begin in bytes (as decimal number): ";
+		cout << endl << "Type in the offset from beginning of file in bytes (as decimal number): ";
 		if (fgets(oSet, sizeof(oSet), stdin)) {
 			/* fgets succeeds, scan for newline character */
 			p = strchr(oSet, '\n');
@@ -220,7 +220,7 @@ void DefineOffSetLength(struct Item *it1)
 			cin.clear();
 			error = 3;
 		}
-        cout << endl << "Type in the offset_end in bytes (as decimal number): ";
+        cout << endl << "Type in the offset from end of the file in bytes (as decimal number): ";
         if (fgets(oSet, sizeof(oSet), stdin)) {
             /*fgets succeds scan for newline character*/
             p = strchr(oSet, '\n');

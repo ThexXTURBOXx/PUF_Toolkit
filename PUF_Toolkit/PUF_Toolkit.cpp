@@ -35,7 +35,7 @@ void HammingWeight_Menu(struct Item *item)
                 cout << "*                        1 : Set File                                         *" << endl;
                 cout << "*                        2 : Calculate Hamming Weight                         *" << endl;
                 cout << "*                        3 : Save result                                      *" << endl;
-                cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'             *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
@@ -977,6 +977,8 @@ void Median_AVG_Menu(struct Item *item)
                 cout << "                     Median               = " << item->median                    << endl;
                 cout << "                     Average              = " << item->average                   << endl;}
 				cout << "*******************************************************************************" << endl;
+                cout << "Hint: You can use hamming distance (file mode) output "
+                    "file that is generated in the desired format." << endl;
 
         if(error) ErrorMessages(error, 0);
         error = 0;
@@ -1073,6 +1075,7 @@ int Main_Menu()
     cout << "*                                                                             *" << endl;
 	cout << "******************************* Global Settings *******************************" << endl << endl;
     cout << "                 Choose mode: 0 - file, 1 - Directory                          " << endl;
+    cout << "Enter mode: " ;
     DefineMode(&it1);
     if (it1.HW_ENTP_mode == 0)
         DefineFilename(&it1, 1);
@@ -1103,7 +1106,7 @@ int Main_Menu()
         cout << "*                        4 : Inter-Hamming Distance                           *" << endl;
         cout << "*                        5 : Min-Entropy (CTW)                                *" << endl;
         cout << "*                        6 : Median and Average                               *" << endl;
-        cout << "*                        7 : Change 'offset_begin' & 'offset_end'                       *" << endl;
+        cout << "*                        7 : Change 'offset_begin' & 'offset_end'             *" << endl;
         cout << "*                        8 : Exit Program                                     *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
@@ -1149,6 +1152,10 @@ int Main_Menu()
                             Entropy_Menu(&it1);
                             break;
                         case '3':
+                            if (it1.HW_ENTP_mode == 0) {
+                                printf("invalid option for file mode!!!\n");
+                                break;
+                            }
                             cout << endl << " Processing : Intra-Hamming Distance" << endl << endl;
                             error = 0;
                             strcpy(it1.result, "none");
@@ -1158,6 +1165,10 @@ int Main_Menu()
                             IntraHD_Menu(&it1);
                             break;
                         case '4':
+                            if (it1.HW_ENTP_mode == 0) {
+                                printf("invalid option for file mode!!!\n");
+                                break;
+                            }
                             cout << endl << " Processing : Inter-Hamming Distance" << endl << endl;
                             error = 0;
                             strcpy(it1.result, "none");
@@ -1167,6 +1178,10 @@ int Main_Menu()
                             InterHD_Menu(&it1);
                             break;
                         case '5':
+                            if (it1.HW_ENTP_mode == 0) {
+                                printf("invalid option for file mode!!!\n");
+                                break;
+                            }
                             cout << endl << " Processing : Min-Entropy (CTW)" << endl << endl;
                             it1.zeros = 0;
                             it1.ones = 0;
@@ -1180,6 +1195,7 @@ int Main_Menu()
                             it1.average = 0;
                             strcpy(it1.result, "none");
                             it1.input_path_name.at(0) = "none";
+                            strcpy(it1.input_file_name, "none");
                             Median_AVG_Menu(&it1);
                             break;
                         case '7':
