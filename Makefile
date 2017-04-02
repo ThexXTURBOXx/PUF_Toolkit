@@ -2,6 +2,7 @@
 # makefile to build the puf_bch_encoder, puf_bch_decoder and puf_toolkit
 
 # find sources in the current dir and name objects based on their name
+CODE_HOME:= /home/prankur/code_seb/
 SOURCES := $(shell find . -type f -name '*.cpp')
 OBJECTS := $(patsubst %.cpp, %.o, ${SOURCES})
 
