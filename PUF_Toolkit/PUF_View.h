@@ -3,9 +3,9 @@
 
 #include "PUF_Toolkit.h"
 
-
 void ClearScreen();
 void ErrorMessages(int error, int pos);
-
-
+//bch view functions
+void ErrorMessages(int error, int pos, int pos2);
+std::string StatusProgress(int x);
 #endif // PUF_VIEW_H_INCLUDED
