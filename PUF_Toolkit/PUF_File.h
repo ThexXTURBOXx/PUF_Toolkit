@@ -9,5 +9,6 @@ bool IsDir(const char* input);
 int ViewFile(struct Item *item, int option);
 int SaveFile(struct Item *item, int option);
 int ReadKeyFile(struct Item *item);
+int SaveFile_bch(struct Item *item);
 
 #endif // PUF_FILE_H_INCLUDED

@@ -20,6 +20,7 @@ std::vector<int> output;
 int             m, n, length, k, t, d;
 long            numerr = 0, decerror = 0, corerr = 0;
 long            filesize;
+int             isSet = 0; //specifically for decoder
 
 int main()
 /*

@@ -152,58 +152,6 @@ void DefineOffSetLength(struct Item *it1)
 						// Set the offset_begin
 						it1->offset_begin = atol(oSet);
 
-				//	while(true){
-				//		ClearScreen();
-				//		cout << "*******************************************************************************" << endl;
-				//		cout << "*                                                                             *" << endl;
-				//		cout << "*                 Define the 'length' of the used PUF-Response                *" << endl;
-				//		cout << "*                                                                             *" << endl;
-				//		cout << "*                 256 = use 256 bytes of the binary PUF-Response              *" << endl;
-				//		cout << "*                 'x' = use 'x' bytes of the binary PUF-Response              *" << endl;
-				//		cout << "*                                                                             *" << endl;
-				//		cout << "*******************************************************************************" << endl;
-				//		if(error) ErrorMessages(error, i);
-				//		error = 0;
-				//		cout << endl << "Type in the length in bytes (as decimal number): ";
-				//			if (fgets(iLength, sizeof(iLength), stdin)) {
-				//				/* fgets succeeds, scan for newline character */
-				//				p = strchr(iLength, '\n');
-				//					if (p) {
-				//						*p = '\0';
-
-				//						//check input if only digits are used
-				//						for(i = 0; i < sizeof(iLength); i++){
-				//							if(iLength[i] != '\0' && !isdigit(iLength[i])){
-				//							   error = 1;
-				//							   break;
-				//							}
-				//							if(iLength[i] == '\0') i = sizeof(iLength);
-				//						}
-
-				//						if(error == 0 && atol(iLength) > 0){
-				//							// Set the length
-				//							it1->input_length = atol(iLength);
-				//							break;
-				//						}
-				//						else if(error == 0 && atol(iLength) == 0){
-				//						   error = 4;
-				//						}
-				//						}
-				//						else {
-				//						/* newline not found, flush stdin to end of line */
-				//							while (((ch = getchar()) != '\n')
-				//								&& !feof(stdin)
-				//								&& !ferror(stdin)
-				//							);
-				//							error = 2;
-				//						}
-				//					}
-				//					else {
-				//					/* fgets failed, handle error */
-				//					cin.clear();
-				//					error = 3;
-				//					}
-				//			}
 						}
 					}
 					else {
@@ -266,6 +214,8 @@ void DefineFilename(struct Item *item, int option)
  * 1 = input filename
  * 2 = output filename
  * 3 = input filename for Median and Average
+ * 4 = output key filename
+ * 5 = input HD filename
  */
 {
     char *p;
@@ -543,6 +493,8 @@ void DefineFilename_BCH(struct Item *item, int option)
  * 1 = input Key filename
  * 2 = input PUF filename
  * 3 = output HD filename
+ * 4 = output Key filename 
+ * 5 = input HD filename
  */
 {
     char *h;
@@ -555,18 +507,22 @@ void DefineFilename_BCH(struct Item *item, int option)
         ClearScreen();
         cout << "*******************************************************************************" << endl;
         cout << "*                                                                             *" << endl;
-        if(option == 1) {
-        cout << "*          Set the 'File-Name' of the file in which the Key is stored         *" << endl;}
+        if(option == 1)
+        cout << "*          Set the 'File-Name' of the file in which the Key is stored         *" << endl;
         if(option == 2){
         cout << "*                   Set the 'File-Name' of the PUF-Response                   *" << endl;}
         if(option == 3) {
         cout << "*   Set the 'File-Name' of the file in which the HelperData will be stored    *" << endl;}
+        if(option == 4) {
+        cout << "*   Set the 'File-Name' of the file in which the decoded Key will be stored   *" << endl;}
+        if(option == 5) {
+        cout << "*   Set the 'File-Name' of the file in which the HelperData is stored         *" << endl;}
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "*                                                                             *" << endl;
-        if(option == 1 || option == 2) {
+        if(option == 1 || option == 2 || option == 5) {
         cout << "* If the file is in the current working directory:                            *" << endl;}
-        if(option == 3){
+        if(option == 3 || option == 4){
         cout << "* If the file should be stored in the current working directory:              *" << endl;}
         cout << "*                                                                             *" << endl;
         if(option == 1) {
@@ -575,10 +531,14 @@ void DefineFilename_BCH(struct Item *item, int option)
         cout << "*  -> Use only the filename               = Stellaris_PUF1                    *" << endl;}
         if(option == 3) {
         cout << "*  -> Use only the filename               = HelperData_1                      *" << endl;}
+        if(option == 4) {
+        cout << "*  -> Use only the filename               = key_file.txt                      *" << endl;}
+        if(option == 5) {
+        cout << "*  -> Use only the filename               = HelperData_1                      *" << endl;}
         cout << "*                                                                             *" << endl;
-        if(option == 1 || option == 2) {
+        if(option == 1 || option == 2 || option == 5) {
         cout << "* If the file is in an sub-folder of the current working directory:           *" << endl;}
-        if(option == 3) {
+        if(option == 3 || option == 4) {
         cout << "* If the file should be stored in an sub-folder of the current directory:     *" << endl;}
         cout << "*                                                                             *" << endl;
         if(option == 1) {
@@ -587,10 +547,14 @@ void DefineFilename_BCH(struct Item *item, int option)
         cout << "*  -> Use the relative path and filename  = device1/Stellaris_PUF1            *" << endl;}
         if(option == 3) {
         cout << "*  -> Use the relative path and filename  = device1/HelperData_1              *" << endl;}
+        if(option == 4) {
+        cout << "*  -> Use the relative path and filename  = device1/key_file.txt              *" << endl;}
+        if(option == 5) {
+        cout << "*  -> Use the relative path and filename  = device1/HelperData_1              *" << endl;}
         cout << "*                                                                             *" << endl;
-        if(option == 1 || option == 2) {
+        if(option == 1 || option == 2 || option == 5) {
         cout << "* If the file is not in an sub-folder of the current working directory:       *" << endl;}
-        if(option == 3) {
+        if(option == 3 || option == 4) {
         cout << "* If the file should be stored somewhere else:                                *" << endl;}
         cout << "*                                                                             *" << endl;
         if(option == 1) {
@@ -599,10 +563,17 @@ void DefineFilename_BCH(struct Item *item, int option)
         cout << "*  -> Use the full path and filename      = C:/Data/device1/Stellaris_PUF1    *" << endl;}
         if(option == 3) {
         cout << "*  -> Use the full path and filename      = C:/Data/device1/HelperData_1      *" << endl;}
+        if(option == 4) {
+        cout << "*  -> Use the full path and filename      = C:/User/Data/device1/key_file.txt *" << endl;}
+        if(option == 5) {
+        cout << "*  -> Use the full path and filename      = C:/Data/device1/HelperData_1      *" << endl;}
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
 
-        if(error) ErrorMessages(error, 0, 0);
+        if(error) {
+            ErrorMessages(error, 0, 0);
+            ErrorMessages_decode(error, 0);
+        }
         error = 0;
 
         cout << endl << "Type in the (Path and) Filename : ";
@@ -617,6 +588,8 @@ void DefineFilename_BCH(struct Item *item, int option)
                             if (option == 1) strcpy (item->input_Key_name ,name);
                             else if (option == 2) strcpy (item->input_PUF_name,name);
                             else if (option == 3) strcpy (item->output_HD_name,name);
+                            else if (option == 4) strcpy (item->output_Key_name,name);
+                            else if (option == 5) strcpy (item->input_HD_name,name);
                     }
                 }
                 else {

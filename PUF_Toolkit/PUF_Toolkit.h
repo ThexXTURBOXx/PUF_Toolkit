@@ -46,6 +46,8 @@ struct Item {
     char input_Key_name[102];
     char input_PUF_name[102];
     char output_HD_name[102];
+    char input_HD_name[102];
+    char output_Key_name[102];
     char BCHmode[25];
     int LR;
 } ;
@@ -117,4 +119,5 @@ extern std::vector<int> output;
 extern int             m, n, length, k, t, d;
 extern long            numerr, decerror, corerr;
 extern long            filesize;
+extern int             isSet;
 #endif // PUF_TOOLKIT_H_INCLUDED
