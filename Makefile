@@ -9,12 +9,18 @@ OBJECTS := $(patsubst %.cpp, %.o, ${SOURCES})
 CC = g++
 
 # Compiler Flags
-CFLAGS += -g -O2 -Wall
+CFLAGS += -fPIC -g -O2 -Wall
 
 TARGET = PUF_BCH
+SO_TARGET = libtoolkit.so
 
 #the target build
-all: $(TARGET)
+all: $(TARGET) $(SO_TARGET)
+
+so: $(SO_TARGET)
+
+$(SO_TARGET): $(OBJECTS)
+	$(CC) -shared -o $@ $(OBJECTS)
 
 $(TARGET): ${OBJECTS}
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
@@ -23,7 +29,7 @@ $(TARGET): ${OBJECTS}
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean: 
-	rm -r $(OBJECTS) $(TARGET)
+	rm -r $(OBJECTS) $(TARGET) $(SO_TARGET)
 
 
 	
