@@ -1435,10 +1435,10 @@ int Main_Menu()
                 p = strchr(menuChoice, '\n');
                 if (p) {
                     *p = '\0';
-                    printf("menuchoice: %d\n", menuChoice[0]);
-                    switch(menuChoice[0])
+                    int s_i = atoi(menuChoice);
+                    switch(s_i)
                         {
-                        case '1':
+                        case 1:
                             cout << endl << " Processing : Hamming-Weight" << endl << endl;
                             error = 0;
                             it1.zeros = 0;
@@ -1450,7 +1450,7 @@ int Main_Menu()
                             //it1.input_path_name.at(0) = "none";
                             HammingWeight_Menu(&it1);
                             break;
-                        case '2':
+                        case 2:
                             cout << endl << " Processing : (Shannon) Entropy" << endl << endl;
                             error = 0;
                             it1.zeros = 0;
@@ -1462,7 +1462,7 @@ int Main_Menu()
                             //it1.input_path_name.at(0) = "none";
                             Entropy_Menu(&it1);
                             break;
-                        case '3':
+                        case 3:
                             if (it1.HW_ENTP_mode == 0) {
                                 printf("invalid option for file mode!!!\n");
                                 break;
@@ -1475,7 +1475,7 @@ int Main_Menu()
                             it1.HD_mode = 0;
                             IntraHD_Menu(&it1);
                             break;
-                        case '4':
+                        case 4:
                             if (it1.HW_ENTP_mode == 0) {
                                 printf("invalid option for file mode!!!\n");
                                 break;
@@ -1488,7 +1488,7 @@ int Main_Menu()
                             it1.HD_mode = 0;
                             InterHD_Menu(&it1);
                             break;
-                        case '5':
+                        case 5:
                             if (it1.HW_ENTP_mode == 0) {
                                 printf("invalid option for file mode!!!\n");
                                 break;
@@ -1500,7 +1500,7 @@ int Main_Menu()
                             strcpy(it1.result, "none");
                             MinEntropy_Menu(&it1);
                             break;
-                        case '6':
+                        case 6:
                             cout << endl << " Processing : Median and Average" << endl << endl;
                             it1.median = 0;
                             it1.average = 0;
@@ -1509,23 +1509,23 @@ int Main_Menu()
                             strcpy(it1.input_file_name, "none");
                             Median_AVG_Menu(&it1);
                             break;
-                        case '7':
+                        case 7:
                             cout << endl << "BCH Encoder Menu" << endl << endl;
                             error = 0;
                             BCH_Encoder_Menu(&it1);
                             break;
-                        case '8':
+                        case 8:
                             cout << endl << "BCH Decoder Menu" << endl << endl;
                             error = 0;
                             BCH_Decoder_Menu();
                             break;
-                        case '9':
+                        case 9:
                             cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                             error = 0;
                             ClearScreen();
                             DefineOffSetLength(&it1);
                             break;
-                        case '10':
+                        case 10:
                             ClearScreen();
                             cout << endl << " Exiting Program -  bye bye" << endl << endl;
                             error = 0;
