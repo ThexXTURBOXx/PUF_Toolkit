@@ -9,19 +9,19 @@ OBJECTS := $(patsubst %.cpp, %.o, ${SOURCES})
 CC = g++
 
 # Compiler Flags
-override CFLAGS += -fPIC -g -O2 -Wall
+override CFLAGS += -g -O2 -Wall
 
-#Include for jni headers and java
-INCLUDE+=-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
 
 TARGET = PUF_BCH
 SO_TARGET = libtoolkit.so
 
 #the target build
-all: $(TARGET) $(SO_TARGET)
+all: $(SO_TARGET)
 
-so: $(SO_TARGET)
+target: clean $(TARGET)
 
+$(SO_TARGET): CFLAGS+= -fPIC -D JNI
+$(SO_TARGET): INCLUDE+=-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
 $(SO_TARGET): $(OBJECTS)
 	$(CC) -shared -o $@ $(OBJECTS)
 
@@ -31,10 +31,7 @@ $(TARGET): ${OBJECTS}
 %.o:%.cpp %.h 
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-clean: 
+clean:
+	rm -r $(OBJECTS)
+cleanall:
 	rm -r $(OBJECTS) $(TARGET) $(SO_TARGET)
-
-
-	
-
-
