@@ -92,8 +92,9 @@ int SaveFile(struct Item *item, int option)
 {
     ofstream file;
 
+#ifndef JNI
     DefineFilename(item, 2);
-
+#endif
     file.open (item->output_file_name);
 
     if(file.fail()) return 11;

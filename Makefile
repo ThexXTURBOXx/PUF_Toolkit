@@ -9,7 +9,10 @@ OBJECTS := $(patsubst %.cpp, %.o, ${SOURCES})
 CC = g++
 
 # Compiler Flags
-CFLAGS += -fPIC -g -O2 -Wall
+override CFLAGS += -fPIC -g -O2 -Wall
+
+#Include for jni headers and java
+INCLUDE+=-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
 
 TARGET = PUF_BCH
 SO_TARGET = libtoolkit.so
@@ -26,7 +29,7 @@ $(TARGET): ${OBJECTS}
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 
 %.o:%.cpp %.h 
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean: 
 	rm -r $(OBJECTS) $(TARGET) $(SO_TARGET)
