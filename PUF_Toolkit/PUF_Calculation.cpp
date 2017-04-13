@@ -1059,11 +1059,11 @@ void read_p()
  *	the code length.
  */
 {
-	int			    i, ninf;
+	int			    i = 0, ninf;
 	char            *h;
     unsigned int    ch;
     char            user_input[7];
-    int             error;
+    int             error = 0;
 
 
 	while(true){
