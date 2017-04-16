@@ -7,10 +7,11 @@
 Item it1 = Item();
 
 JNIEXPORT void JNICALL Java_toolkit_hammingwt(JNIEnv *env, jobject obj, 
-        jstring name, jboolean mode)
+        jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
     const char *fname = env->GetStringUTFChars(name, 0);
+    const char *op_fname = env->GetStringUTFChars(op_name, 0);
     it1.input_path_name.push_back("none");
     
     if(mode)
@@ -18,9 +19,7 @@ JNIEXPORT void JNICALL Java_toolkit_hammingwt(JNIEnv *env, jobject obj,
     else if(!mode)
         strcpy(it1.input_file_name, fname);
 
-    printf("%s\n", it1.input_path_name.at(0).c_str());
-
-    strcpy(it1.output_file_name, "folder_HD.txt");
+    strcpy(it1.output_file_name, op_fname);
     error = HammingWeight(&it1, mode);
     if(!error) {
             strcpy(it1.result, "done - result saved");
@@ -30,6 +29,7 @@ JNIEXPORT void JNICALL Java_toolkit_hammingwt(JNIEnv *env, jobject obj,
     if (error) ErrorMessages(error, 0);
     //cleanup 
     env->ReleaseStringUTFChars(name, fname);
+    env->ReleaseStringUTFChars(op_name, op_fname);
 
 }
 #endif
