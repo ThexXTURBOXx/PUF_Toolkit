@@ -6,6 +6,7 @@ public class toolkit {
     public static String filename = "none";
     public static String op_fname = "none";
     public native void hammingwt(String name, String op_fname, boolean mode);
+    public native void entropy(String name, String op_fname, boolean mode);
     
     static {
         System.loadLibrary("toolkit");
@@ -26,7 +27,8 @@ public class toolkit {
 
     public static void interface_C() {
         toolkit tk = new toolkit();
-        tk.hammingwt(filename, op_fname, mode);
+        //tk.hammingwt(filename, op_fname, mode);
+        tk.entropy(filename, op_fname, mode);
     }
 
     public static void main(String argv[]) {
