@@ -977,7 +977,7 @@ void Median_AVG_Menu(struct Item *item)
                 cout << "                     Median               = " << item->median                    << endl;
                 cout << "                     Average              = " << item->average                   << endl;}
 				cout << "*******************************************************************************" << endl;
-                cout << "Hint: You can use hamming distance (file mode) output "
+                cout << "Hint: You can use hamming distance (folder mode) output "
                     "file that is generated in the desired format." << endl;
 
         if(error) ErrorMessages(error, 0);
