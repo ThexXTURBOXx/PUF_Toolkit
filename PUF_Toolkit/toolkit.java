@@ -7,6 +7,8 @@ public class toolkit {
     public static String op_fname = "none";
     public native void hammingwt(String name, String op_fname, boolean mode);
     public native void entropy(String name, String op_fname, boolean mode);
+    public native void intra_hd(String name, String op_fname, boolean mode);
+    public native void min_entropy(String name, String op_fname, boolean mode);
     
     static {
         System.loadLibrary("toolkit");
@@ -28,7 +30,12 @@ public class toolkit {
     public static void interface_C() {
         toolkit tk = new toolkit();
         //tk.hammingwt(filename, op_fname, mode);
-        tk.entropy(filename, op_fname, mode);
+        //tk.entropy(filename, op_fname, mode);
+        //call intra_hd only when mode = true (folder mode)
+        if (mode) {
+            tk.intra_hd(filename, op_fname, mode);
+            tk.min_entropy(filename, op_fname, mode);
+        }
     }
 
     public static void main(String argv[]) {
@@ -36,5 +43,3 @@ public class toolkit {
         interface_C();
     }
 }
-
-    
