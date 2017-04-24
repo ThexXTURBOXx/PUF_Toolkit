@@ -124,4 +124,21 @@ JNIEXPORT void JNICALL Java_toolkit_min_1entropy
     env->ReleaseStringUTFChars(name, fname);
     env->ReleaseStringUTFChars(op_name, op_fname);
 }
+
+JNIEXPORT void JNICALL Java_toolkit_median_1avg
+  (JNIEnv * env, jobject obj, jstring name, jstring op_name)
+{
+    unsigned int error = 0;
+    const char *fname = env->GetStringUTFChars(name, 0);
+    const char *op_fname = env->GetStringUTFChars(op_name, 0);
+    strcpy(item.input_file_name, fname);
+    strcpy(item.output_file_name, op_fname);
+
+    error = Median_AVG(&item); // median average calculation
+
+    if (error) ErrorMessages(error, 0);
+    //cleanup
+    env->ReleaseStringUTFChars(name, fname);
+    env->ReleaseStringUTFChars(op_name, op_fname);
+}
 #endif
