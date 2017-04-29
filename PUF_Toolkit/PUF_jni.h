@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include "PUF_Toolkit.h"
 
 // Arrays/Vectors for the general computation of the BCH implementation

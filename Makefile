@@ -34,4 +34,4 @@ $(TARGET): ${OBJECTS}
 clean:
 	rm -r $(OBJECTS)
 cleanall:
-	rm -r $(OBJECTS) $(TARGET) $(SO_TARGET)
+	rm -r $(OBJECTS) $(SO_TARGET)

@@ -1066,63 +1066,64 @@ void read_p()
     int             error;
 
 
-	while(true){
-        if (error != 0) ClearScreen();
-        cout << "*******************************************************************************" << endl;
-		cout << "*                                                                             *" << endl;
-		cout << "*                  Set the relevant parameter to define the BCH mode:         *" << endl;
-		cout << "*                                                                             *" << endl;
-		cout << "*                   'm'  = such that the code length is in between            *" << endl;
-		cout << "*                                                                             *" << endl;
-        cout << "*                        (2^(m-1) - 1) < length <= (2^m - 1)                  *" << endl;
-		cout << "*                                                                             *" << endl;
-		cout << "*******************************************************************************" << endl;
+//	while(true){
+//        if (error != 0) ClearScreen();
+//        cout << "*******************************************************************************" << endl;
+//		cout << "*                                                                             *" << endl;
+//		cout << "*                  Set the relevant parameter to define the BCH mode:         *" << endl;
+//		cout << "*                                                                             *" << endl;
+//		cout << "*                   'm'  = such that the code length is in between            *" << endl;
+//		cout << "*                                                                             *" << endl;
+//        cout << "*                        (2^(m-1) - 1) < length <= (2^m - 1)                  *" << endl;
+//		cout << "*                                                                             *" << endl;
+//		cout << "*******************************************************************************" << endl;
+//
+//        if(error) ErrorMessages(error, i, 0);
+//        error = 0;
+//
+//        // Get "m" as user input
+//        cout << endl << "Enter m (between 4 and 14): ";
+//        if (fgets(user_input, sizeof(user_input), stdin)) {
+//            /* fgets succeeds, scan for newline character */
+//            h = strchr(user_input, '\n');
+//                if (h) {
+//                    if(user_input[0] == '\n') error = 6;
+//                    else {
+//                        *h = '\0';
+//                        //check input if only digits are used
+//                        for(i = 0; i < (signed)sizeof(user_input)-1; i++){
+//                            if(user_input[i] != '\0' && !isdigit(user_input[i])){
+//                                error = 1;
+//                                break;
+//                            }
+//                            if(user_input[i] == '\0') i = sizeof(user_input);
+//                        }
+//                        if(!error){
+//                            if(atoi(user_input) >= 4 && atoi(user_input) <= 14){
+//                                m = atoi(user_input);
+//                                break;
+//                            }
+//                            else error = 7;
+//                        }
+//                    }
+//                }
+//                else {
+//                    /* newline not found, flush stdin to end of line */
+//                        while (((ch = getchar()) != '\n')
+//                                && !feof(stdin)
+//                                && !ferror(stdin)
+//                            );
+//                        error = 2;
+//                }
+//        }
+//        else {
+//            /* fgets failed, handle error */
+//            cin.clear();
+//            error = 3;
+//        }
+//    }
 
-        if(error) ErrorMessages(error, i, 0);
-        error = 0;
-
-        // Get "m" as user input
-        cout << endl << "Enter m (between 4 and 14): ";
-        if (fgets(user_input, sizeof(user_input), stdin)) {
-            /* fgets succeeds, scan for newline character */
-            h = strchr(user_input, '\n');
-                if (h) {
-                    if(user_input[0] == '\n') error = 6;
-                    else {
-                        *h = '\0';
-                        //check input if only digits are used
-                        for(i = 0; i < (signed)sizeof(user_input)-1; i++){
-                            if(user_input[i] != '\0' && !isdigit(user_input[i])){
-                                error = 1;
-                                break;
-                            }
-                            if(user_input[i] == '\0') i = sizeof(user_input);
-                        }
-                        if(!error){
-                            if(atoi(user_input) >= 4 && atoi(user_input) <= 14){
-                                m = atoi(user_input);
-                                break;
-                            }
-                            else error = 7;
-                        }
-                    }
-                }
-                else {
-                    /* newline not found, flush stdin to end of line */
-                        while (((ch = getchar()) != '\n')
-                                && !feof(stdin)
-                                && !ferror(stdin)
-                            );
-                        error = 2;
-                }
-        }
-        else {
-            /* fgets failed, handle error */
-            cin.clear();
-            error = 3;
-        }
-    }
-
+    m = 10; // prankur set the coefficient to 10 for testing
     // Generate coefficients of a primitive polynomial used to generate GF(2**m)
     for (i=1; i<m; i++)
             p[i] = 0;
@@ -1152,62 +1153,63 @@ void read_p()
     ninf = (n + 1) / 2 - 1;
 
     // Get the code length from user input
-    while(true){
-        ClearScreen();
-        cout << "*******************************************************************************" << endl;
-        cout << "*                                                                             *" << endl;
-        cout << "*             Set the relevant parameter to define the BCH mode:              *" << endl;
-        cout << "*                                                                             *" << endl;
-        cout << "*              length  = the length of each BCH encoded codeword              *" << endl;
-        cout << "*                                                                             *" << endl;
-        cout << "*******************************************************************************" << endl;
+    length = 1023; //prankur for testing purposes 
+   // while(true){
+   //     ClearScreen();
+   //     cout << "*******************************************************************************" << endl;
+   //     cout << "*                                                                             *" << endl;
+   //     cout << "*             Set the relevant parameter to define the BCH mode:              *" << endl;
+   //     cout << "*                                                                             *" << endl;
+   //     cout << "*              length  = the length of each BCH encoded codeword              *" << endl;
+   //     cout << "*                                                                             *" << endl;
+   //     cout << "*******************************************************************************" << endl;
 
-        if(error) ErrorMessages(error, i, n);
-        error = 0;
+   //     if(error) ErrorMessages(error, i, n);
+   //     error = 0;
 
-        cout << endl << "Enter the code length between (" << ninf << " < length <= " << n << "): ";
-        if (fgets(user_input, sizeof(user_input), stdin)) {
-            /* fgets succeeds, scan for newline character */
-            h = strchr(user_input, '\n');
-            if (h) {
-                if(user_input[0] == '\n') error = 6;
-                else {
-                    *h = '\0';
-                    //check input if only digits are used
-                    for(i = 0; i < (signed)sizeof(user_input)-1; i++){
-                        if(user_input[i] != '\0' && !isdigit(user_input[i])){
-                            error = 1;
-                            break;
-                        }
-                        if(user_input[i] == '\0') i = sizeof(user_input);
-                    }
-                    if(!error){
-                        if(atoi(user_input) > ninf && atoi(user_input) <= n){
-                            length = atoi(user_input);
-                            break;
-                        }
-                        else {
-                            error = 8;
-                            i = ninf;
-                        }
-                    }
-                }
-            }
-            else {
-                /* newline not found, flush stdin to end of line */
-                while (((ch = getchar()) != '\n')
-                                && !feof(stdin)
-                                && !ferror(stdin)
-                            );
-                error = 2;
-            }
-        }
-        else {
-            /* fgets failed, handle error */
-            cin.clear();
-            error = 3;
-        }
-    }
+   //     cout << endl << "Enter the code length between (" << ninf << " < length <= " << n << "): ";
+   //     if (fgets(user_input, sizeof(user_input), stdin)) {
+   //         /* fgets succeeds, scan for newline character */
+   //         h = strchr(user_input, '\n');
+   //         if (h) {
+   //             if(user_input[0] == '\n') error = 6;
+   //             else {
+   //                 *h = '\0';
+   //                 //check input if only digits are used
+   //                 for(i = 0; i < (signed)sizeof(user_input)-1; i++){
+   //                     if(user_input[i] != '\0' && !isdigit(user_input[i])){
+   //                         error = 1;
+   //                         break;
+   //                     }
+   //                     if(user_input[i] == '\0') i = sizeof(user_input);
+   //                 }
+   //                 if(!error){
+   //                     if(atoi(user_input) > ninf && atoi(user_input) <= n){
+   //                         length = atoi(user_input);
+   //                         break;
+   //                     }
+   //                     else {
+   //                         error = 8;
+   //                         i = ninf;
+   //                     }
+   //                 }
+   //             }
+   //         }
+   //         else {
+   //             /* newline not found, flush stdin to end of line */
+   //             while (((ch = getchar()) != '\n')
+   //                             && !feof(stdin)
+   //                             && !ferror(stdin)
+   //                         );
+   //             error = 2;
+   //         }
+   //     }
+   //     else {
+   //         /* fgets failed, handle error */
+   //         cin.clear();
+   //         error = 3;
+   //     }
+   // }
 }
 
 void generate_gf()
@@ -1331,58 +1333,59 @@ void gen_poly()
 	nocycles = jj;		/* number of cycle sets modulo n */
 
 	while(!done){
-        while(true){
-            ClearScreen();
-            cout << "*******************************************************************************" << endl;
-            cout << "*                                                                             *" << endl;
-            cout << "*             Set the relevant parameter to define the BCH mode:              *" << endl;
-            cout << "*                                                                             *" << endl;
-            cout << "*    't'  = the error correcting capability for each BCH encoded codeword     *" << endl;
-            cout << "*                                                                             *" << endl;
-            cout << "*******************************************************************************" << endl;
+       // while(true){
+       //     ClearScreen();
+       //     cout << "*******************************************************************************" << endl;
+       //     cout << "*                                                                             *" << endl;
+       //     cout << "*             Set the relevant parameter to define the BCH mode:              *" << endl;
+       //     cout << "*                                                                             *" << endl;
+       //     cout << "*    't'  = the error correcting capability for each BCH encoded codeword     *" << endl;
+       //     cout << "*                                                                             *" << endl;
+       //     cout << "*******************************************************************************" << endl;
 
-            if(error) ErrorMessages(error, i, (int)max_error);
-            error = 0;
+       //     if(error) ErrorMessages(error, i, (int)max_error);
+       //     error = 0;
 
-            // Get "t" as user input
-            cout << endl << "Enter the error correcting capability, t: ";
-            if (fgets(user_input, sizeof(user_input), stdin)) {
-                /* fgets succeeds, scan for newline character */
-                h = strchr(user_input, '\n');
-                if (h) {
-                    if(user_input[0] == '\n') error = 6;
-                    else {
-                        *h = '\0';
-                        //check input if only digits are used
-                        for(i = 0; i < (signed)sizeof(user_input)-1; i++){
-                            if(user_input[i] != '\0' && !isdigit(user_input[i])){
-                                error = 1;
-                                break;
-                            }
-                            if(user_input[i] == '\0') i = sizeof(user_input);
-                        }
-                        if(!error){
-                            t = atoi(user_input);
-                            break;
-                        }
-                    }
-                }
-                else {
-                    /* newline not found, flush stdin to end of line */
-                    while (((ch = getchar()) != '\n')
-                            && !feof(stdin)
-                            && !ferror(stdin)
-                            );
-                    error = 2;
-                }
-            }
-            else {
-                /* fgets failed, handle error */
-                cin.clear();
-                error = 3;
-            }
-        }
+       //     // Get "t" as user input
+       //     cout << endl << "Enter the error correcting capability, t: ";
+       //     if (fgets(user_input, sizeof(user_input), stdin)) {
+       //         /* fgets succeeds, scan for newline character */
+       //         h = strchr(user_input, '\n');
+       //         if (h) {
+       //             if(user_input[0] == '\n') error = 6;
+       //             else {
+       //                 *h = '\0';
+       //                 //check input if only digits are used
+       //                 for(i = 0; i < (signed)sizeof(user_input)-1; i++){
+       //                     if(user_input[i] != '\0' && !isdigit(user_input[i])){
+       //                         error = 1;
+       //                         break;
+       //                     }
+       //                     if(user_input[i] == '\0') i = sizeof(user_input);
+       //                 }
+       //                 if(!error){
+       //                     t = atoi(user_input);
+       //                     break;
+       //                 }
+       //             }
+       //         }
+       //         else {
+       //             /* newline not found, flush stdin to end of line */
+       //             while (((ch = getchar()) != '\n')
+       //                     && !feof(stdin)
+       //                     && !ferror(stdin)
+       //                     );
+       //             error = 2;
+       //         }
+       //     }
+       //     else {
+       //         /* fgets failed, handle error */
+       //         cin.clear();
+       //         error = 3;
+       //     }
+       // }
 
+        t = 17; //prankur default for testing
         d = 2 * t + 1;
 
         /* Search for roots 1, 2, ..., d-1 in cycle sets */

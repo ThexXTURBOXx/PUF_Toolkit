@@ -1,6 +1,5 @@
 #ifdef JNI
 #include "PUF_jni.h"
-#include "PUF_Toolkit.h"
 #include "toolkit.h"
 
 
@@ -140,5 +139,56 @@ JNIEXPORT void JNICALL Java_toolkit_median_1avg
     //cleanup
     env->ReleaseStringUTFChars(name, fname);
     env->ReleaseStringUTFChars(op_name, op_fname);
+}
+
+JNIEXPORT void JNICALL Java_toolkit_bch_1encoder
+  (JNIEnv *env, jobject obj, jstring PUF, jstring key, jstring helper)
+{
+    unsigned error = 0;
+    const char *PUF_file = env->GetStringUTFChars(PUF, 0);
+    const char *key_file = env->GetStringUTFChars(key, 0);
+    const char *helper_file = env->GetStringUTFChars(helper, 0);
+
+    read_p();
+    generate_gf();
+    gen_poly();
+    //set LR to 7
+    item.LR = 7;
+    // setting the input key , PUF and output helper data
+    strcpy(item.input_Key_name, key_file);
+    strcpy(item.input_PUF_name, PUF_file);
+    strcpy(item.output_HD_name, helper_file);
+
+    //BCH encoding
+    error = ReadKeyFile(&item);
+    if (!error) error = Calculation_encode(&item);
+    else if (error) ErrorMessages(error, 0);
+    //cleanup
+    env->ReleaseStringUTFChars(PUF, PUF_file);
+    env->ReleaseStringUTFChars(key, key_file);
+    env->ReleaseStringUTFChars(helper, helper_file);
+
+}
+
+JNIEXPORT void JNICALL Java_toolkit_bch_1decoder
+  (JNIEnv *env, jobject obj, jstring PUF, jstring helperdata, jstring key_r)
+{
+    unsigned error = 0;
+    const char *PUF_file = env->GetStringUTFChars(PUF, 0);
+    const char *key_file = env->GetStringUTFChars(key_r, 0);
+    const char *helper_file = env->GetStringUTFChars(helperdata, 0);
+
+    // setting the output key , PUF and input helper data
+    strcpy(item.output_Key_name, key_file);
+    strcpy(item.input_PUF_name, PUF_file);
+    strcpy(item.input_HD_name, helper_file);
+
+    //BCH decoding
+    error = Calculation_decode(&item);
+    if (error) ErrorMessages(error, 0);
+    //cleanup
+    env->ReleaseStringUTFChars(PUF, PUF_file);
+    env->ReleaseStringUTFChars(key_r, key_file);
+    env->ReleaseStringUTFChars(helperdata, helper_file);
 }
 #endif
