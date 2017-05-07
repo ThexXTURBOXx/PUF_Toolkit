@@ -191,4 +191,33 @@ JNIEXPORT void JNICALL Java_toolkit_bch_1decoder
     env->ReleaseStringUTFChars(key_r, key_file);
     env->ReleaseStringUTFChars(helperdata, helper_file);
 }
+JNIEXPORT void JNICALL Java_toolkit_inter_1hd
+  (JNIEnv *env, jobject obj, jobjectArray folders, jstring op_file)
+{
+    unsigned error = 0;
+    int i = 0;
+    //item.input_path_name.push_back("none");
+    const char *op_f = env->GetStringUTFChars(op_file, 0);
+    strcpy(item.output_file_name, op_f);
+    jsize len = env->GetArrayLength(folders);
+    for (i = 0; i < len; i++)
+    {
+        jstring string = (jstring) env->GetObjectArrayElement(folders, i);
+        const char *folder = env->GetStringUTFChars(string, 0);
+        item.input_path_name.push_back(folder);
+        env->ReleaseStringUTFChars(string, folder);
+    }
+
+    error = InterHD(&item, 1);
+    if (error) ErrorMessages(error, item.HD_error_pos);
+
+    //printf("input size :%ld\n", item.input_path_name.size());
+    //for(std::vector<string>::const_iterator i = item.input_path_name.begin();
+    //        i != item.input_path_name.end(); ++i)
+    //    std::cout << ' ' << *i;
+    //std::cout << '\n';
+
+    //cleanup
+    env->ReleaseStringUTFChars(op_file, op_f);
+}
 #endif

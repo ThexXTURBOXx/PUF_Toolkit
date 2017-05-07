@@ -9,10 +9,12 @@ public class toolkit {
     public static String PUF = "PUF";
     public static String helperdata = "helper";
     public static String op_fname = "none";
+    public static int n = 0;
 
     public native void hammingwt(String name, String op_fname, boolean mode);
     public native void entropy(String name, String op_fname, boolean mode);
     public native void intra_hd(String name, String op_fname, boolean mode);
+    public native void inter_hd(String name[], String op_fname);
     public native void min_entropy(String name, String op_fname, boolean mode);
     public native void median_avg(String name, String op_fname);
     public native void bch_encoder(String PUF, String key_file, String helperdata);
@@ -36,7 +38,9 @@ public class toolkit {
     }
 
     public static void interface_C() {
+        Scanner reader = new Scanner(System.in);
         toolkit tk = new toolkit();
+        File f = null;
         //tk.hammingwt(filename, op_fname, mode);
         //tk.entropy(filename, op_fname, mode);
         //call intra_hd only when mode = true (folder mode)
@@ -45,8 +49,24 @@ public class toolkit {
         //    tk.min_entropy(filename, op_fname, mode);
         //}
         //tk.median_avg(filename, op_fname);
-        tk.bch_encoder(PUF, key_file, helperdata);
-        tk.bch_decoder(PUF, helperdata, key_r);
+        //inter hd user input
+        System.out.println("enter number of folders");
+        n = Integer.parseInt(reader.nextLine());
+        String name[] = new String[n];
+
+        for(int i = 0; i < n; i++)
+        {
+            System.out.format("enter %d folder name%n", i+1);
+            name[i] = reader.nextLine();
+            f = new File(name[i]);
+            if (!f.isDirectory()) {
+                System.out.println("error! incorrect folder name");
+                return;
+            }
+        }
+        tk.inter_hd(name, "inter_hd");
+        //tk.bch_encoder(PUF, key_file, helperdata);
+        //tk.bch_decoder(PUF, helperdata, key_r);
     }
 
     public static void main(String argv[]) {
