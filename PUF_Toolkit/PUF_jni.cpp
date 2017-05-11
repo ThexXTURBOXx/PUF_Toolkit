@@ -1,11 +1,11 @@
 #ifdef JNI
 #include "PUF_jni.h"
-#include "toolkit.h"
+#include "jni_toolkit.h"
 
 
 Item item = Item();
-JNIEXPORT void JNICALL Java_toolkit_hammingwt(JNIEnv *env, jobject obj, 
-        jstring name, jstring op_name, jboolean mode)
+JNIEXPORT void JNICALL Java_jni_toolkit_hammingwt
+  (JNIEnv *env, jobject obj, jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
     const char *fname = env->GetStringUTFChars(name, 0);
@@ -38,7 +38,7 @@ JNIEXPORT void JNICALL Java_toolkit_hammingwt(JNIEnv *env, jobject obj,
 
 }
 
-JNIEXPORT void JNICALL Java_toolkit_entropy
+JNIEXPORT void JNICALL Java_jni_toolkit_entropy
   (JNIEnv * env, jobject obj, jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
@@ -71,7 +71,7 @@ JNIEXPORT void JNICALL Java_toolkit_entropy
     env->ReleaseStringUTFChars(op_name, op_fname);
 }
 
-JNIEXPORT void JNICALL Java_toolkit_intra_1hd
+JNIEXPORT void JNICALL Java_jni_toolkit_intra_1hd
   (JNIEnv * env, jobject obj, jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
@@ -95,7 +95,37 @@ JNIEXPORT void JNICALL Java_toolkit_intra_1hd
     env->ReleaseStringUTFChars(op_name, op_fname);
 }
 
-JNIEXPORT void JNICALL Java_toolkit_min_1entropy
+JNIEXPORT void JNICALL Java_jni_toolkit_inter_1hd
+  (JNIEnv *env, jobject obj, jobjectArray folders, jstring op_file)
+{
+    unsigned error = 0;
+    int i = 0;
+    //item.input_path_name.push_back("none");
+    const char *op_f = env->GetStringUTFChars(op_file, 0);
+    strcpy(item.output_file_name, op_f);
+    jsize len = env->GetArrayLength(folders);
+    for (i = 0; i < len; i++)
+    {
+        jstring string = (jstring) env->GetObjectArrayElement(folders, i);
+        const char *folder = env->GetStringUTFChars(string, 0);
+        item.input_path_name.push_back(folder);
+        env->ReleaseStringUTFChars(string, folder);
+    }
+
+    error = InterHD(&item, 1);
+    if (error) ErrorMessages(error, item.HD_error_pos);
+
+    printf("input size :%ld\n", item.input_path_name.size());
+    for(std::vector<string>::const_iterator i = item.input_path_name.begin();
+            i != item.input_path_name.end(); ++i)
+        std::cout << ' ' << *i;
+    std::cout << '\n';
+
+    //cleanup
+    env->ReleaseStringUTFChars(op_file, op_f);
+}
+
+JNIEXPORT void JNICALL Java_jni_toolkit_min_1entropy
   (JNIEnv * env, jobject obj, jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
@@ -124,7 +154,7 @@ JNIEXPORT void JNICALL Java_toolkit_min_1entropy
     env->ReleaseStringUTFChars(op_name, op_fname);
 }
 
-JNIEXPORT void JNICALL Java_toolkit_median_1avg
+JNIEXPORT void JNICALL Java_jni_toolkit_median_1avg
   (JNIEnv * env, jobject obj, jstring name, jstring op_name)
 {
     unsigned int error = 0;
@@ -141,7 +171,7 @@ JNIEXPORT void JNICALL Java_toolkit_median_1avg
     env->ReleaseStringUTFChars(op_name, op_fname);
 }
 
-JNIEXPORT void JNICALL Java_toolkit_bch_1encoder
+JNIEXPORT void JNICALL Java_jni_toolkit_bch_1encoder
   (JNIEnv *env, jobject obj, jstring PUF, jstring key, jstring helper)
 {
     unsigned error = 0;
@@ -170,7 +200,7 @@ JNIEXPORT void JNICALL Java_toolkit_bch_1encoder
 
 }
 
-JNIEXPORT void JNICALL Java_toolkit_bch_1decoder
+JNIEXPORT void JNICALL Java_jni_toolkit_bch_1decoder
   (JNIEnv *env, jobject obj, jstring PUF, jstring helperdata, jstring key_r)
 {
     unsigned error = 0;
@@ -190,34 +220,5 @@ JNIEXPORT void JNICALL Java_toolkit_bch_1decoder
     env->ReleaseStringUTFChars(PUF, PUF_file);
     env->ReleaseStringUTFChars(key_r, key_file);
     env->ReleaseStringUTFChars(helperdata, helper_file);
-}
-JNIEXPORT void JNICALL Java_toolkit_inter_1hd
-  (JNIEnv *env, jobject obj, jobjectArray folders, jstring op_file)
-{
-    unsigned error = 0;
-    int i = 0;
-    //item.input_path_name.push_back("none");
-    const char *op_f = env->GetStringUTFChars(op_file, 0);
-    strcpy(item.output_file_name, op_f);
-    jsize len = env->GetArrayLength(folders);
-    for (i = 0; i < len; i++)
-    {
-        jstring string = (jstring) env->GetObjectArrayElement(folders, i);
-        const char *folder = env->GetStringUTFChars(string, 0);
-        item.input_path_name.push_back(folder);
-        env->ReleaseStringUTFChars(string, folder);
-    }
-
-    error = InterHD(&item, 1);
-    if (error) ErrorMessages(error, item.HD_error_pos);
-
-    //printf("input size :%ld\n", item.input_path_name.size());
-    //for(std::vector<string>::const_iterator i = item.input_path_name.begin();
-    //        i != item.input_path_name.end(); ++i)
-    //    std::cout << ' ' << *i;
-    //std::cout << '\n';
-
-    //cleanup
-    env->ReleaseStringUTFChars(op_file, op_f);
 }
 #endif

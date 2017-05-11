@@ -1,5 +1,9 @@
+package jni;
+
+import soloader.NativeUtils;
 import java.util.Scanner;
 import java.io.File;
+import java.io.IOException;
 
 public class toolkit {
     public static boolean mode = false;
@@ -10,18 +14,23 @@ public class toolkit {
     public static String helperdata = "helper";
     public static String op_fname = "none";
     public static int n = 0;
+    public static String name[];
 
-    public native void hammingwt(String name, String op_fname, boolean mode);
-    public native void entropy(String name, String op_fname, boolean mode);
-    public native void intra_hd(String name, String op_fname, boolean mode);
-    public native void inter_hd(String name[], String op_fname);
-    public native void min_entropy(String name, String op_fname, boolean mode);
-    public native void median_avg(String name, String op_fname);
-    public native void bch_encoder(String PUF, String key_file, String helperdata);
-    public native void bch_decoder(String PUF, String helper_data, String key_r);
+    public static native void hammingwt(String name, String op_fname, boolean mode);
+    public static native void entropy(String name, String op_fname, boolean mode);
+    public static native void intra_hd(String name, String op_fname, boolean mode);
+    public static native void inter_hd(String name[], String op_fname);
+    public static native void min_entropy(String name, String op_fname, boolean mode);
+    public static native void median_avg(String name, String op_fname);
+    public static native void bch_encoder(String PUF, String key_file, String helperdata);
+    public static native void bch_decoder(String PUF, String helper_data, String key_r);
     
     static {
-        System.loadLibrary("toolkit");
+        try {
+            NativeUtils.loadLibraryFromJar("/libtoolkit.so");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void setparams() {
@@ -52,24 +61,25 @@ public class toolkit {
         //inter hd user input
         System.out.println("enter number of folders");
         n = Integer.parseInt(reader.nextLine());
-        String name[] = new String[n];
+        //String name[] = new String[]{"/home/prankur/code_seb/PUF_Tookit/data/input", 
+        //    "/home/prankur/code_seb/PUF_Toolkit/data/ouput", "/home/prankur/code_seb/PUF_Toolkit/data/test"};
 
         for(int i = 0; i < n; i++)
         {
             System.out.format("enter %d folder name%n", i+1);
             name[i] = reader.nextLine();
-            f = new File(name[i]);
-            if (!f.isDirectory()) {
-                System.out.println("error! incorrect folder name");
-                return;
-            }
+            //f = new File(name[i]);
+            //if (!f.isDirectory()) {
+            //    System.out.println("error! incorrect folder name");
+            //    return;
+            //}
         }
         tk.inter_hd(name, "inter_hd");
         //tk.bch_encoder(PUF, key_file, helperdata);
         //tk.bch_decoder(PUF, helperdata, key_r);
     }
 
-    public static void main(String argv[]) {
+    public static void jni() {
         //setparams();
         interface_C();
     }
