@@ -35,13 +35,13 @@ void HammingWeight_Menu(struct Item *item)
                 cout << "*                        1 : Set File                                         *" << endl;
                 cout << "*                        2 : Calculate Hamming Weight                         *" << endl;
                 cout << "*                        3 : Save result                                      *" << endl;
-                cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'             *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet   = " << item->offSet                                << endl;
+                cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
                 cout << "                     Length   = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode     = single file                                    " << endl;
                 cout << "                                                                               " << endl;
@@ -69,13 +69,16 @@ void HammingWeight_Menu(struct Item *item)
                                 item->zeros = 0;
                                 item->ones = 0;
                                 error = HammingWeight(item, item->HW_ENTP_mode);
-                                if(!error) itoa(item->ones,item->result,10);
+                                if(!error) {
+                                    snprintf(item->result, 52, "%lu", item->ones); //itoa(item->ones,item->result,10);
+                                    printf("prankur value at item->result: %s\n", item->result);
+                                }
                                 else strcpy(item->result, "none");
                                 break;
                             case '2':
                                 cout << endl << " Processing : HammingWeight calculation" << endl << endl;
                                 error = HammingWeight(item, item->HW_ENTP_mode);
-                                if(!error) itoa(item->ones,item->result,10);
+                                if(!error) snprintf(item->result, 52, "%lu", item->ones);//itoa(item->ones,item->result,10);
                                 else strcpy(item->result, "none");
                                 break;
                             case '3':
@@ -84,7 +87,7 @@ void HammingWeight_Menu(struct Item *item)
                                 else error = SaveFile(item,1);
                                 break;
                             case '4':
-                                cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                                cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                                 item->zeros = 0;
                                 item->ones = 0;
                                 error = 0;
@@ -139,13 +142,13 @@ void HammingWeight_Menu(struct Item *item)
                 cout << "*                        1 : Set Input-Path                                   *" << endl;
                 cout << "*                        2 : Set Output-Filename                              *" << endl;
                 cout << "*                        3 : Calculate Hamming Weight                         *" << endl;
-                cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet          = " << item->offSet                         << endl;
+                cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
                 cout << "                     Length          = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode            = complete directory                      " << endl;
                 cout << "                                                                               " << endl;
@@ -198,7 +201,7 @@ void HammingWeight_Menu(struct Item *item)
                                 }
                                 break;
                             case '4':
-                                cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                                cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                                 item->zeros = 0;
                                 item->ones = 0;
                                 error = 0;
@@ -272,13 +275,13 @@ void Entropy_Menu(struct Item *item)
                 cout << "*                        1 : Set File                                         *" << endl;
                 cout << "*                        2 : Calculate (Shannon) Entropy                      *" << endl;
                 cout << "*                        3 : Save result                                      *" << endl;
-                cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet   = " << item->offSet                                << endl;
+                cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
                 cout << "                     Length   = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode     = single file                                    " << endl;
                 cout << "                                                                               " << endl;
@@ -337,7 +340,7 @@ void Entropy_Menu(struct Item *item)
                                 else error = SaveFile(item,2);
                                 break;
                             case '4':
-                                cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                                cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                                 item->zeros = 0;
                                 item->ones = 0;
                                 item->entrp = 0;
@@ -392,13 +395,13 @@ void Entropy_Menu(struct Item *item)
                 cout << "*                        1 : Set Input-Path                                   *" << endl;
                 cout << "*                        2 : Set Output-Filename                              *" << endl;
                 cout << "*                        3 : Calculate (Shannon) Entropy                      *" << endl;
-                cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+                cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
                 cout << "*                        5 : Switch mode (file / directory)                   *" << endl;
                 cout << "*                        6 : Back                                             *" << endl;
                 cout << "*                                                                             *" << endl;
                 cout << "*******************************************************************************" << endl;
                 cout << "          Settings:                                                            " << endl;
-                cout << "                     OffSet          = " << item->offSet                         << endl;
+                cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
                 cout << "                     Length          = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
                 cout << "                     Mode            = complete directory                      " << endl;
                 cout << "                                                                               " << endl;
@@ -457,7 +460,7 @@ void Entropy_Menu(struct Item *item)
                                 }
                                 break;
                             case '4':
-                                cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                                cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                                 item->zeros = 0;
                                 item->ones = 0;
                                 item->entrp = 0;
@@ -528,13 +531,13 @@ void IntraHD_Menu(struct Item *item)
         cout << "*                        2 : Set Output-Filename                              *" << endl;
         cout << "*                        3 : Calculate Intra-Hamming Distance                 *" << endl;
         cout << "*                        4 : View Result                                      *" << endl;
-        cout << "*                        5 : Change 'offset' & 'length'                       *" << endl;
+        cout << "*                        5 : Change 'offset_begin' & 'offset_end'                       *" << endl;
         cout << "*                        6 : Switch Output-Style                              *" << endl;
         cout << "*                        7 : Back                                             *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
-        cout << "                     OffSet          = " << item->offSet                         << endl;
+        cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
         cout << "                     Length          = " << item->input_length<< " byte (" << item->input_length*8 << " bit)" << endl;
         if(item->HD_mode == 0){
         cout << "                     Output-Style    = compact                                 " << endl;}
@@ -595,7 +598,7 @@ void IntraHD_Menu(struct Item *item)
                         error = ViewFile(item, 1);
                         break;
                     case '5':
-                        cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                        cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                         item->zeros = 0;
                         item->ones = 0;
                         item->entrp = 0;
@@ -676,13 +679,13 @@ void InterHD_Menu(struct Item *item)
 								cout << "*                        2 : Set Output-Filename                              *" << endl;
 								cout << "*                        3 : Calculate Inter-Hamming Distance                 *" << endl;
 								cout << "*                        4 : View Result                                      *" << endl;
-								cout << "*                        5 : Change 'offset' & 'length'                       *" << endl;
+								cout << "*                        5 : Change 'offset_begin' & 'offset_end'                       *" << endl;
 								cout << "*                        6 : Switch Output-Style                              *" << endl;
 								cout << "*                        7 : Back                                             *" << endl;
 								cout << "*                                                                             *" << endl;
 								cout << "*******************************************************************************" << endl;
 								cout << "          Settings:                                                            " << endl;
-								cout << "                     OffSet          = " << item->offSet                         << endl;
+								cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
 								cout << "                     Length          = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
 		if(item->HD_mode == 0)  cout << "                     Output-Style    = compact                                 " << endl;
 		if(item->HD_mode == 1)  cout << "                     Output-Style    = detailed                                " << endl;
@@ -745,7 +748,7 @@ void InterHD_Menu(struct Item *item)
                         error = ViewFile(item,1);
                         break;
                     case '5':
-                        cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                        cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                         item->zeros = 0;
                         item->ones = 0;
                         item->entrp = 0;
@@ -837,12 +840,12 @@ void MinEntropy_Menu(struct Item *item)
 				cout << "*                        1 : Set Path                                         *" << endl;
 				cout << "*                        2 : Calculate Min-Entropy (CTW)                      *" << endl;
 				cout << "*                        3 : Save result                                      *" << endl;
-				cout << "*                        4 : Change 'offset' & 'length'                       *" << endl;
+				cout << "*                        4 : Change 'offset_begin' & 'offset_end'                       *" << endl;
 				cout << "*                        5 : Back                                             *" << endl;
 				cout << "*                                                                             *" << endl;
 				cout << "*******************************************************************************" << endl;
 				cout << "          Settings:                                                            " << endl;
-				cout << "                     OffSet   = " << item->offSet                                << endl;
+				cout << "                     offset_begin, offset_end  = " << item->offset_begin << ", " << item->offset_end    << endl;
 				cout << "                     Length   = " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
 				cout << "                     Pathname = " << item->input_path_name.at(0).c_str()         << endl;
 				cout << "                                                                               " << endl;
@@ -904,7 +907,7 @@ void MinEntropy_Menu(struct Item *item)
                         else error = SaveFile(item,3);
                         break;
                     case '4':
-                        cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                        cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                         item->zeros = 0;
                         item->ones = 0;
                         item->entrp = 0;
@@ -974,6 +977,8 @@ void Median_AVG_Menu(struct Item *item)
                 cout << "                     Median               = " << item->median                    << endl;
                 cout << "                     Average              = " << item->average                   << endl;}
 				cout << "*******************************************************************************" << endl;
+                cout << "Hint: You can use hamming distance (file mode) output "
+                    "file that is generated in the desired format." << endl;
 
         if(error) ErrorMessages(error, 0);
         error = 0;
@@ -1034,12 +1039,320 @@ void Median_AVG_Menu(struct Item *item)
     }
 }
 
+void BCH_Encoder_Menu(struct Item *item)
+/*
+ * BCH Menu for the PUF-BCH-Encoder */
+{
+
+    char menuChoice[3];
+    char *h;
+    unsigned int ch;
+    unsigned int error = 0;
+    unsigned int exit = 0;
+    unsigned int offset_isSet = 0;
+    unsigned int LR_isSet = 0;
+    stringstream BCH;
+    string bch_mode;
+
+
+    // Set the initial values for the data struct
+    item->offSet = 0;
+    item->input_Key_length = 0;
+    item->LR = 0;
+    strcpy(item->input_Key_name, "none");
+    strcpy(item->input_PUF_name, "none");
+    strcpy(item->output_HD_name, "none");
+    strcpy(item->BCHmode, "none");
+    strcpy(item->result, "none");
+
+    while(true){
+        ClearScreen();
+        cout << "*******************************************************************************" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*                         Welcome to the PUF-Toolkit                          *" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "********************************* BCH-Encoder *********************************" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*                        1 : Set BCH mode                                     *" << endl;
+        cout << "*                        2 : Set Linear Repetition factor                     *" << endl;
+        cout << "*                        3 : Set 'offset' for the PUF file                    *" << endl;
+        cout << "*                        4 : Set Key file                                     *" << endl;
+        cout << "*                        5 : Set PUF file                                     *" << endl;
+        cout << "*                        6 : Set HelperData output filename                   *" << endl;
+        cout << "*                        7 : Generate HelperData                              *" << endl;
+        cout << "*                        8 : Back                                             *" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*******************************************************************************" << endl;
+        cout << "          Settings:                                                            " << endl;
+        cout << "                     BCH mode    = " << item->BCHmode                             << endl;
+        if(LR_isSet){
+        cout << "                     LR Factor   = " << item->LR                                  << endl;}
+        else {
+        cout << "                     LR Factor   = none"                                         << endl;}
+        if(offset_isSet){
+        cout << "                     OffSet      = " << item->offSet                              << endl;}
+        else {
+        cout << "                     OffSet      = none"                                         << endl;}
+        cout << "                     Key file    = " << item->input_Key_name                      << endl;
+        cout << "                     PUF file    = " << item->input_PUF_name                      << endl;
+        cout << "                     HD file     = " << item->output_HD_name                      << endl;
+        cout << "          Result:                                                              " << endl;
+        cout << "                     Calculation progress = " << item->result                     << endl;
+        cout << "                                                                               " << endl;
+        cout << "*******************************************************************************" << endl;
+
+        if(error) ErrorMessages(error, 0, 0);
+        error = 0;
+
+        while(true){
+            cout << endl << "Make a choice by typing in a number (1-8): ";
+            if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
+                /* fgets succeeds, scan for newline character */
+                h = strchr(menuChoice, '\n');
+                if (h) {
+                    *h = '\0';
+                    switch(menuChoice[0])
+                        {
+                        case '1':
+                            cout << endl << " Processing : Set BCH mode" << endl << endl;
+                            ClearScreen();
+                            read_p();               /* Read m */
+                            generate_gf();          /* Construct the Galois Field GF(2**m) */
+                            gen_poly();             /* Compute the generator polynomial of BCH code */
+                            BCH << "BCH(" << length << ", " << k << ", " << d << ")";
+                            bch_mode = BCH.str();
+                            strcpy(item->BCHmode, bch_mode.c_str());
+                            BCH.str("");
+                            BCH.clear();
+                            strcpy(item->result, "none");
+                            break;
+                        case '2':
+                            cout << endl << " Processing : Set Linear Repetition factor" << endl << endl;
+                            error = 0;
+                            DefineSettings(item, 2);
+                            LR_isSet = 1;
+                            strcpy(item->result, "none");
+                            break;
+                        case '3':
+                            cout << endl << " Processing : Set 'offset' for the PUF file" << endl << endl;
+                            error = 0;
+                            DefineSettings(item, 1);
+                            offset_isSet = 1;
+                            strcpy(item->result, "none");
+                            break;
+                        case '4':
+                            cout << endl << " Processing : Set Key file" << endl << endl;
+                            error = 0;
+                            DefineFilename_BCH(item, 1);
+                            strcpy(item->result, "none");
+                            break;
+                        case '5':
+                            cout << endl << " Processing : Set PUF file" << endl << endl;
+                            DefineFilename_BCH(item, 2);
+                            strcpy(item->result, "none");
+                            break;
+                        case '6':
+                            cout << endl << " Processing : Set HelperData output filename" << endl << endl;
+                            DefineFilename_BCH(item, 3);
+                            strcpy(item->result, "none");
+                            break;
+                        case '7':
+                            cout << endl << " Processing : Generate HelperData" << endl << endl;
+                            if(strcmp(item->BCHmode, "none") == 0) error = 17;
+                            else if(!LR_isSet) error = 18;
+                            else if(!offset_isSet) error = 19;
+                            else if(strcmp(item->input_Key_name, "none") == 0) error = 20;
+                            else if(strcmp(item->input_PUF_name, "none") == 0) error = 21;
+                            else if(strcmp(item->output_HD_name, "none") == 0) error = 22;
+                            if(!error) error = ReadKeyFile(item);
+                            if(!error) error = Calculation_encode(item);
+                            if(!error) strcpy(item->result, "done - HelperData saved");
+                            break;
+                        case '8':
+                            ClearScreen();
+                            cout << endl << " Exiting Program -  bye bye" << endl << endl;
+                            error = 0;
+                            exit = 1;
+                            break;
+                        default:
+                            error = 15;
+                            break;
+                        }
+                    break;
+                }
+                else {
+                    /* newline not found, flush stdin to end of line */
+                    while (((ch = getchar()) != '\n')
+                             && !feof(stdin)
+                             && !ferror(stdin)
+                            );
+                        error = 2;
+                        break;
+                }
+            }
+            else {
+                /* fgets failed, handle error */
+                cin.clear();
+                error = 3;
+                break;
+            }
+        }
+        if(exit) break;
+    }
+}
+
+void BCH_Decoder_Menu()
+/*
+ *  Menu for the PUF-BCH-Decoder */
+{
+
+    char menuChoice[3];
+    char *h;
+    unsigned int ch;
+    unsigned int error = 0;
+    unsigned int exit = 0;
+    struct Item item;
+
+
+    // Set the initial values for the data struct
+    item.offSet = 0;
+    item.LR = 0;
+    strcpy(item.input_HD_name, "none");
+    strcpy(item.input_PUF_name, "none");
+    strcpy(item.output_Key_name, "none");
+    strcpy(item.BCHmode, "none");
+    strcpy(item.result, "none");
+
+    while(true){
+        ClearScreen();
+        cout << "*******************************************************************************" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*                         Welcome to the PUF-Toolkit                          *" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "********************************* BCH-Decoder *********************************" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*                        1 : Set HelperData                                   *" << endl;
+        cout << "*                        2 : Set PUF file                                     *" << endl;
+        cout << "*                        3 : Set Key file                                     *" << endl;
+        cout << "*                        4 : Decode HelperData                                *" << endl;
+        cout << "*                        5 : View recovered File                              *" << endl;
+        cout << "*                        6 : Back                                             *" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*******************************************************************************" << endl;
+        cout << "    Settings:                                                                  " << endl;
+        if(strcmp(item.result, "Done - file saved") == 0) {
+        cout << "                                                                               " << endl;}
+        cout << "                     HD file     = " << item.input_HD_name                       << endl;
+        cout << "                     PUF file    = " << item.input_PUF_name                      << endl;
+        cout << "                     Key file    = " << item.output_Key_name                     << endl;
+        cout << "                                                                               " << endl;
+        cout << "    Result:                                                                    " << endl;
+        if(strcmp(item.result, "Done - file saved") == 0) {
+        cout << "                                                                               " << endl;}
+        cout << "                     BCH mode    = " << item.BCHmode                             << endl;
+        if(isSet){
+        cout << "                     LR Factor   = " << item.LR                                  << endl;}
+        else {
+        cout << "                     LR Factor   = none"                                         << endl;}
+        if(isSet){
+        cout << "                     OffSet      = " << item.offSet                              << endl;}
+        else {
+        cout << "                     OffSet      = none"                                         << endl;}
+        cout << "                                                                               " << endl;
+        if(strcmp(item.result, "Done - file saved") == 0) {
+        cout << "    Decoding Error summary:                                                    " << endl;
+        cout << "                                                                               " << endl;
+        cout << "       Error detection           = " << numerr << " errors in total detected"    << endl;
+        cout << "       Error correction          = " << corerr << " of " << numerr << " errors corrected" << endl;
+        cout << "       Not corrected codeword(s) = " << decerror                                 << endl;
+        cout << "                                                                               " << endl;
+        cout << "                                                                               " << endl;}
+        cout << "            Calculation progress = " << item.result                              << endl;
+        cout << "                                                                               " << endl;
+        cout << "*******************************************************************************" << endl;
+
+        if(error) ErrorMessages_decode(error, 0);
+        error = 0;
+
+        while(true){
+            cout << endl << "Make a choice by typing in a number (1-6): ";
+            if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
+                /* fgets succeeds, scan for newline character */
+                h = strchr(menuChoice, '\n');
+                if (h) {
+                    *h = '\0';
+                    switch(menuChoice[0])
+                        {
+                        case '1':
+                            cout << endl << " Processing : Set HelperData" << endl << endl;
+                            DefineFilename_BCH(&item, 5);
+                            strcpy(item.result, "none");
+                            break;
+                        case '2':
+                            cout << endl << " Processing : Set PUF file" << endl << endl;
+                            error = 0;
+                            DefineFilename_BCH(&item, 2);
+                            strcpy(item.result, "none");
+                            break;
+                        case '3':
+                            cout << endl << " Processing : Set KEY file" << endl << endl;
+                            DefineFilename_BCH(&item, 4);
+                            strcpy(item.result, "none");
+                            break;
+                        case '4':
+                            ClearScreen();
+                            cout << endl << " Processing : Decode HelperData" << endl << endl;
+                            error = Calculation_decode(&item);
+                            if(!error) strcpy(item.result, "Done - file saved");
+                            break;
+                        case '5':
+                            cout << endl << " Processing : View Key file" << endl << endl;
+                            if(strcmp(item.output_Key_name, "none") == 0) error = 19;
+                            else if(strcmp(item.result, "none") == 0) error = 21;
+                            if(error == 0 || error == 21) {
+                                if(error == 0) error = ViewFile(&item);
+                                else if(error == 21 && !(ViewFile(&item) == 0)) error = 20;
+                            }
+                            break;
+                        case '6':
+                            ClearScreen();
+                            cout << endl << " Exiting Program -  bye bye" << endl << endl;
+                            error = 0;
+                            exit = 1;
+                            break;
+                        default:
+                            error = 13;
+                            break;
+                        }
+                    break;
+                }
+                else {
+                    /* newline not found, flush stdin to end of line */
+                    while (((ch = getchar()) != '\n')
+                             && !feof(stdin)
+                             && !ferror(stdin)
+                            );
+                        error = 2;
+                        break;
+                }
+            }
+            else {
+                /* fgets failed, handle error */
+                cin.clear();
+                error = 3;
+                break;
+            }
+        }
+        if(exit) break;
+    }
+}
+
 int Main_Menu()
 /*
  * Main Menu for the PUF-Toolkit */
 {
 
-    char menuChoice[3];
+    char menuChoice[4];
     char *p;
     unsigned int ch;
     unsigned int error = 0;
@@ -1048,7 +1361,8 @@ int Main_Menu()
     struct Item it1;
 
 	// Set start values for the item struct
-    it1.offSet = 0;
+    it1.offset_begin = 0;
+    it1.offset_end = 0;
     it1.input_length = 0;
     strcpy(it1.input_file_name, "none");
     strcpy(it1.result, "none");
@@ -1068,11 +1382,23 @@ int Main_Menu()
     cout << "*                         Welcome to the PUF-Toolkit                          *" << endl;
     cout << "*                                                                             *" << endl;
 	cout << "******************************* Global Settings *******************************" << endl << endl;
-    cout << "                 The 'offset' and 'length' have to be defined.                 " << endl;
+    cout << "                 Choose mode: 0 - file, 1 - Directory                          " << endl;
+    cout << "Enter mode: " ;
+    DefineMode(&it1);
+    if (it1.HW_ENTP_mode == 0)
+        DefineFilename(&it1, 1);
+    if (it1.HW_ENTP_mode == 1)
+        DefinePathname(&it1, 1);
+
+    cout << "                 The 'offset_begin' and 'offset_end' have to be defined.       " << endl;
     cout << "                 These settings will be used for all processing.               " << endl << endl;
 
-    // Get the 'offset' and 'length' to be used
+    // Get the 'offset_begin' and 'offset_end' to be used
 	DefineOffSetLength(&it1);
+
+    //calculate the input_length based on the offset
+    if (it1.HW_ENTP_mode == 0)
+        error = SetInputLen(&it1);
 
     while(true){
         ClearScreen();
@@ -1088,12 +1414,14 @@ int Main_Menu()
         cout << "*                        4 : Inter-Hamming Distance                           *" << endl;
         cout << "*                        5 : Min-Entropy (CTW)                                *" << endl;
         cout << "*                        6 : Median and Average                               *" << endl;
-        cout << "*                        7 : Change 'offset' & 'length'                       *" << endl;
-        cout << "*                        8 : Exit Program                                     *" << endl;
+        cout << "*                        7 : BCH Encoder Menu                                 *" << endl;
+        cout << "*                        8 : BCH Decoder Menu                                 *" << endl;
+        cout << "*                        9 : Change 'offset_begin' & 'offset_end'             *" << endl;
+        cout << "*                        10 : Exit Program                                    *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
-        cout << "                     OffSet   = " << it1.offSet                                  << endl;
+        cout << "                     offset_begin, offset_end   = " << it1.offset_begin << ", " << it1.offset_end        << endl;
         cout << "                     Length   = " << it1.input_length << " byte (" << it1.input_length*8 << " bit)" << endl;
         cout << "*******************************************************************************" << endl;
 
@@ -1101,48 +1429,57 @@ int Main_Menu()
         error = 0;
 
         while(true){
-            cout << endl << "Make a choice by typing in a number (1-8): ";
+            cout << endl << "Make a choice by typing in a number (1-10): ";
             if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
                 /* fgets succeeds, scan for newline character */
                 p = strchr(menuChoice, '\n');
                 if (p) {
                     *p = '\0';
-                    switch(menuChoice[0])
+                    int s_i = atoi(menuChoice);
+                    switch(s_i)
                         {
-                        case '1':
+                        case 1:
                             cout << endl << " Processing : Hamming-Weight" << endl << endl;
                             error = 0;
                             it1.zeros = 0;
                             it1.ones = 0;
                             it1.entrp = 0;
-                            it1.HW_ENTP_mode = 0;
+                            //it1.HW_ENTP_mode = 0;
                             strcpy(it1.result, "none");
                             strcpy(it1.output_file_name, "none");
-                            it1.input_path_name.at(0) = "none";
+                            //it1.input_path_name.at(0) = "none";
                             HammingWeight_Menu(&it1);
                             break;
-                        case '2':
+                        case 2:
                             cout << endl << " Processing : (Shannon) Entropy" << endl << endl;
                             error = 0;
                             it1.zeros = 0;
                             it1.ones = 0;
                             it1.entrp = 0;
-                            it1.HW_ENTP_mode = 0;
+                            //it1.HW_ENTP_mode = 0;
                             strcpy(it1.result, "none");
                             strcpy(it1.output_file_name, "none");
-                            it1.input_path_name.at(0) = "none";
+                            //it1.input_path_name.at(0) = "none";
                             Entropy_Menu(&it1);
                             break;
-                        case '3':
+                        case 3:
+                            if (it1.HW_ENTP_mode == 0) {
+                                printf("invalid option for file mode!!!\n");
+                                break;
+                            }
                             cout << endl << " Processing : Intra-Hamming Distance" << endl << endl;
                             error = 0;
                             strcpy(it1.result, "none");
                             strcpy(it1.output_file_name, "none");
-                            it1.input_path_name.at(0) = "none";
+                            //it1.input_path_name.at(0) = "none";
                             it1.HD_mode = 0;
                             IntraHD_Menu(&it1);
                             break;
-                        case '4':
+                        case 4:
+                            if (it1.HW_ENTP_mode == 0) {
+                                printf("invalid option for file mode!!!\n");
+                                break;
+                            }
                             cout << endl << " Processing : Inter-Hamming Distance" << endl << endl;
                             error = 0;
                             strcpy(it1.result, "none");
@@ -1151,7 +1488,11 @@ int Main_Menu()
                             it1.HD_mode = 0;
                             InterHD_Menu(&it1);
                             break;
-                        case '5':
+                        case 5:
+                            if (it1.HW_ENTP_mode == 0) {
+                                printf("invalid option for file mode!!!\n");
+                                break;
+                            }
                             cout << endl << " Processing : Min-Entropy (CTW)" << endl << endl;
                             it1.zeros = 0;
                             it1.ones = 0;
@@ -1159,21 +1500,32 @@ int Main_Menu()
                             strcpy(it1.result, "none");
                             MinEntropy_Menu(&it1);
                             break;
-                        case '6':
+                        case 6:
                             cout << endl << " Processing : Median and Average" << endl << endl;
                             it1.median = 0;
                             it1.average = 0;
                             strcpy(it1.result, "none");
                             it1.input_path_name.at(0) = "none";
+                            strcpy(it1.input_file_name, "none");
                             Median_AVG_Menu(&it1);
                             break;
-                        case '7':
-                            cout << endl << " Change 'offset' and 'length'" << endl << endl;
+                        case 7:
+                            cout << endl << "BCH Encoder Menu" << endl << endl;
+                            error = 0;
+                            BCH_Encoder_Menu(&it1);
+                            break;
+                        case 8:
+                            cout << endl << "BCH Decoder Menu" << endl << endl;
+                            error = 0;
+                            BCH_Decoder_Menu();
+                            break;
+                        case 9:
+                            cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                             error = 0;
                             ClearScreen();
                             DefineOffSetLength(&it1);
                             break;
-                        case '8':
+                        case 10:
                             ClearScreen();
                             cout << endl << " Exiting Program -  bye bye" << endl << endl;
                             error = 0;
@@ -1207,4 +1559,3 @@ int Main_Menu()
     }
 return 0;
 }
-
