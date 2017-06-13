@@ -5,7 +5,7 @@
 
 Item item = Item();
 JNIEXPORT void JNICALL Java_jni_toolkit_hammingwt
-  (JNIEnv *env, jobject obj, jstring name, jstring op_name, jboolean mode)
+  (JNIEnv *env, jclass cls, jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
     const char *fname = env->GetStringUTFChars(name, 0);
@@ -39,7 +39,7 @@ JNIEXPORT void JNICALL Java_jni_toolkit_hammingwt
 }
 
 JNIEXPORT void JNICALL Java_jni_toolkit_entropy
-  (JNIEnv * env, jobject obj, jstring name, jstring op_name, jboolean mode)
+  (JNIEnv * env, jclass cls, jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
     const char *fname = env->GetStringUTFChars(name, 0);
@@ -72,7 +72,7 @@ JNIEXPORT void JNICALL Java_jni_toolkit_entropy
 }
 
 JNIEXPORT void JNICALL Java_jni_toolkit_intra_1hd
-  (JNIEnv * env, jobject obj, jstring name, jstring op_name, jboolean mode)
+  (JNIEnv * env, jclass cls, jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
     const char *fname = env->GetStringUTFChars(name, 0);
@@ -96,7 +96,7 @@ JNIEXPORT void JNICALL Java_jni_toolkit_intra_1hd
 }
 
 JNIEXPORT void JNICALL Java_jni_toolkit_inter_1hd
-  (JNIEnv *env, jobject obj, jobjectArray folders, jstring op_file)
+  (JNIEnv *env, jclass cls, jobjectArray folders, jstring op_file)
 {
     unsigned error = 0;
     int i = 0;
@@ -112,21 +112,22 @@ JNIEXPORT void JNICALL Java_jni_toolkit_inter_1hd
         env->ReleaseStringUTFChars(string, folder);
     }
 
-    error = InterHD(&item, 1);
-    if (error) ErrorMessages(error, item.HD_error_pos);
-
+    //printing the contents of the vector
     printf("input size :%ld\n", item.input_path_name.size());
     for(std::vector<string>::const_iterator i = item.input_path_name.begin();
             i != item.input_path_name.end(); ++i)
-        std::cout << ' ' << *i;
-    std::cout << '\n';
+        std::cout << *i << endl;
+
+    error = InterHD(&item, 1);
+    if (error) ErrorMessages(error, item.HD_error_pos);
+
 
     //cleanup
     env->ReleaseStringUTFChars(op_file, op_f);
 }
 
 JNIEXPORT void JNICALL Java_jni_toolkit_min_1entropy
-  (JNIEnv * env, jobject obj, jstring name, jstring op_name, jboolean mode)
+  (JNIEnv * env, jclass cls, jstring name, jstring op_name, jboolean mode)
 {
     unsigned int error = 0;
     stringstream res;
@@ -155,7 +156,7 @@ JNIEXPORT void JNICALL Java_jni_toolkit_min_1entropy
 }
 
 JNIEXPORT void JNICALL Java_jni_toolkit_median_1avg
-  (JNIEnv * env, jobject obj, jstring name, jstring op_name)
+  (JNIEnv * env, jclass cls, jstring name, jstring op_name)
 {
     unsigned int error = 0;
     const char *fname = env->GetStringUTFChars(name, 0);
@@ -172,7 +173,7 @@ JNIEXPORT void JNICALL Java_jni_toolkit_median_1avg
 }
 
 JNIEXPORT void JNICALL Java_jni_toolkit_bch_1encoder
-  (JNIEnv *env, jobject obj, jstring PUF, jstring key, jstring helper)
+  (JNIEnv *env, jclass cls, jstring PUF, jstring key, jstring helper)
 {
     unsigned error = 0;
     const char *PUF_file = env->GetStringUTFChars(PUF, 0);
@@ -201,7 +202,7 @@ JNIEXPORT void JNICALL Java_jni_toolkit_bch_1encoder
 }
 
 JNIEXPORT void JNICALL Java_jni_toolkit_bch_1decoder
-  (JNIEnv *env, jobject obj, jstring PUF, jstring helperdata, jstring key_r)
+  (JNIEnv *env, jclass cls, jstring PUF, jstring helperdata, jstring key_r)
 {
     unsigned error = 0;
     const char *PUF_file = env->GetStringUTFChars(PUF, 0);
