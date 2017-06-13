@@ -84,6 +84,6 @@ public class toolkit {
         //interface_C();
         String [] name = {"/home/prankur/code_seb/PUF_Toolkit/data/input", 
             "/home/prankur/code_seb/PUF_Toolkit/data/output"};
-        inter_hd(name, "inter_HD");
+        inter_hd(name, "inter_jni");
     }
 }
