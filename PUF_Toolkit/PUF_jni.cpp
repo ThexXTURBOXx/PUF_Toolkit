@@ -118,7 +118,7 @@ JNIEXPORT void JNICALL Java_jni_toolkit_inter_1hd
             i != item.input_path_name.end(); ++i)
         std::cout << *i << endl;
 
-    error = InterHD(&item, 1);
+    error = InterHD(&item, 0);
     if (error) ErrorMessages(error, item.HD_error_pos);
 
 
