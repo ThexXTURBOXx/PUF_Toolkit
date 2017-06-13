@@ -100,6 +100,8 @@ JNIEXPORT void JNICALL Java_jni_toolkit_inter_1hd
 {
     unsigned error = 0;
     int i = 0;
+    //set the HW_ENTP_mode for detailed or compact output
+    item.HW_ENTP_mode = 0; //compact
     //item.input_path_name.push_back("none");
     const char *op_f = env->GetStringUTFChars(op_file, 0);
     strcpy(item.output_file_name, op_f);
@@ -118,7 +120,7 @@ JNIEXPORT void JNICALL Java_jni_toolkit_inter_1hd
             i != item.input_path_name.end(); ++i)
         std::cout << *i << endl;
 
-    error = InterHD(&item, 0);
+    error = InterHD(&item, item.HW_ENTP_mode);
     if (error) ErrorMessages(error, item.HD_error_pos);
 
 
