@@ -766,7 +766,7 @@ int InterHD(struct Item *item, int option)
 						header = false;
 					}
 					if(next_table){
-						if(max_file_length < 79) white_spaces = string(67 - strlen((*it).c_str()), ' ');
+						if(max_file_length < 79) white_spaces = string(69 - strlen((*it).c_str()), ' ');
 						else white_spaces = string(4, ' ');
                         result_file << endl << "-------------------------------------------------------------------------------" << endl;
                                 result_file << "    Filename" << white_spaces << *it << endl;
