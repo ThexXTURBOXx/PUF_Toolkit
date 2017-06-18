@@ -4,7 +4,7 @@
 #include "PUF_Toolkit.h"
 
 // Setting Functions
-unsigned int SetInputLen(struct Item *item);
+unsigned int SetInputLen(struct Item *item, int option = 0);
 void DefineMode(struct Item *it1);
 void DefineOffSetLength(struct Item *it1);
 void DefineFilename(struct Item *item, int option);

@@ -1347,6 +1347,153 @@ void BCH_Decoder_Menu()
     }
 }
 
+void Golay_Encoder_Menu(struct Item *item)
+/*
+ * Golay Menu for the PUF-Toolkit */
+{
+
+    char menuChoice[3];
+    char *h;
+    unsigned int ch;
+    unsigned int error = 0;
+    unsigned int exit = 0;
+    unsigned int offset_isSet = 0;
+    unsigned int LR_isSet = 0;
+
+    // Set the initial values for the data struct
+    item->offSet = 0;
+    item->input_Key_length = 0;
+    item->LR = 0;
+    strcpy(item->input_Key_name, "none");
+    strcpy(item->input_PUF_name, "none");
+    strcpy(item->output_HD_name, "none");
+    strcpy(item->result, "none");
+
+    while(true){
+        ClearScreen();
+        cout << "*******************************************************************************" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*                         Welcome to the PUF-Toolkit                          *" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "********************************* Golay-Encoder *******************************" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*                        1 : Set Linear Repetition factor                     *" << endl;
+        cout << "*                        2 : Set 'offset' for the PUF file                    *" << endl;
+        cout << "*                        3 : Set Key file                                     *" << endl;
+        cout << "*                        4 : Set PUF file                                     *" << endl;
+        cout << "*                        5 : Set HelperData output filename                   *" << endl;
+        cout << "*                        6 : Generate HelperData                              *" << endl;
+        cout << "*                        7 : Back                                             *" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*******************************************************************************" << endl;
+        cout << "          Settings:                                                            " << endl;
+        if(LR_isSet){
+        cout << "                     LR Factor   = " << item->LR                                  << endl;}
+        else {
+        cout << "                     LR Factor   = none"                                         << endl;}
+        if(offset_isSet){
+        cout << "                     OffSet begin = " << item->offset_begin                        << endl;
+        cout << "                     OffSet end = " << item->offset_end                            << endl;}
+        else {
+        cout << "                     OffSet      = none"                                         << endl;}
+        cout << "                     Key file    = " << item->input_Key_name                      << endl;
+        cout << "                     PUF file    = " << item->input_PUF_name                      << endl;
+        cout << "                     HD file     = " << item->output_HD_name                      << endl;
+        cout << "          Result:                                                              " << endl;
+        cout << "                     Calculation progress = " << item->result                     << endl;
+        cout << "                                                                               " << endl;
+        cout << "*******************************************************************************" << endl;
+
+        if(error) ErrorMessages(error, 0, 0);
+        error = 0;
+
+        while(true){
+            cout << endl << "Make a choice by typing in a number (1-7): ";
+            if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
+                /* fgets succeeds, scan for newline character */
+                h = strchr(menuChoice, '\n');
+                if (h) {
+                    *h = '\0';
+                    switch(menuChoice[0])
+                        {
+                        case '1':
+                            cout << endl << " Processing : Set Linear Repetition factor" << endl << endl;
+                            error = 0;
+                            DefineSettings(item, 2);
+                            LR_isSet = 1;
+                            strcpy(item->result, "none");
+                            break;
+                        case '2':
+                            cout << endl << " Processing : Set 'offsets' for the PUF file" << endl << endl;
+                            error = 0;
+                            DefineOffSetLength(item);
+                            offset_isSet = 1;
+                            strcpy(item->result, "none");
+                            break;
+                        case '3':
+                            cout << endl << " Processing : Set Key file" << endl << endl;
+                            error = 0;
+                            DefineFilename_BCH(item, 1);
+                            strcpy(item->result, "none");
+                            break;
+                        case '4':
+                            cout << endl << " Processing : Set PUF file" << endl << endl;
+                            DefineFilename_BCH(item, 2);
+                            strcpy(item->result, "none");
+                            break;
+                        case '5':
+                            cout << endl << " Processing : Set HelperData output filename" << endl << endl;
+                            DefineFilename_BCH(item, 3);
+                            strcpy(item->result, "none");
+                            break;
+                        case '6':
+                            cout << endl << " Processing : Generate HelperData" << endl << endl;
+                            if(!LR_isSet) error = 18;
+                            else if(!offset_isSet) error = 19;
+                            else if(strcmp(item->input_Key_name, "none") == 0) error = 20;
+                            else if(strcmp(item->input_PUF_name, "none") == 0) error = 21;
+                            else if(strcmp(item->output_HD_name, "none") == 0) error = 22;
+                            if(!error) error = Golay_encode(item);
+                            if(!error) strcpy(item->result, "done - HelperData saved");
+                            break;
+                        case '7':
+                            ClearScreen();
+                            cout << endl << " Exiting Program -  bye bye" << endl << endl;
+                            error = 0;
+                            exit = 1;
+                            break;
+                        default:
+                            error = 15;
+                            break;
+                        }
+                    break;
+                }
+                else {
+                    /* newline not found, flush stdin to end of line */
+                    while (((ch = getchar()) != '\n')
+                             && !feof(stdin)
+                             && !ferror(stdin)
+                            );
+                        error = 2;
+                        break;
+                }
+            }
+            else {
+                /* fgets failed, handle error */
+                cin.clear();
+                error = 3;
+                break;
+            }
+        }
+        if(exit) break;
+    }
+}
+
+void Golay_Decoder_Menu(struct Item *item)
+{
+
+}
+
 int Main_Menu()
 /*
  * Main Menu for the PUF-Toolkit */
@@ -1416,8 +1563,10 @@ int Main_Menu()
         cout << "*                        6 : Median and Average                               *" << endl;
         cout << "*                        7 : BCH Encoder Menu                                 *" << endl;
         cout << "*                        8 : BCH Decoder Menu                                 *" << endl;
-        cout << "*                        9 : Change 'offset_begin' & 'offset_end'             *" << endl;
-        cout << "*                        10 : Exit Program                                    *" << endl;
+        cout << "*                        9 : Golay Encoder Menu                               *" << endl;
+        cout << "*                        10 : Golay Decoder Menu                              *" << endl;
+        cout << "*                        11 : Change 'offset_begin' & 'offset_end'            *" << endl;
+        cout << "*                        12 : Exit Program                                    *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
@@ -1429,7 +1578,7 @@ int Main_Menu()
         error = 0;
 
         while(true){
-            cout << endl << "Make a choice by typing in a number (1-10): ";
+            cout << endl << "Make a choice by typing in a number (1-12): ";
             if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
                 /* fgets succeeds, scan for newline character */
                 p = strchr(menuChoice, '\n');
@@ -1520,12 +1669,22 @@ int Main_Menu()
                             BCH_Decoder_Menu();
                             break;
                         case 9:
+                            cout << endl << "Golay Encoder Menu" << endl << endl;
+                            error = 0;
+                            Golay_Encoder_Menu(&it1);
+                            break;
+                        case 10:
+                            cout << endl << "Golay Decoder Menu" << endl << endl;
+                            error = 0;
+                            Golay_Decoder_Menu(&it1);
+                            break;
+                        case 11:
                             cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                             error = 0;
                             ClearScreen();
                             DefineOffSetLength(&it1);
                             break;
-                        case 10:
+                        case 12:
                             ClearScreen();
                             cout << endl << " Exiting Program -  bye bye" << endl << endl;
                             error = 0;

@@ -9,7 +9,7 @@
  *
  */
 
-unsigned int SetInputLen(struct Item *item)
+unsigned int SetInputLen(struct Item *item, int option)
 /*
  * Function to calculate the input_length based on the offsets
  * make sure the offsets and it1->input_file_name are initialized before calling
@@ -19,7 +19,26 @@ unsigned int SetInputLen(struct Item *item)
     FILE *fd;
     unsigned long filesize;
 	// Open the specified file
-    if((fd = fopen(item->input_file_name, "rb")) == NULL) return 12;
+    switch (option) {
+        case 0:
+            if((fd = fopen(item->input_file_name, "rb")) == NULL) return 12;
+            break;
+        case 1:
+            if((fd = fopen(item->input_PUF_name, "rb")) == NULL) return 12;
+            break;
+        case 2:
+            if((fd = fopen(item->input_Key_name, "rb")) == NULL) return 12;
+            // Get the filesize
+            fseek(fd, 0, SEEK_END);
+            filesize = ftell(fd);
+            rewind(fd);
+            item->input_length = filesize;
+            goto error;
+        default:
+            printf("incorrect option\n");
+            return -1;
+    }
+
 
     // Get the filesize
     fseek(fd, 0, SEEK_END);
@@ -42,6 +61,7 @@ unsigned int SetInputLen(struct Item *item)
     // Check if the chosen part of the PUF-Response is valid
     if((item->offset_begin+item->input_length) > filesize) return 13;
 
+error:
     fclose(fd);
     return 0;
 }
@@ -107,7 +127,8 @@ void DefineOffSetLength(struct Item *it1)
  * Inputs:
  * item = pointer to the struct to store the necessary informations
  *
- * offset_begin = the amount of bytes (in decimal) that will be script from the beginning
+ * offset_begin = the amount of bytes (in decimal) that will be skipped from the beginning
+ * offset_end = the amount of bytes (in decimal) that will be skipped from the end
  * Length = the mount of bytes that will be used (in decimal)
  */
 {

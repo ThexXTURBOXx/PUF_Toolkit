@@ -96,6 +96,8 @@ struct Pattern {
     int Golay_k_BCH_m;
     int linearRep;
     long puf_offSet;
+    long puf_offSet_begin;
+    long puf_offSet_end;
     long original_filesize;
 } ;
 

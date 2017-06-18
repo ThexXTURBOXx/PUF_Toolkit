@@ -21,4 +21,16 @@ int MajorityVoting(unsigned long pos, struct Item *item);
 int Calculation_encode(struct Item *item);
 int Calculation_decode(struct Item *item);
 
+// calculation functions for Golay
+int Golay_encode(struct Item *item);
+int Golay_decode(struct Item *item);
+
+//
+//*****************************************************************************
+// Define GOLAY DATA
+#define X22             0x00400000   /* vector representation of X^{22} */
+#define X11             0x00000800   /* vector representation of X^{11} */
+#define MASK12          0xfffff800   /* auxiliary vector for testing */
+#define GENPOL          0x00000c75   /* generator polinomial, g(x) */
+
 #endif // PUF_CALCULATION_H_INCLUDED
