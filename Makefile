@@ -25,8 +25,3 @@ $(TARGET): ${OBJECTS}
 
 clean: 
 	rm -r $(OBJECTS) $(TARGET)
-
-
-	
-
-
