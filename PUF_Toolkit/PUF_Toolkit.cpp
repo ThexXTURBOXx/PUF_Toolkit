@@ -49,6 +49,7 @@ void HammingWeight_Menu(struct Item *item)
                 cout << "                                                                               " << endl;
                 cout << "          Result:                                                              " << endl;
                 cout << "                     HammingWeight = " << item->result                           << endl;
+                cout << "               Fractional distance = " << atoi(item->result) / float(item->input_length*8)<< endl;
                 cout << "*******************************************************************************" << endl;
 
                 if(error) ErrorMessages(error, 0);
