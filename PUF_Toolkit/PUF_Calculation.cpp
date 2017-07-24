@@ -3186,3 +3186,94 @@ error1:
 
     return 0;
 }
+
+/*============================================================================*/
+/* jaccard functions */
+
+char *readfile(char *name, unsigned long offset_begin, int filesize)
+{
+    char *data = NULL;
+    FILE * file;
+    if ((file = fopen(name, "rb")) == NULL) {
+        printf("unable to open file\n");
+        return NULL;
+    }
+    fseek(file, offset_begin, SEEK_SET);
+
+    if ((data = (char *)malloc(filesize)) == NULL) {
+            printf("unable to obtain memory from heap for %s\n", name);
+            goto error1;
+    }
+
+    if (fread(data, sizeof(char), filesize, file) != filesize) {
+        printf("unable to read file %s\n", name);
+        goto error;
+    }
+    //printf("data file %s read \n", name);
+error:
+    fclose(file);
+error1:
+    return data;
+}
+
+int hammingwt(char *data, int size)
+{
+    int i;
+    int wt = 0;
+    for (i = 0; i < size; i++) {
+        (data[i] & 0x80 ? wt++ : wt);
+        (data[i] & 0x40 ? wt++ : wt);
+        (data[i] & 0x20 ? wt++ : wt);
+        (data[i] & 0x10 ? wt++ : wt);
+        (data[i] & 0x08 ? wt++ : wt);
+        (data[i] & 0x04 ? wt++ : wt);
+        (data[i] & 0x02 ? wt++ : wt);
+        (data[i] & 0x01 ? wt++ : wt);
+    }
+
+    return wt;
+}
+
+int Jaccard_Index(struct Item *item)
+{
+    int i = 0, wt1, wt2, wt3, size1, size2;
+    float jindex;
+    int error = 0;
+    //set the filesize based on the offsets begin and end
+    SetInputLen(item, 0);
+    size1 = item->input_length;
+    SetInputLen(item, 1);
+    size2 = item->input_length;
+
+    char *f1data = readfile(item->input_file_name, item->offset_begin, size1);
+    char *f2data = readfile(item->input_PUF_name, item->offset_begin, size2);
+    int dsize = ((size1 >= size2) ? size2 :size1);
+    char data[dsize];
+    if ((f1data == NULL) || (f2data == NULL)) {
+        error = 11;
+        goto error;
+    }
+
+    //bitwise AND f1data and f2data to get the common # of 1s
+    for (i = 0; i < dsize; i++) {
+        data[i] = f1data[i] & f2data[i];
+    }
+
+    //calculate hamming wt and then jaccard's index
+    wt1 = hammingwt(f1data, size1);
+    wt2 = hammingwt(f2data, size2);
+    wt3 = hammingwt(data, dsize);
+
+    printf("wt1: %d\nwt2: %d\nwt3: %d\n", wt1, wt2, wt3);
+    jindex = (float) wt3 / (wt1 + wt2 - wt3) ;
+    printf("jaccards index: %.3f\n", jindex);
+    //item->result = jindex;
+
+error:
+    if (f1data)
+        free(f1data);
+    if (f2data)
+        free(f2data);
+
+    return error;
+}

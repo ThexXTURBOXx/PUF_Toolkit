@@ -27,13 +27,13 @@ void ErrorMessages(int error, int pos)
     if(error == 2) cout << endl << "ERROR! Invalid input - Input to long." << endl;
     if(error == 3) cout << endl << "ERROR! Invalid input - Try again..." << endl;
     if(error == 4) cout << endl << "ERROR! Invalid input - 'length' has to be greater the zero." << endl;
-    if(error == 5) cout << endl << "ERROR! Invalid input - 'Filename' to long." << endl;
+    if(error == 5) cout << endl << "ERROR! Invalid input - 'Filename' too long." << endl;
     if(error == 6) cout << endl << "ERROR! Invalid input - No input." << endl;
     if(error == 7) cout << endl << "ERROR! Invalid input - Amount has to be greater then zero." << endl;
     if(error == 8) cout << endl << "ERROR! Invalid input - To many paths [Maximum is 99]." << endl;
     if(error == 9) cout << endl << "ERROR! Invalid input - To less paths [Minimum is 2]." << endl;
     if(error == 10) cout << endl << "ERROR! Invalid input - 'Path' to long." << endl;
-    if(error == 11) cout << endl << "ERROR! File could not be open." << endl;
+    if(error == 11) cout << endl << "ERROR! File could not be opened/read." << endl;
     if(error == 12) perror("\nERROR! Opening file / directory / path");
     if(error == 13) cout << endl << "ERROR! Chosen part of the PUF-Response is out of range." << endl;
     if(error == 14) cout << endl << "ERROR! Reading file." << endl;

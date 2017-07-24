@@ -1171,7 +1171,7 @@ void BCH_Encoder_Menu(struct Item *item)
                             break;
                         case '8':
                             ClearScreen();
-                            cout << endl << " Exiting Program -  bye bye" << endl << endl;
+                            cout << endl << " Back " << endl << endl;
                             error = 0;
                             exit = 1;
                             break;
@@ -1317,7 +1317,7 @@ void BCH_Decoder_Menu()
                             break;
                         case '6':
                             ClearScreen();
-                            cout << endl << " Exiting Program -  bye bye" << endl << endl;
+                            cout << endl << " Back " << endl << endl;
                             error = 0;
                             exit = 1;
                             break;
@@ -1459,7 +1459,7 @@ void Golay_Encoder_Menu(struct Item *item)
                             break;
                         case '7':
                             ClearScreen();
-                            cout << endl << " Exiting Program -  bye bye" << endl << endl;
+                            cout << endl << " Back " << endl << endl;
                             error = 0;
                             exit = 1;
                             break;
@@ -1584,12 +1584,135 @@ void Golay_Decoder_Menu()
                             if(!error) strcpy(item.result, "Done - file saved");
                             break;
                         case '5':
-                            cout << endl << " Exiting Program -  bye bye" << endl << endl;
+                            cout << endl << " Back " << endl << endl;
                             error = 0;
                             exit = 1;
                             break;
                         default:
                             error = 13;
+                            break;
+                        }
+                    break;
+                }
+                else {
+                    /* newline not found, flush stdin to end of line */
+                    while (((ch = getchar()) != '\n')
+                             && !feof(stdin)
+                             && !ferror(stdin)
+                            );
+                        error = 2;
+                        break;
+                }
+            }
+            else {
+                /* fgets failed, handle error */
+                cin.clear();
+                error = 3;
+                break;
+            }
+        }
+        if(exit) break;
+    }
+}
+
+void Jaccard_Index_Menu(struct Item* item)
+/*
+ * Jaccard index menu */
+{
+
+    char menuChoice[3];
+    char *h;
+    unsigned int ch;
+    unsigned int error = 0;
+    unsigned int exit = 0;
+    unsigned int offset_isSet = 1;
+
+    // Set the initial values for the data struct
+    item->input_Key_length = 0;
+    strcpy(item->input_file_name, "none");
+    strcpy(item->input_PUF_name, "none");
+    strcpy(item->result, "none");
+
+    while(true){
+        ClearScreen();
+        cout << "*******************************************************************************" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*                         Welcome to the PUF-Toolkit                          *" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "********************************* Jaccard Index *******************************" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*                        1 : Set Offsets from beginning and end               *" << endl;
+        cout << "*                        2 : Jaccard index between two files                  *" << endl;
+        cout << "*                        3 : Intra Jaccard index                              *" << endl;
+        cout << "*                        4 : Inter Jaccard index                              *" << endl;
+        cout << "*                        5 : Back                                             *" << endl;
+        cout << "*                                                                             *" << endl;
+        cout << "*******************************************************************************" << endl;
+        cout << "          Settings:                                                            " << endl;
+        if(offset_isSet){
+        cout << "                     OffSet begin = " << item->offset_begin                      << endl;
+        cout << "                     OffSet end   = " << item->offset_end                        << endl;}
+        else {
+        cout << "                     OffSet       = none"                                        << endl;}
+        cout << "                     file 1       = " << item->input_file_name                   << endl;
+        cout << "                     file 2       = " << item->input_PUF_name                    << endl;
+        cout << "          Result:                                                              " << endl;
+        cout << "                     Calculation progress = " << item->result                    << endl;
+        cout << "                                                                               " << endl;
+        cout << "*******************************************************************************" << endl;
+
+        if(error) ErrorMessages(error, 0, 0);
+        error = 0;
+
+        while(true){
+            cout << endl << "Make a choice by typing in a number (1-5): ";
+            if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
+                /* fgets succeeds, scan for newline character */
+                h = strchr(menuChoice, '\n');
+                if (h) {
+                    *h = '\0';
+                    switch(menuChoice[0])
+                        {
+                        case '1':
+                            cout << endl << " Processing : Set 'offsets' for the files" << endl << endl;
+                            error = 0;
+                            DefineOffSetLength(item);
+                            offset_isSet = 1;
+                            strcpy(item->result, "none");
+                            break;
+                        case '2':
+                            cout << endl << " Processing : Set filename 1" << endl << endl;
+                            error = 0;
+                            DefineFilename(item, 1);
+                            cout << endl << " Processing : Set filename 2" << endl << endl;
+                            DefineFilename_BCH(item, 2);
+                            //call jaccard function in calculate.cpp
+                            error = Jaccard_Index(item);
+                            if (error == 0)
+                                strcpy(item->result, "Jaccard index calculated");
+                            break;
+                        case '3':
+                            cout << endl << " Processing : Set Input path for Intra Jaccard index" << endl << endl;
+                            error = 0;
+                            DefinePathname(item, 1);
+                            //call inter jaccard index in calculate.cpp
+                            strcpy(item->result, "none");
+                            break;
+                        case '4':
+                            cout << endl << " Processing : Set Input paths for Inter Jaccard index" << endl << endl;
+                            error = 0;
+                            DefinePathname(item, 2);
+                            //call inter jaccard index in calculate.cpp
+                            strcpy(item->result, "none");
+                            break;
+                        case '5':
+                            ClearScreen();
+                            cout << endl << " Back " << endl << endl;
+                            error = 0;
+                            exit = 1;
+                            break;
+                        default:
+                            error = 15;
                             break;
                         }
                     break;
@@ -1685,9 +1808,10 @@ int Main_Menu()
         cout << "*                        7 : BCH Encoder Menu                                 *" << endl;
         cout << "*                        8 : BCH Decoder Menu                                 *" << endl;
         cout << "*                        9 : Golay Encoder Menu                               *" << endl;
-        cout << "*                        10 : Golay Decoder Menu                              *" << endl;
-        cout << "*                        11 : Change 'offset_begin' & 'offset_end'            *" << endl;
-        cout << "*                        12 : Exit Program                                    *" << endl;
+        cout << "*                        10: Golay Decoder Menu                               *" << endl;
+        cout << "*                        11: Jaccard Index Menu                               *" << endl;
+        cout << "*                        12: Change 'offset_begin' & 'offset_end'             *" << endl;
+        cout << "*                        13: Exit Program                                     *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
@@ -1699,7 +1823,7 @@ int Main_Menu()
         error = 0;
 
         while(true){
-            cout << endl << "Make a choice by typing in a number (1-12): ";
+            cout << endl << "Make a choice by typing in a number (1-13): ";
             if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
                 /* fgets succeeds, scan for newline character */
                 p = strchr(menuChoice, '\n');
@@ -1800,12 +1924,17 @@ int Main_Menu()
                             Golay_Decoder_Menu();
                             break;
                         case 11:
+                            cout << endl << "Jaccard index menu" << endl << endl;
+                            error = 0;
+                            Jaccard_Index_Menu(&it1);
+                            break;
+                        case 12:
                             cout << endl << " Change 'offset_begin' and 'offset_end'" << endl << endl;
                             error = 0;
                             ClearScreen();
                             DefineOffSetLength(&it1);
                             break;
-                        case 12:
+                        case 13:
                             ClearScreen();
                             cout << endl << " Exiting Program -  bye bye" << endl << endl;
                             error = 0;
