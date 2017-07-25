@@ -1631,6 +1631,7 @@ void Jaccard_Index_Menu(struct Item* item)
     item->input_Key_length = 0;
     strcpy(item->input_file_name, "none");
     strcpy(item->input_PUF_name, "none");
+    strcpy(item->output_file_name, "none");
     strcpy(item->result, "none");
 
     while(true){
@@ -1642,10 +1643,11 @@ void Jaccard_Index_Menu(struct Item* item)
         cout << "********************************* Jaccard Index *******************************" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*                        1 : Set Offsets from beginning and end               *" << endl;
-        cout << "*                        2 : Jaccard index between two files                  *" << endl;
-        cout << "*                        3 : Intra Jaccard index                              *" << endl;
-        cout << "*                        4 : Inter Jaccard index                              *" << endl;
-        cout << "*                        5 : Back                                             *" << endl;
+        cout << "*                        2 : Set Output file                                  *" << endl;
+        cout << "*                        3 : Jaccard index between two files                  *" << endl;
+        cout << "*                        4 : Intra Jaccard index                              *" << endl;
+        cout << "*                        5 : Inter Jaccard index                              *" << endl;
+        cout << "*                        6 : Back                                             *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
@@ -1656,6 +1658,7 @@ void Jaccard_Index_Menu(struct Item* item)
         cout << "                     OffSet       = none"                                        << endl;}
         cout << "                     file 1       = " << item->input_file_name                   << endl;
         cout << "                     file 2       = " << item->input_PUF_name                    << endl;
+        cout << "                     output file  = " << item->output_file_name                  << endl;
         cout << "          Result:                                                              " << endl;
         cout << "                     Calculation progress = " << item->result                    << endl;
         cout << "                                                                               " << endl;
@@ -1665,7 +1668,7 @@ void Jaccard_Index_Menu(struct Item* item)
         error = 0;
 
         while(true){
-            cout << endl << "Make a choice by typing in a number (1-5): ";
+            cout << endl << "Make a choice by typing in a number (1-6): ";
             if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
                 /* fgets succeeds, scan for newline character */
                 h = strchr(menuChoice, '\n');
@@ -1681,6 +1684,12 @@ void Jaccard_Index_Menu(struct Item* item)
                             strcpy(item->result, "none");
                             break;
                         case '2':
+                            cout << endl << " Processing : Set Output filename" << endl << endl;
+                            error = 0;
+                            DefineFilename(item, 2);
+                            strcpy(item->result, "none");
+                            break;
+                        case 3:
                             cout << endl << " Processing : Set filename 1" << endl << endl;
                             error = 0;
                             DefineFilename(item, 1);
@@ -1690,21 +1699,21 @@ void Jaccard_Index_Menu(struct Item* item)
                             if (error == 0)
                                 strcpy(item->result, "Jaccard index calculated");
                             break;
-                        case '3':
+                        case '4':
                             cout << endl << " Processing : Set Input path for Intra Jaccard index" << endl << endl;
                             error = 0;
                             DefinePathname(item, 1);
                             //call inter jaccard index in calculate.cpp
                             strcpy(item->result, "none");
                             break;
-                        case '4':
+                        case '5':
                             cout << endl << " Processing : Set Input paths for Inter Jaccard index" << endl << endl;
                             error = 0;
                             DefinePathname(item, 2);
                             //call inter jaccard index in calculate.cpp
                             strcpy(item->result, "none");
                             break;
-                        case '5':
+                        case '6':
                             ClearScreen();
                             cout << endl << " Back " << endl << endl;
                             error = 0;
