@@ -1626,6 +1626,7 @@ void Jaccard_Index_Menu(struct Item* item)
     unsigned int error = 0;
     unsigned int exit = 0;
     unsigned int offset_isSet = 1;
+    unsigned int output_isSet = 0;
 
     // Set the initial values for the data struct
     item->input_Key_length = 0;
@@ -1664,7 +1665,7 @@ void Jaccard_Index_Menu(struct Item* item)
         cout << "                                                                               " << endl;
         cout << "*******************************************************************************" << endl;
 
-        if(error) ErrorMessages(error, 0, 0);
+        if(error) ErrorMessages(error, 0);
         error = 0;
 
         while(true){
@@ -1687,9 +1688,10 @@ void Jaccard_Index_Menu(struct Item* item)
                             cout << endl << " Processing : Set Output filename" << endl << endl;
                             error = 0;
                             DefineFilename(item, 2);
+                            output_isSet = 1;
                             strcpy(item->result, "none");
                             break;
-                        case 3:
+                        case '3':
                             cout << endl << " Processing : Set filename 1" << endl << endl;
                             error = 0;
                             DefineFilename(item, 1);
@@ -1703,8 +1705,15 @@ void Jaccard_Index_Menu(struct Item* item)
                             cout << endl << " Processing : Set Input path for Intra Jaccard index" << endl << endl;
                             error = 0;
                             DefinePathname(item, 1);
-                            //call inter jaccard index in calculate.cpp
-                            strcpy(item->result, "none");
+                            //call intra jaccard index in calculate.cpp
+                            if (offset_isSet && output_isSet) {
+                                error = Jaccard_Intra(item);
+                            } else {
+                                printf("please set the output filename first!\n");
+                                error = 18;
+                            }
+                            if (error == 0)
+                                strcpy(item->result, "Intra Jaccard index saved to output file");
                             break;
                         case '5':
                             cout << endl << " Processing : Set Input paths for Inter Jaccard index" << endl << endl;
