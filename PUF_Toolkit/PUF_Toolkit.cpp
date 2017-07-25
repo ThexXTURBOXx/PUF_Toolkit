@@ -1394,7 +1394,7 @@ void Golay_Encoder_Menu(struct Item *item)
         cout << "                     LR Factor   = none"                                         << endl;}
         if(offset_isSet){
         cout << "                     OffSet begin = " << item->offset_begin                        << endl;
-        cout << "                     OffSet end = " << item->offset_end                            << endl;}
+        cout << "                     OffSet end   = " << item->offset_end                          << endl;}
         else {
         cout << "                     OffSet      = none"                                         << endl;}
         cout << "                     Key file    = " << item->input_Key_name                      << endl;
@@ -1542,7 +1542,7 @@ void Golay_Decoder_Menu()
         cout << "                     LR Factor   = none"                                         << endl;}
         if(isSet){
         cout << "                     OffSet begin = " << item.offset_begin                        << endl;
-        cout << "                     OffSet end = " << item.offset_end                            << endl;}
+        cout << "                     OffSet end   = " << item.offset_end                          << endl;}
         else {
         cout << "                     OffSet      = none"                                         << endl;}
         cout << "                                                                               " << endl;
@@ -1686,7 +1686,6 @@ void Jaccard_Index_Menu(struct Item* item)
                             DefineFilename(item, 1);
                             cout << endl << " Processing : Set filename 2" << endl << endl;
                             DefineFilename_BCH(item, 2);
-                            //call jaccard function in calculate.cpp
                             error = Jaccard_Index(item);
                             if (error == 0)
                                 strcpy(item->result, "Jaccard index calculated");
