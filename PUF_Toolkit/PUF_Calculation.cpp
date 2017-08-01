@@ -3406,3 +3406,212 @@ int Jaccard_Intra(struct Item *item)
     }
     return 0;
 }
+
+int Jaccard_Inter(struct Item *item, int option)
+    /*
+     * Calculate the Inter-Hamming Distance of all files of the defined directories
+     *
+     * Inputs:
+     * item = pointer to the struct to get and store the necessary informations
+     * option = define of the calculation and output format
+     *
+     * Options:
+     * 0 = compact - no duplicate calculation - symmetry
+     * 1 = detailed - all with all - symmetries will be ignored
+     * 2 = minimal - plain results sequence
+     */
+{
+    DIR *dir;
+    struct dirent *ent;
+    string path_and_file_name;
+    string path;
+    string white_spaces;
+    string check_output_name(item->output_file_name);
+    const char * path_file_name;
+    vector<string> list_of_all_files;
+    vector<string> list_of_files;
+    vector<string>::iterator it;
+    vector<string>::iterator it2;
+    vector<unsigned int> number_of_files;
+    ofstream result_file;
+    unsigned int i = 0;
+    unsigned int count_files = 0;
+    unsigned int count_offset = 0;
+    unsigned int max_file_length = 0;
+    bool header = true;
+    bool next_table = true;
+
+    it = list_of_files.begin();
+
+    // Check if Input directories are really directories
+    for(i = 0; i < item->input_path_name.size(); i++){
+        if(!IsDir(item->input_path_name.at(i).c_str())){
+            item->HD_error_pos = i+1;
+            return 20;
+        }
+    }
+
+    // Check if Output is set
+    if(check_output_name == "none") return 18;
+
+    // Get all the filenames included in the specified directory
+    for(i = 0; i < item->input_path_name.size(); i++){
+        path = item->input_path_name.at(i).c_str();
+
+        // Reset the file counter
+        count_files = 0;
+
+        if ((dir = opendir (item->input_path_name.at(i).c_str())) != NULL) {
+            while ((ent = readdir (dir)) != NULL) {
+                // Skip '.' and '..'
+                if( strcmp(ent->d_name, ".") != 0 && strcmp(ent->d_name, "..") != 0 ) {
+                    // Generate complete path+filename
+                    path_and_file_name = "";
+                    path_and_file_name += path;
+                    path_and_file_name += "/";
+                    path_and_file_name += ent->d_name;
+                    path_file_name = path_and_file_name.c_str();
+                    // Only take existing files
+                    if(IsFile(path_file_name)) {
+                        // Add filenames in a List depending on option
+                        if(option == 0 || option == 2){
+                            if(i < item->input_path_name.size()-1)
+                                list_of_all_files.push_back(path_file_name);
+                        }
+                        else if(option == 1){
+                            list_of_all_files.push_back(path_file_name);
+                        }
+
+                        // Increment file counter
+                        count_files++;
+
+                        // Comparators list, skip first folder
+                        if(i > 0) list_of_files.push_back(path_file_name);
+
+                        // Check the length of the file and find the maximum
+                        if(strlen(path_file_name) > max_file_length) max_file_length = strlen(path_file_name);
+                    }
+                }
+            }
+            number_of_files.push_back(count_files);
+            closedir (dir);
+        } else {
+            /* Could not open directory */
+            perror ("");
+            return EXIT_FAILURE;
+        }
+
+    }
+
+    // Check if in each folder is at least one file
+    for(i = 0; i < number_of_files.size();i++){
+        if(number_of_files.at(i) < 1) {
+            item->HD_error_pos = i+1;
+            return 21;
+        }
+    }
+
+    FILE *fd;
+    FILE *fd2;
+    unsigned char * file1;
+    unsigned char * file2;
+    unsigned char inputData;
+    unsigned long file1_size;
+    unsigned long file2_size;
+    unsigned int j = 0;
+    count_files = 0;
+    unsigned int c = 0;
+    unsigned int error = 0;
+
+    for(it = list_of_all_files.begin();it != list_of_all_files.end(); ++it){
+
+        // Count the # of precessed files
+        count_files++;
+        count_offset++;
+
+        //copy the filename 1 to input_file_name
+        strcpy(item->input_file_name, (*it).c_str());
+
+        for(it2 = list_of_files.begin();it2 != list_of_files.end(); ++it2){
+
+            //copy the filename 2 to input_PUF_name
+            strcpy(item->input_PUF_name, (*it2).c_str());
+
+            error = Jaccard_Index(item);
+
+            if (error == 0) {
+                // Open the output file to store the results (append)
+                result_file.open (item->output_file_name, ios::out | ios::app );
+
+                // Generate output content
+                if (result_file.is_open()) {
+                    if(option == 0 || option == 1){
+                        if(header){
+                            result_file << "*******************************************************************************" << endl;
+                            result_file << "                                                                               " << endl;
+                            result_file << "                             Inter-Jaccard Index                               " << endl;
+                            result_file << "                                                                               " << endl;
+                            result_file << "                          Used Settings:                                       " << endl;
+                            result_file << "                                                                               " << endl;
+                            for(j = 0; j < item->input_path_name.size(); j++){
+                                if(j == 0)  		result_file << "                          Device folder: '" << item->input_path_name.at(j).c_str() <<"'" << endl;
+                                else        		result_file << "                                         '" << item->input_path_name.at(j).c_str() <<"'" << endl;
+                            }
+                            result_file << "                          offset_begin:         " << item->offset_begin                      << endl;
+                            result_file << "                          Length:         " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
+                            if(option == 0)			result_file << "                          Output Style:   compact                              " << endl;
+                            else if(option == 1) 	result_file << "                          Output Style:   detailed                             " << endl;
+                            result_file << "                                                                               " << endl;
+                            result_file << "*******************************************************************************" << endl << endl;
+                            header = false;
+                        }
+                        if(next_table){
+                            if(max_file_length < 79) white_spaces = string(69 - strlen((*it).c_str()), ' ');
+                            else white_spaces = string(4, ' ');
+                            result_file << endl << "-------------------------------------------------------------------------------" << endl;
+                            result_file << "    Filename" << white_spaces << *it << endl;
+                            result_file << "-------------------------------------------------------------------------------" << endl;
+                            next_table = false;
+                        }
+                        if(max_file_length < 79) white_spaces = string(((79 - strlen((*it2).c_str())) - ((79 - max_file_length)/2)), ' ');
+                        else white_spaces = string(4, ' ');
+                        result_file << *it2 << white_spaces << jindex << endl;
+                        if((it2+1) == list_of_files.end()){
+                            result_file << "-------------------------------------------------------------------------------" << endl << endl;
+                        }
+                        result_file.close();
+                    }
+                    if (option == 2){
+                        // Minimal output of plain result values, separated with a " "
+                        result_file << jindex;
+
+                        // Remove the last " " in the end of the file (might be problematic with new calculation due to appending)
+                        if(!((it2+1) == list_of_files.end() && (it+1) == list_of_all_files.end())) {
+                            result_file << " ";
+                        }
+                        result_file.close();
+                    }
+                } else return 16; //end if result open
+
+                jindex = 0;
+            }
+        } // end inner for loop
+
+        // Handle next table and EOF
+        if(count_files == number_of_files.at(c)){
+            c++;
+
+            if(option == 0 || option == 2) list_of_files.erase(list_of_files.begin(), list_of_files.begin() + number_of_files.at(c));
+            else if(option == 1) {
+                if(c < number_of_files.size()){
+                    list_of_files = list_of_all_files;
+                    list_of_files.erase(list_of_files.begin() + count_offset, list_of_files.begin() + count_offset + number_of_files.at(c));
+                }
+
+            }
+            count_files = 0;
+        }
+        next_table = true;
+    } //end outer for loop
+    return 0;
+}

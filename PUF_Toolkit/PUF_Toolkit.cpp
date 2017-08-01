@@ -1709,7 +1709,6 @@ void Jaccard_Index_Menu(struct Item* item)
                             if (offset_isSet && output_isSet) {
                                 error = Jaccard_Intra(item);
                             } else {
-                                printf("please set the output filename first!\n");
                                 error = 18;
                             }
                             if (error == 0)
@@ -1720,7 +1719,13 @@ void Jaccard_Index_Menu(struct Item* item)
                             error = 0;
                             DefinePathname(item, 2);
                             //call inter jaccard index in calculate.cpp
-                            strcpy(item->result, "none");
+                            if (offset_isSet && output_isSet) {
+                                error = Jaccard_Inter(item, 1);
+                            } else {
+                                error = 18;
+                            }
+                            if (error == 0)
+                                strcpy(item->result, "Inter Jaccard index saved to output file");
                             break;
                         case '6':
                             ClearScreen();

@@ -24,7 +24,7 @@ int Calculation_decode(struct Item *item);
 // calculation function for jaccard index
 int Jaccard_Index(struct Item *item);
 int Jaccard_Intra(struct Item *item);
-int Jaccard_Inter(struct Item *item);
+int Jaccard_Inter(struct Item *item, int option);
 
 // calculation functions for Golay
 int Golay_encode(struct Item *item);
