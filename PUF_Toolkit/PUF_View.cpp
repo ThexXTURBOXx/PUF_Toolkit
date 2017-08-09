@@ -53,6 +53,7 @@ void ErrorMessages(int error, int pos)
     if(error == 22) cout << endl << "WARNING! Looks like the calculation was not started." << endl;
     if(error == 23) cout << endl << "ERROR! Looks like the file was empty." << endl;
     if(error == 24) cout << endl << "ERROR! Looks like the file was not in the supported format." << endl;
+    if(error == 25) cout << endl << "WARNING! Looks like the 'offset' is not set." << endl;
 }
 
 /*

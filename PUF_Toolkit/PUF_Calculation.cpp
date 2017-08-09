@@ -26,6 +26,7 @@ int a[4];
 
 //global variable to retain the jaccard index value between function calls
 static float jindex = 0;
+static float frd_jindex = 0;
 
 int Median_AVG(struct Item *item)
     /*
@@ -152,6 +153,9 @@ int HammingWeight(struct Item *item, int option)
             if((inputData[i] & 0x01) == 0x00) item->zeros++;                       // bit at position 1 == 0
             else item->ones++;
         }
+
+		//set the fractional distance
+		item->frd = (float)item->ones / item->input_length;
         fclose(fd);
         free(inputData);
     }
@@ -206,6 +210,8 @@ int HammingWeight(struct Item *item, int option)
         // Check if more the one file is in the folder
         if(list_of_files.size() < 1) return 17;
 
+        // Open the output file to store the results (append)
+        result_file.open (item->output_file_name, ios::out | ios::app );
         for(it = list_of_files.begin();it != list_of_files.end(); ++it){
 
             // Set the input_file_name for each entry of the list_of_files
@@ -216,19 +222,17 @@ int HammingWeight(struct Item *item, int option)
 
             if(error == 0){
 
-                // Open the output file to store the results (append)
-                result_file.open (item->output_file_name, ios::out | ios::app );
-
                 if (result_file.is_open()){
 
+					if ( it == list_of_files.begin())
+						result_file << "Hamming wt  Fractional distance: ";
                     // Minimal output of plain result values, separated with a " "
-                    result_file << item->ones;
+                    result_file << item->ones << "  " << item->frd << ",";
 
                     // Remove the last " " in the end of the file (might be problematic with new calculation due to appending)
                     if(!((it+1) == list_of_files.end())) {
                         result_file << " ";
                     }
-                    result_file.close();
                 }
                 else return 16;
 
@@ -238,6 +242,7 @@ int HammingWeight(struct Item *item, int option)
                 if(error !=0) break;
             }
         }
+        result_file.close();
     }
     return error;
 }
@@ -330,6 +335,8 @@ int Entropy(struct Item *item, int option)
         // Check if more the one file is in the folder
         if(list_of_files.size() < 1) return 17;
 
+        // Open the output file to store the results (append)
+        result_file.open (item->output_file_name, ios::out | ios::app );
         for(it = list_of_files.begin();it != list_of_files.end(); ++it){
 
             // Set the input_file_name for each entry of the list_of_files
@@ -340,9 +347,6 @@ int Entropy(struct Item *item, int option)
 
             if(error == 0){
 
-                // Open the output file to store the results (append)
-                result_file.open (item->output_file_name, ios::out | ios::app );
-
                 if (result_file.is_open()){
 
                     // Minimal output of plain result values, separated with a " "
@@ -352,7 +356,6 @@ int Entropy(struct Item *item, int option)
                     if(!((it+1) == list_of_files.end())) {
                         result_file << " ";
                     }
-                    result_file.close();
                 }
                 else return 16;
             }
@@ -363,7 +366,49 @@ int Entropy(struct Item *item, int option)
 
             if(error !=0) break;
         }
+        result_file.close();
     }
+    return error;
+}
+
+int Hamming_Distance(struct Item *item)
+{
+
+    int i = 0, size1, size2;
+    unsigned int error = 0;
+    //set the filesize based on the offsets begin and end
+    SetInputLen(item, 0);
+    size1 = item->input_length;
+    SetInputLen(item, 1);
+    size2 = item->input_length;
+    int dsize = ((size1 >= size2) ? size2 :size1);
+    char data[dsize];
+
+    char *f1data = readfile(item->input_file_name, item->offset_begin, size1);
+    char *f2data = readfile(item->input_PUF_name, item->offset_begin, size2);
+    if ((f1data == NULL) || (f2data == NULL)) {
+        error = 11;
+        goto error;
+    }
+
+    //bitwise XOR f1data and f2data to get the positions where bits differ
+    for (i = 0; i < dsize; i++) {
+        data[i] = f1data[i] ^ f2data[i];
+    }
+
+    //calculate hamming distance
+    item->ones = hammingwt(data, dsize);
+	item->frd = (float) item->ones / dsize;
+
+    printf("hamming distance: %ld \t fractional Distance: %.3f\n", item->ones, item->frd);
+    printf("\n");
+
+error:
+    if (f1data)
+        free(f1data);
+    if (f2data)
+        free(f2data);
+
     return error;
 }
 
@@ -448,6 +493,8 @@ int IntraHD(struct Item *item, int option)
     unsigned int i = 0;
     unsigned int error = 0;
 
+    // Open the output file to store the results (append)
+    result_file.open (item->output_file_name, ios::out | ios::app );
     for(it = list_of_files.begin();it != list_of_files.end(); ++it){
 
         // Try to open the file
@@ -512,10 +559,11 @@ int IntraHD(struct Item *item, int option)
                 if((inputData & 0x01) != 0x00) counter++;                    // bit at position 1 == 1
             }
 
+			//set fractional distance
+			item->frd = (float)counter/item->input_length;
+
             free(file2);
             fclose(fd2);
-            // Open the output file to store the results (append)
-            result_file.open (item->output_file_name, ios::out | ios::app );
 
             if (result_file.is_open()){
                 if(option == 0){
@@ -543,11 +591,10 @@ int IntraHD(struct Item *item, int option)
                     }
                     if(max_file_length < 79) white_spaces = string(((79 - strlen((*it2).c_str())) - ((79 - max_file_length)/2)), ' ');
                     else white_spaces = string(4, ' ');
-                    result_file << *it2 << white_spaces << counter << endl;
+                    result_file << *it2 << white_spaces << fixed << setprecision(3) << counter << "\t" << item->frd << endl;
                     if((it2+1) == list_of_files.end()){
                         result_file << "-------------------------------------------------------------------------------" << endl << endl;
                     }
-                    result_file.close();
                 }
                 if(option == 2){
                     // Minimal output of plain result values, separated with a " "
@@ -557,16 +604,17 @@ int IntraHD(struct Item *item, int option)
                     if(!((it2+1) == list_of_files.end() && (it+2) == list_of_files.end())) {
                         result_file << " ";
                     }
-                    result_file.close();
                 }
             }
             else return 16;
             counter = 0;
+			item->frd = 0;
         }
         next_table = true;
         free(file1);
         fclose(fd);
     }
+	result_file.close();
     return 0;
 }
 
@@ -686,6 +734,8 @@ int InterHD(struct Item *item, int option)
     count_files = 0;
     unsigned int c = 0;
 
+	// Open the output file to store the results (append)
+    result_file.open (item->output_file_name, ios::out | ios::app );
     for(it = list_of_all_files.begin();it != list_of_all_files.end(); ++it){
 
         // Count the # of precessed files
@@ -753,11 +803,10 @@ int InterHD(struct Item *item, int option)
                 if((inputData & 0x01) != 0x00) counter++;                    // bit at position 1 == 1
             }
 
+			//set fractional distance
+			item->frd = (float)counter/item->input_length;
             free(file2);
             fclose(fd2);
-
-            // Open the output file to store the results (append)
-            result_file.open (item->output_file_name, ios::out | ios::app );
 
             // Generate output content
             if (result_file.is_open()) {
@@ -791,11 +840,10 @@ int InterHD(struct Item *item, int option)
                     }
                     if(max_file_length < 79) white_spaces = string(((79 - strlen((*it2).c_str())) - ((79 - max_file_length)/2)), ' ');
                     else white_spaces = string(4, ' ');
-                    result_file << *it2 << white_spaces << counter << endl;
+                    result_file << *it2 << white_spaces << fixed << setprecision(3) << counter << "\t" << item->frd << endl;
                     if((it2+1) == list_of_files.end()){
                         result_file << "-------------------------------------------------------------------------------" << endl << endl;
                     }
-                    result_file.close();
                 }
                 if (option == 2){
                     // Minimal output of plain result values, separated with a " "
@@ -810,6 +858,7 @@ int InterHD(struct Item *item, int option)
             }
             else return 16;
             counter = 0;
+			item->frd = 0;
         }
 
         // Handle next table and EOF
@@ -830,6 +879,7 @@ int InterHD(struct Item *item, int option)
         free(file1);
         fclose(fd);
     }
+    result_file.close();
     return 0;
 }
 
@@ -3267,7 +3317,8 @@ int Jaccard_Index(struct Item *item)
 
     printf("wt1: %d\nwt2: %d\nwt3: %d\n", wt1, wt2, wt3);
     jindex = (float) wt3 / (wt1 + wt2 - wt3) ;
-    printf("jaccards index: %.3f\n", jindex);
+	frd_jindex = jindex / dsize;
+    printf("jaccards index: %.3f \t Fractional Distance: %.3f \n", jindex, frd_jindex);
     printf("\n");
 
 error:
@@ -3345,6 +3396,8 @@ int Jaccard_Intra(struct Item *item)
     // Check if more than one file is in the folder
     if(list_of_files.size() <= 1) return 17;
 
+    // Open the output file to store the results (append)
+    result_file.open (item->output_file_name, ios::out | ios::app );
     for(it = list_of_files.begin();it != list_of_files.end(); ++it){
 
         //copy the first filename to input file
@@ -3357,8 +3410,6 @@ int Jaccard_Intra(struct Item *item)
             error = Jaccard_Index(item);
 
             if (error == 0) {
-                // Open the output file to store the results (append)
-                result_file.open (item->output_file_name, ios::out | ios::app );
 
                 if (result_file.is_open()){
                     if(header){
@@ -3390,20 +3441,21 @@ int Jaccard_Intra(struct Item *item)
                         white_spaces = string(((79 - strlen((*it2).c_str())) - ((79 - max_file_length)/2)), ' ');
                     else
                         white_spaces = string(4, ' ');
-                    result_file << *it2 << white_spaces << jindex << endl;
+                    result_file << *it2 << white_spaces << fixed << setprecision(3) << jindex << "\t" << frd_jindex << endl;
                     if((it2+1) == list_of_files.end()) {
                         result_file << "-------------------------------------------------------------------------------" << endl << endl;
                     }
-                    result_file.close();
                 } else {
                     printf("unable to open result output filestream\n");
                     return 16;
                 }
             }
             jindex = 0;
+			frd_jindex = 0;
         }
         next_table = true;
     }
+    result_file.close();
     return 0;
 }
 
@@ -3523,6 +3575,8 @@ int Jaccard_Inter(struct Item *item, int option)
     unsigned int c = 0;
     unsigned int error = 0;
 
+    // Open the output file to store the results (append)
+    result_file.open (item->output_file_name, ios::out | ios::app );
     for(it = list_of_all_files.begin();it != list_of_all_files.end(); ++it){
 
         // Count the # of precessed files
@@ -3540,8 +3594,6 @@ int Jaccard_Inter(struct Item *item, int option)
             error = Jaccard_Index(item);
 
             if (error == 0) {
-                // Open the output file to store the results (append)
-                result_file.open (item->output_file_name, ios::out | ios::app );
 
                 // Generate output content
                 if (result_file.is_open()) {
@@ -3575,11 +3627,10 @@ int Jaccard_Inter(struct Item *item, int option)
                         }
                         if(max_file_length < 79) white_spaces = string(((79 - strlen((*it2).c_str())) - ((79 - max_file_length)/2)), ' ');
                         else white_spaces = string(4, ' ');
-                        result_file << *it2 << white_spaces << jindex << endl;
+                        result_file << *it2 << white_spaces << fixed << setprecision(3) << jindex << "\t" << frd_jindex << endl;
                         if((it2+1) == list_of_files.end()){
                             result_file << "-------------------------------------------------------------------------------" << endl << endl;
                         }
-                        result_file.close();
                     }
                     if (option == 2){
                         // Minimal output of plain result values, separated with a " "
@@ -3589,11 +3640,11 @@ int Jaccard_Inter(struct Item *item, int option)
                         if(!((it2+1) == list_of_files.end() && (it+1) == list_of_all_files.end())) {
                             result_file << " ";
                         }
-                        result_file.close();
                     }
                 } else return 16; //end if result open
 
                 jindex = 0;
+				frd_jindex = 0;
             }
         } // end inner for loop
 
@@ -3613,5 +3664,6 @@ int Jaccard_Inter(struct Item *item, int option)
         }
         next_table = true;
     } //end outer for loop
+    result_file.close();
     return 0;
 }

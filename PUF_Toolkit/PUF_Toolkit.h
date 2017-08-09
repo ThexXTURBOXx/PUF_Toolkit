@@ -33,6 +33,7 @@ struct Item {
     vector<string> input_path_name;
     unsigned long zeros;
     unsigned long ones;
+	float frd; //fractional distance = hamming wt. / filesize
     double entrp;
     double median;
     double average;

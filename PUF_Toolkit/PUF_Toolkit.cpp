@@ -829,6 +829,7 @@ void Hamming_Distance_Menu(struct Item *item)
     unsigned int output_isSet = 0;
     unsigned int paths_are_set = 0;
     unsigned int files_are_set = 0;
+	bool style_changed = false;
 
 
     while(true){
@@ -870,7 +871,10 @@ void Hamming_Distance_Menu(struct Item *item)
         cout << "                     Output-File  = " << item->output_file_name              << endl;
         cout << "                                                                               " << endl;
         cout << "          Result:                                                              " << endl;
-        cout << "                     Hamming Dt.  = " << item->result                        << endl;
+		if (files_are_set) {
+			cout << "                     Hamming Dt.  = " << item->ones <<"\t" << "Fractional Dt. = " << item->frd   << endl;}
+		else {
+			cout << "                     Hamming Dt.  = " << item->result                        << endl;}
         if((item->HD_mode == 1) && !(strcmp(item->result, "none") == 0)){
             cout << "                     Median       = " << item->median                        << endl;
             cout << "                     Average      = " << item->average                       << endl;}
@@ -909,7 +913,11 @@ void Hamming_Distance_Menu(struct Item *item)
                         cout << endl << " Processing : Set filename 2" << endl << endl;
                         DefineFilename_BCH(item, 2);
                         files_are_set = 1;
-                        //error = Hamming_Distance(item);
+						if (offset_isSet)
+							error = Hamming_Distance(item);
+						else
+							error = 25;
+
                         if (error == 0)
                             strcpy(item->result, "Hamming Distance calculated");
                         break;
@@ -919,12 +927,22 @@ void Hamming_Distance_Menu(struct Item *item)
                         DefinePathname(item, 1);
                         paths_are_set = 0;
                         files_are_set = 0;
+						//if the output style is detailed change it to compact
+						if (item->HD_mode == 1) {
+							item->HD_mode = 0;
+							style_changed = true;
+						}
                         //call intra Hamming distance in calculate.cpp
                         if (offset_isSet && output_isSet) {
                             error = IntraHD(item, item->HD_mode);
                         } else {
                             error = 18;
                         }
+						if (style_changed) {
+							style_changed = false;
+							cout << endl << "NOTE: Detailed output style not allowed for intra hamming distance defaulting to compact" << endl;
+						}
+
                         if (error == 0)
                             strcpy(item->result, "Intra Hamming Distance saved to output file");
                         break;
@@ -941,6 +959,7 @@ void Hamming_Distance_Menu(struct Item *item)
                         }
                         if (error == 0)
                             strcpy(item->result, "Inter Hamming Distance saved to output file");
+						break;
                     case '6':
                         cout << endl << " Switch Output-Style " << endl << endl;
                         if(item->HD_mode == 0) {

@@ -7,6 +7,7 @@
 int Median_AVG(struct Item *item);
 int HammingWeight(struct Item *item, int option);
 int Entropy(struct Item *item, int option);
+int Hamming_Distance(struct Item *item);
 int InterHD(struct Item *item, int option);
 int IntraHD(struct Item *item, int option);
 int MinEntropy(struct Item *item);
@@ -22,6 +23,8 @@ int Calculation_encode(struct Item *item);
 int Calculation_decode(struct Item *item);
 
 // calculation function for jaccard index
+int hammingwt(char *data, int size);
+char *readfile(char *name, unsigned long offset_begin, int filesize);
 int Jaccard_Index(struct Item *item);
 int Jaccard_Intra(struct Item *item);
 int Jaccard_Inter(struct Item *item, int option);
