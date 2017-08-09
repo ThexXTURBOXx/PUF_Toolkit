@@ -377,7 +377,7 @@ int IntraHD(struct Item *item, int option)
      *
      * Options:
      * 0 = compact - no duplicate calculation
-     * 1 = minimal - plain results sequence
+     * 2 = minimal - plain results sequence
      */
 {
     DIR *dir;
@@ -549,7 +549,7 @@ int IntraHD(struct Item *item, int option)
                     }
                     result_file.close();
                 }
-                if(option == 1){
+                if(option == 2){
                     // Minimal output of plain result values, separated with a " "
                     result_file << counter;
 
