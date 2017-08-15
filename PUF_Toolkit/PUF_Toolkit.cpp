@@ -1835,8 +1835,9 @@ void Jaccard_Index_Menu(struct Item* item)
     unsigned int ch;
     unsigned int error = 0;
     unsigned int exit = 0;
-    unsigned int offset_isSet = 1;
-    unsigned int output_isSet = 0;
+    bool offset_isSet = true;
+    bool output_isSet = false;
+	bool result_is_set = false;
 
     // Set the initial values for the data struct
     item->input_Key_length = 0;
@@ -1858,7 +1859,8 @@ void Jaccard_Index_Menu(struct Item* item)
         cout << "*                        3 : Jaccard index between two files                  *" << endl;
         cout << "*                        4 : Intra Jaccard index                              *" << endl;
         cout << "*                        5 : Inter Jaccard index                              *" << endl;
-        cout << "*                        6 : Back                                             *" << endl;
+        cout << "*                        6 : View Result file                                 *" << endl;
+        cout << "*                        7 : Back                                             *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
@@ -1879,7 +1881,7 @@ void Jaccard_Index_Menu(struct Item* item)
         error = 0;
 
         while(true){
-            cout << endl << "Make a choice by typing in a number (1-6): ";
+            cout << endl << "Make a choice by typing in a number (1-7): ";
             if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
                 /* fgets succeeds, scan for newline character */
                 h = strchr(menuChoice, '\n');
@@ -1891,14 +1893,14 @@ void Jaccard_Index_Menu(struct Item* item)
                             cout << endl << " Processing : Set 'offsets' for the files" << endl << endl;
                             error = 0;
                             DefineOffSetLength(item);
-                            offset_isSet = 1;
+                            offset_isSet = true;
                             strcpy(item->result, "none");
                             break;
                         case '2':
                             cout << endl << " Processing : Set Output filename" << endl << endl;
                             error = 0;
                             DefineFilename(item, 2);
-                            output_isSet = 1;
+                            output_isSet = true;
                             strcpy(item->result, "none");
                             break;
                         case '3':
@@ -1908,8 +1910,10 @@ void Jaccard_Index_Menu(struct Item* item)
                             cout << endl << " Processing : Set filename 2" << endl << endl;
                             DefineFilename_BCH(item, 2);
                             error = Jaccard_Index(item);
-                            if (error == 0)
+                            if (error == 0) {
                                 strcpy(item->result, "Jaccard index calculated");
+								result_is_set = true;
+							}
                             break;
                         case '4':
                             cout << endl << " Processing : Set Input path for Intra Jaccard index" << endl << endl;
@@ -1921,8 +1925,10 @@ void Jaccard_Index_Menu(struct Item* item)
                             } else {
                                 error = 18;
                             }
-                            if (error == 0)
+                            if (error == 0) {
                                 strcpy(item->result, "Intra Jaccard index saved to output file");
+								result_is_set = true;
+							}
                             break;
                         case '5':
                             cout << endl << " Processing : Set Input paths for Inter Jaccard index" << endl << endl;
@@ -1934,10 +1940,20 @@ void Jaccard_Index_Menu(struct Item* item)
                             } else {
                                 error = 18;
                             }
-                            if (error == 0)
+                            if (error == 0) {
                                 strcpy(item->result, "Inter Jaccard index saved to output file");
+								result_is_set = true;
+							}
                             break;
-                        case '6':
+						case '6':
+							cout << endl << " Processing : View Result file" << endl << endl;
+							if(output_isSet && result_is_set) {
+								error = ViewFile(item->output_file_name);
+							} else {
+								error = 26;
+							}
+							break;
+                        case '7':
                             ClearScreen();
                             cout << endl << " Back " << endl << endl;
                             error = 0;
