@@ -825,11 +825,12 @@ void Hamming_Distance_Menu(struct Item *item)
     unsigned int ch, i;
     unsigned int error = 0;
     unsigned int exit = 0;
-    unsigned int offset_isSet = 1;
-    unsigned int output_isSet = 0;
-    unsigned int paths_are_set = 0;
-    unsigned int files_are_set = 0;
+    bool offset_isSet = true;
+    bool output_isSet = false;
+    bool paths_are_set = false;
+    bool files_are_set = false;
 	bool style_changed = false;
+	bool result_is_set = false;
 
 
     while(true){
@@ -846,7 +847,8 @@ void Hamming_Distance_Menu(struct Item *item)
         cout << "*                        4 : Intra Hamming Distance                           *" << endl;
         cout << "*                        5 : Inter Hamming Distance                           *" << endl;
         cout << "*                        6 : Switch Output-Style                              *" << endl;
-        cout << "*                        7 : Back                                             *" << endl;
+        cout << "*                        7 : View Result file                                 *" << endl;
+        cout << "*                        8 : Back                                             *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "          Settings:                                                            " << endl;
@@ -896,14 +898,14 @@ void Hamming_Distance_Menu(struct Item *item)
                         cout << endl << " Processing : Set 'offsets' for the files" << endl << endl;
                         error = 0;
                         DefineOffSetLength(item);
-                        offset_isSet = 1;
+                        offset_isSet = true;
                         strcpy(item->result, "none");
                         break;
                     case '2':
                         cout << endl << " Processing : Set Output filename" << endl << endl;
                         error = 0;
                         DefineFilename(item, 2);
-                        output_isSet = 1;
+                        output_isSet = true;
                         strcpy(item->result, "none");
                         break;
                     case '3':
@@ -912,21 +914,23 @@ void Hamming_Distance_Menu(struct Item *item)
                         DefineFilename(item, 1);
                         cout << endl << " Processing : Set filename 2" << endl << endl;
                         DefineFilename_BCH(item, 2);
-                        files_are_set = 1;
+                        files_are_set = true;
 						if (offset_isSet)
 							error = Hamming_Distance(item);
 						else
 							error = 25;
 
-                        if (error == 0)
+                        if (error == 0) {
                             strcpy(item->result, "Hamming Distance calculated");
+							result_is_set = true;
+						}
                         break;
                     case '4':
-                        cout << endl << " Processing : Set Input path for Intra Jaccard index" << endl << endl;
+                        cout << endl << " Processing : Set Input path for Intra hamming distance" << endl << endl;
                         error = 0;
                         DefinePathname(item, 1);
-                        paths_are_set = 0;
-                        files_are_set = 0;
+                        paths_are_set = false;
+                        files_are_set = false;
 						//if the output style is detailed change it to compact
 						if (item->HD_mode == 1) {
 							item->HD_mode = 0;
@@ -943,22 +947,26 @@ void Hamming_Distance_Menu(struct Item *item)
 							cout << endl << "NOTE: Detailed output style not allowed for intra hamming distance defaulting to compact" << endl;
 						}
 
-                        if (error == 0)
+                        if (error == 0) {
                             strcpy(item->result, "Intra Hamming Distance saved to output file");
+							result_is_set = true;
+						}
                         break;
                     case '5':
                         cout << endl << " Processing : Set Input paths for Inter Hamming Distance" << endl << endl;
                         error = 0;
                         DefinePathname(item, 2);
-                        paths_are_set = 1;
+                        paths_are_set = true;
                         //call inter Hamming distance in calculate.cpp
                         if (offset_isSet && output_isSet) {
                             error = InterHD(item, item->HD_mode);
                         } else {
                             error = 18;
                         }
-                        if (error == 0)
+                        if (error == 0) {
                             strcpy(item->result, "Inter Hamming Distance saved to output file");
+							result_is_set = true;
+						}
 						break;
                     case '6':
                         cout << endl << " Switch Output-Style " << endl << endl;
@@ -981,7 +989,15 @@ void Hamming_Distance_Menu(struct Item *item)
                             strcpy(item->result, "none");
                         }
                         break;
-                    case '7':
+					case '7':
+                        cout << endl << " Processing : View Result file" << endl << endl;
+                        if(output_isSet && result_is_set) {
+							error = ViewFile(item->output_file_name);
+                        } else {
+							error = 26;
+						}
+                        break;
+                    case '8':
                         cout << endl << " Back " << endl << endl;
                         error = 0;
                         exit = 1;
@@ -1505,8 +1521,8 @@ void BCH_Decoder_Menu()
                             if(strcmp(item.output_Key_name, "none") == 0) error = 19;
                             else if(strcmp(item.result, "none") == 0) error = 21;
                             if(error == 0 || error == 21) {
-                                if(error == 0) error = ViewFile(&item);
-                                else if(error == 21 && !(ViewFile(&item) == 0)) error = 20;
+                                if(error == 0) error = ViewFile(item.output_Key_name);
+                                else if(error == 21 && !(ViewFile(item.output_Key_name) == 0)) error = 20;
                             }
                             break;
                         case '6':

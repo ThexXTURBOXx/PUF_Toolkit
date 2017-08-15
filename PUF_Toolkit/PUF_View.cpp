@@ -54,6 +54,7 @@ void ErrorMessages(int error, int pos)
     if(error == 23) cout << endl << "ERROR! Looks like the file was empty." << endl;
     if(error == 24) cout << endl << "ERROR! Looks like the file was not in the supported format." << endl;
     if(error == 25) cout << endl << "WARNING! Looks like the 'offset' is not set." << endl;
+    if(error == 26) cout << endl << "ERROR! Looks like the 'Output file and/or Result' is not set/calculated." << endl;
 }
 
 /*
@@ -148,7 +149,7 @@ StatusProgress(int x)
     return s;
 }
 
-int ViewFile(struct Item *item)
+int ViewFile(char *filename)
 /*
  * View a text file */
 {
@@ -159,7 +160,7 @@ int ViewFile(struct Item *item)
     char *h;
 
 
-    view.open(item->output_Key_name);
+    view.open(filename);
 
     if(view.fail()) {
 		view.close();
