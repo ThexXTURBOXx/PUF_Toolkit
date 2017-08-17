@@ -3039,7 +3039,7 @@ int recoverOriginalData(volatile unsigned char *sramData, int originalSecretSize
 
     //get helper data from file
     FILE *ptr2;
-    if ((ptr2 = fopen("/home/prankur/golay/generate/helperdata.bin", "rb")) == NULL)
+    if ((ptr2 = fopen(item->input_HD_name, "rb")) == NULL)
     {
         printf("Unable to open helper file!\n");
         return 1;

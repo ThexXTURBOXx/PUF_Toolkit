@@ -1709,7 +1709,8 @@ void Golay_Decoder_Menu()
     unsigned int error = 0;
     unsigned int exit = 0;
     struct Item item;
-
+	bool output_isSet = false;
+	bool result_is_set = false;
 
     // Set the initial values for the data struct
     item.offSet = 0;
@@ -1733,7 +1734,8 @@ void Golay_Decoder_Menu()
         cout << "*                        2 : Set PUF file                                     *" << endl;
         cout << "*                        3 : Set Key file                                     *" << endl;
         cout << "*                        4 : Decode HelperData                                *" << endl;
-        cout << "*                        5 : Back                                             *" << endl;
+        cout << "*                        5 : View Result file                                 *" << endl;
+        cout << "*                        6 : Back                                             *" << endl;
         cout << "*                                                                             *" << endl;
         cout << "*******************************************************************************" << endl;
         cout << "    Settings:                                                                  " << endl;
@@ -1776,6 +1778,7 @@ void Golay_Decoder_Menu()
                             cout << endl << " Processing : Set HelperData" << endl << endl;
                             DefineFilename_BCH(&item, 5);
                             strcpy(item.result, "none");
+							output_isSet = true;
                             break;
                         case '2':
                             cout << endl << " Processing : Set PUF file" << endl << endl;
@@ -1791,9 +1794,20 @@ void Golay_Decoder_Menu()
                         case '4':
                             cout << endl << " Processing : Decode HelperData" << endl << endl;
                             error = Golay_decode(&item);
-                            if(!error) strcpy(item.result, "Done - file saved");
+                            if(!error) {
+								strcpy(item.result, "Done - file saved");
+								result_is_set = true;
+							}
                             break;
-                        case '5':
+						case '5':
+							cout << endl << " Processing : View Result file" << endl << endl;
+							if(output_isSet && result_is_set) {
+								error = ViewFile(item.output_Key_name);
+							} else {
+								error = 26;
+							}
+							break;
+                        case '6':
                             cout << endl << " Back " << endl << endl;
                             error = 0;
                             exit = 1;
