@@ -885,7 +885,7 @@ void Hamming_Distance_Menu(struct Item *item)
         if(error) ErrorMessages(error, 0);
         error = 0;
 
-        cout << endl << "Make a choice by typing in a number (1-7): ";
+        cout << endl << "Make a choice by typing in a number (1-8): ";
 
         if (fgets(menuChoice, sizeof(menuChoice), stdin)) {
             /* fgets succeeds, scan for newline character */
