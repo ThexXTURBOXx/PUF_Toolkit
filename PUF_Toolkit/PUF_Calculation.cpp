@@ -584,6 +584,7 @@ int IntraHD(struct Item *item, int option)
                         result_file << "                                                                               " << endl;
                         result_file << "                          Device folder: '" << item->input_path_name.at(0).c_str() <<"'" << endl;
                         result_file << "                          offset_begin:         " << item->offset_begin                      << endl;
+                        result_file << "                          offset_end  :         " << item->offset_end                        << endl;
                         result_file << "                          Length:         " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                         result_file << "                                                                               " << endl;
                         result_file << "*******************************************************************************" << endl << endl;
@@ -599,7 +600,7 @@ int IntraHD(struct Item *item, int option)
                     }
                     if(max_file_length < 79) white_spaces = string(((79 - strlen((*it2).c_str())) - ((79 - max_file_length)/2)), ' ');
                     else white_spaces = string(4, ' ');
-                    result_file << *it2 << white_spaces << fixed << setprecision(5) << counter << "\t" << item->frd << endl;
+                    result_file << *it2 << white_spaces << fixed << setprecision(5) << counter << "\t\t" << item->frd << endl;
                     if((it2+1) == list_of_files.end()){
                         result_file << "-------------------------------------------------------------------------------" << endl << endl;
                     }
@@ -831,6 +832,7 @@ int InterHD(struct Item *item, int option)
                             else        		result_file << "                                         '" << item->input_path_name.at(j).c_str() <<"'" << endl;
                         }
                         result_file << "                          offset_begin:         " << item->offset_begin                      << endl;
+                        result_file << "                          offset_end  :         " << item->offset_end                        << endl;
                         result_file << "                          Length:         " << item->input_length << " byte (" << item->input_length*8 << " bit)" << endl;
                         if(option == 0)			result_file << "                          Output Style:   compact                              " << endl;
                         else if(option == 1) 	result_file << "                          Output Style:   detailed                             " << endl;
