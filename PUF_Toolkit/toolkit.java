@@ -24,7 +24,7 @@ public class toolkit {
     public static native void median_avg(String name, String op_fname);
     public static native void bch_encoder(String PUF, String key_file, String helperdata);
     public static native void bch_decoder(String PUF, String helper_data, String key_r);
-    
+
     static {
         try {
             NativeUtils.loadLibraryFromJar("/libtoolkit.so");
@@ -61,7 +61,7 @@ public class toolkit {
     //    //inter hd user input
     //    //System.out.println("enter number of folders");
     //    //n = Integer.parseInt(reader.nextLine());
-    //    //String name[] = new String[]{"/home/prankur/code_seb/PUF_Tookit/data/input", 
+    //    //String name[] = new String[]{"/home/prankur/code_seb/PUF_Tookit/data/input",
     //    //    "/home/prankur/code_seb/PUF_Toolkit/data/ouput", "/home/prankur/code_seb/PUF_Toolkit/data/test"};
 
     //    //for(int i = 0; i < n; i++)
@@ -79,11 +79,11 @@ public class toolkit {
     //    //tk.bch_decoder(PUF, helperdata, key_r);
     //}
 
-    public static void main(String [] args){
-        //setparams();
-        //interface_C();
-        String [] name = {"/home/prankur/code_seb/PUF_Toolkit/data/input", 
-            "/home/prankur/code_seb/PUF_Toolkit/data/output"};
-        inter_hd(name, "inter_jni");
-    }
+    //public static void main(String [] args){
+    //    //setparams();
+    //    //interface_C();
+    //    String [] name = {"/home/prankur/code_seb/PUF_Toolkit/data/input",
+    //        "/home/prankur/code_seb/PUF_Toolkit/data/output"};
+    //    inter_hd(name, "inter_jni");
+    //}
 }
