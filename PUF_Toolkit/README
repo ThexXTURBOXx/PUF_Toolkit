@@ -1,0 +1,17 @@
+Master Thesis project by Prankur Chauhan (prankur.chauhan89@gmail.com)
+
+This readme tells the users how to build and clean the PUF toolkit
+NOTE: the Makefile needs to be modified for windows machine
+this will work out of the box for linux machines.
+
+
+To build the toolkit
+$ make
+
+To clean the toolkit
+$make clean
+
+
+git repos for code and thesis tex files can be found at:
+Code   - git@github.com:prankurgit/PUF_Toolkit
+Thesis - git@github.com:prankurgit/thesis.git
