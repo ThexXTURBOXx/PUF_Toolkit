@@ -1,0 +1,222 @@
+/*Author: Prankur Chauhan
+TU Darmstadt, Msc. Distributed Software Systems
+email - prankur.chauhan89@gmail.com 
+*/
+
+This file summarizes the functions and routines of the PUF Toolkit binary. 
+It can be helpful for a new person to get some pointers in the code
+ and where to start looking if he/she wants to insert a new metric to the toolkit.
+
+The arguments to the functions are purposefully not shown to avoid complexity.
+
+The main structure ''struct Item'' that contains data members such as filenames, offsets etc. is present in PUF_Toolkit.h
+
+
+FILE - PUF_Toolkit.cpp
+Contains the functions for each metric that displays the menu items and main menu.
+The functions represent menus and sub-menus where ususally the protocol is to input file/foldername
+and set some other options like offset to the PUF file, then calculate the required metric and store
+the result in the output file.
+
+int Main_Menu()
+This is the main menu which is called by the executable binary main function and the entry point for all other menus.
+It presents the various metrics as menu items and waits for the user to input a number based on which a sub-menu is selected.
+For a new metric implementation this is a good point to start, by creating another menu-item for the new metric.
+
+void HammingWeight_Menu()
+Displays the sub menu items of the hamming weight of a single file or entire folder
+and other menu-items like setting the input file or folder name etc.
+
+void Entropy_Menu()
+Displays the console for the (Shannon) Entropy, similar to Hamming weight options
+
+/*void IntraHD_Menu()
+void InterHD_Menu()
+Shows the console for Intra- and Inter-Hamming Distance respectively.
+*/
+these two functions are obsolete since the Intra- and Inter-Hamming Distance is a sub-menu item in the Hamming Distance menu.
+
+void HammingDistance_Menu()
+Displays the console to calculate the Hamming Distance between two files and also the Intra- and Inter-Hamming Distance.
+
+void MinEntropy_Menu()
+Displays the console for the minimum Entropy.
+
+void Median_AVG_Menu()
+Displays the console for calculating median-avg for a list of values.
+
+void BCH_Encoder_Menu()
+Displays the console for the menu of the BCH encoder that takes PUF file and secret key as input producing helperdata.
+
+void BCH_Decoder_Menu()
+Displays the console for the menu of the BCH decoder that takes PUF file and helper data as input reproducing secret key.
+
+void Golay_Encoder_Menu()
+Golay Encoder Menu for the PUF-Toolkit, similar to BCH encoder.
+		 
+void Golay_Encoder_Menu()
+Golay decoder Menu for the PUF-Toolkit, similar to BCH decoder.
+
+void Jaccard_Index_Menu()
+Shows the menu concerned with displaying the items related to Jaccard Index.
+
+
+FILE - PUF_View.cpp
+This source code file contains routines to display error information and to view the result stored in the output file.
+
+void ErrorMessages()
+The function is used by the toolkit to detect error inputs from the user and provides information to recover from faulty-state.
+
+void ErrorMessages_decode()
+This function is dedicated to detect errors only for the BCH decoder inputs and error states.
+
+std::string StatusProgress()
+It visualizes the Progress as a horizontal bar to relay percentage completed information to the user.
+
+int ViewFile()
+As name suggest this function is called by many other sub-menus to display the result stored in the output file after calculating the metric.
+
+
+
+FILE - PUF_Settings.cpp
+The file contains source code to take input filenames from the user, 
+define the offset length (in bytes), set the input path and other things like mode (file or folder mode).
+
+unsigned int SetInputLen()
+Function to calculate the input_length based on the offsets, used by many other functions repeatedly.
+
+void DefineMode()
+Function to set the mode to 0 - file or 1 - directory
+
+void DefineOffSetLength()
+Function to get the 'offset_begin' and 'length' as user input
+
+void DefineFilename()
+Routine to define the input file name, input PUF file name, input secret key , output helperdata, result output filename etc.
+
+void DefineFilename_BCH()
+Routine to define the input file name, input PUF file name, input secret key , output helperdata, result output filename etc.
+exclusively for BCH Encoder and Decoder.
+
+void DefinePathname()
+Defines one or more input paths to the folder, depending on the metric (eg. Inter-Hamming Distance takes minimum of two folders as input)
+
+void DefineSettings()
+Function to set the linear repetition factor (previous version of the toolkit also set offset using this API, but now is obsolete)
+
+
+
+FILE - PUF_File.cpp
+The source code in this file deals with the saving the output file, 
+reading the file into RAM and checking if the input name is file or folder.
+
+bool IsFile()
+Check if the input is a file.
+
+bool IsDir()
+Check if the input is a directory,
+
+int ViewFile()
+This is to view the text file, not to be confused with another function of the same name, that deals exclisively with secret keys.
+
+int SaveFile()
+Saves the result to the designated output file.
+
+int ReadKeyFile()
+Reads the key file into memory.
+
+int SaveFile_bch()
+Function to save the recovered secret key into the output file.
+
+FILE - PUF_Calculation.cpp
+This source file contains the functions to calculate the hamming distance, 
+intra- inter-hamming distance, bch and golay fuzzy extractor routines
+and other metrics (that are supported by the toolkit) calculation functions.
+
+To add a new metric, the implementation to calculate the metric must be placed here 
+which will eventually be called by the user after he/she selects the option from the menu items.
+
+// Calculation functions for metrics
+int Median_AVG()
+Calculates the median and average of a data file
+
+int HammingWeight()
+Calculates the Hamming weight of a data file
+
+int Entropy()
+Calculates the entropy of a data file
+
+int Hamming_Distance()
+Calculates Hamming Distance between two files.
+
+int InterHD()
+Calculates Hamming Distance between multiple directories containing multiple data files.
+
+int IntraHD()
+Calculates Hamming Distance between multiple data files within the same directory.
+
+int MinEntropy()
+Calculate the Min-Entropy of a device (out of all files in the defined directory)
+
+
+// Calculation Functions for BCH menu
+void read_p()
+void generate_gf()
+void gen_poly()
+Above three functions are internal functions to calculate galois field and for 
+producing generator polynomial for given m and n parameter of the BCH code
+
+void encode_bch()
+Encodes the secret key and the PUF file to generate helper data
+
+void decode_bch()
+Takes the PUF file and helper data generated by encode_bch() to recover the secret key.
+
+int MajorityVoting()
+Function that implements Majority voting, used in the second (Reconstruction) phase of the fuzzy extractor
+
+int Calculation_encode()
+Sets the required data structures to their proper values and call encode_bch() for encoding
+and stores the helper data in output file.
+
+int Calculation_decode()
+Sets the required data structures to their proper values and call decode_bch() for decoding
+and stores the recovered secret key in output file.
+
+// calculation function for jaccard index
+int hammingwt()
+Calculates hamming weight for a string, much simpler than the HammingWeight() function.
+
+char *readfile()
+Reads the file and returns the pointer to it.
+
+int Jaccard_Index()
+Calculates Jaccard Index for a given file.
+
+int Jaccard_Intra()
+Calculate the Jaccard index between all files of a defined directory
+
+int Jaccard_Inter()
+Calculate the Inter-Hamming Distance of all files of the defined directories
+
+// Calculation functions for Golay Menu
+int generateHelperData()
+Generates helperdata using the Golay Code
+
+int Golay_encode()
+Performs the Golay encoding of the PUF file and secret key 
+
+int read_infos()
+long arr2int()
+Internal functions used by Golay_decode
+
+int Savefile()
+Saves the recovered secret key in output file, exclusive for Golay functions
+
+int recoverOriginalData()
+Actual Golay decoding is performed in this function to recover the secret key and then Savefile() is called
+
+int Golay_decode()
+Sets the required data structures to their proper values and call recoverOriginalData() for decoding
+
+THE END
