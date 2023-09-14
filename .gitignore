@@ -1,2 +1,6 @@
 *.exe
 *.o
+*.cmake
+CMakeFiles/
+CMakeCache.txt
+Makefile
