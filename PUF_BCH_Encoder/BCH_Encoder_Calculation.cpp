@@ -60,7 +60,7 @@
  * g[] = coefficients of the generator polynomial, g(x)
  * alpha_to [] = log table of GF(2**m)
  * index_of[] = antilog table of GF(2**m)
- * data[] = information bits = coefficients of data polynomial, i(x)
+ * bdata[] = information bits = coefficients of data polynomial, i(x)
  * bb[] = coefficients of redundancy polynomial x^(length-k) i(x) modulo g(x)
  * numerr = number of errors
  * errpos[] = error positions
@@ -500,7 +500,7 @@ encode_bch()
 	for (i = 0; i < length - k; i++)
 		bb[i] = 0;
 	for (i = k - 1; i >= 0; i--) {
-		feedback = data[i] ^ bb[length - k - 1];
+		feedback = bdata[i] ^ bb[length - k - 1];
 		if (feedback != 0) {
 			for (j = length - k - 1; j > 0; j--)
 				if (g[j] != 0)
@@ -576,10 +576,10 @@ Calculation(struct Item *item)
         // Fill the data vector with the input values
         for(i = 0; i < k; i++){
             if( i + j < (signed)input.size()){
-                data[i] = input[i+j];
+                bdata[i] = input[i+j];
             }
             else {
-                data[i] = 0;
+                bdata[i] = 0;
             }
         }
 
@@ -592,7 +592,7 @@ Calculation(struct Item *item)
 
 		// Take the corresponding original input and store it in the recd vector at the corresponding position
         for (i = 0; i < k; i++){
-            recd[i + (length - k)] = data[i];
+            recd[i + (length - k)] = bdata[i];
         }
 
         // Store the BCH codewords in the output vector

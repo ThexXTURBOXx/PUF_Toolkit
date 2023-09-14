@@ -1525,7 +1525,7 @@ void encode_bch()
     for (i = 0; i < length - k; i++)
         bb[i] = 0;
     for (i = k - 1; i >= 0; i--) {
-        feedback = data[i] ^ bb[length - k - 1];
+        feedback = bdata[i] ^ bb[length - k - 1];
         if (feedback != 0) {
             for (j = length - k - 1; j > 0; j--)
                 if (g[j] != 0)
@@ -1600,10 +1600,10 @@ int Calculation_encode(struct Item *item)
         // Fill the data vector with the input values
         for(i = 0; i < k; i++){
             if( i + j < (signed)input.size()){
-                data[i] = input[i+j];
+                bdata[i] = input[i+j];
             }
             else {
-                data[i] = 0;
+                bdata[i] = 0;
             }
         }
 
@@ -1616,7 +1616,7 @@ int Calculation_encode(struct Item *item)
 
         // Take the corresponding original input and store it in the recd vector at the corresponding position
         for (i = 0; i < k; i++){
-            recd[i + (length - k)] = data[i];
+            recd[i + (length - k)] = bdata[i];
         }
 
         // Store the BCH codewords in the output vector

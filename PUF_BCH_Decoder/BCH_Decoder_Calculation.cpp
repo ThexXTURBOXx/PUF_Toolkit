@@ -60,7 +60,7 @@
  * g[] = coefficients of the generator polynomial, g(x)
  * alpha_to [] = log table of GF(2**m)
  * index_of[] = antilog table of GF(2**m)
- * data[] = information bits = coefficients of data polynomial, i(x)
+ * bdata[] = information bits = coefficients of data polynomial, i(x)
  * bb[] = coefficients of redundancy polynomial x^(length-k) i(x) modulo g(x)
  * numerr = number of errors
  * errpos[] = error positions

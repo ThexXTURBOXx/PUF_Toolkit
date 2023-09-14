@@ -112,7 +112,7 @@ extern std::vector<int> errpos;
 
 // Arrays/Vectors for the input/output data en-/de-coding
 extern std::vector<int> recd;
-extern std::vector<int> data;
+extern std::vector<int> bdata;
 
 // Dynamic Arrays/Vectors for the input/output data
 extern std::vector<int> input;

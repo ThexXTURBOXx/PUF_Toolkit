@@ -19,7 +19,7 @@ std::vector<int> errpos(1024);
 
 // Arrays/Vectors for the input/output data en-/de-coding
 std::vector<int> recd(16385);
-std::vector<int> data(16385);
+std::vector<int> bdata(16385);
 
 // Dynamic Arrays/Vectors for the input/output data
 std::vector<int> input;
