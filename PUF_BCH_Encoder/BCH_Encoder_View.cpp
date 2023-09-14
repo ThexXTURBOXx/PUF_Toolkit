@@ -45,7 +45,7 @@ void ClearScreen()
  * Clear the console */
 {
     // Check if system is too unsecure!
-    system("cls");
+    system("cls||clear");
 }
 
 string
