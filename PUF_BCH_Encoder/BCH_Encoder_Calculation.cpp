@@ -271,7 +271,7 @@ generate_gf()
  * alpha=2 is the primitive element of GF(2**m)
  */
 {
-	register int    i, mask;
+	int    i, mask;
 
 
 	mask = 1;
@@ -307,8 +307,8 @@ gen_poly()
  * the above cycle sets.
  */
 {
-	register int	ii, jj, ll, kaux, zero;
-	register int	test, aux, nocycles, root, noterms, rdncy;
+	int	ii, jj, ll, kaux, zero;
+	int	test, aux, nocycles, root, noterms, rdncy;
 	int      cycle[8192][21];
 	std::vector<int> size(8192);
     std::vector<int> min(2048);
