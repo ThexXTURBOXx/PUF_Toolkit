@@ -155,7 +155,7 @@ int HammingWeight(struct Item *item, int option)
         }
 
 		//set the fractional distance
-		item->frd = (float)item->ones / item->input_length;
+		item->frd = (float)item->ones / (item->input_length*8);
         fclose(fd);
         free(inputData);
     }
@@ -378,9 +378,9 @@ int Hamming_Distance(struct Item *item)
     unsigned int error = 0;
     //set the filesize based on the offsets begin and end
     SetInputLen(item, 0);
-    size1 = item->input_length;
+    size1 = item->input_length * 8;
     SetInputLen(item, 1);
-    size2 = item->input_length;
+    size2 = item->input_length * 8;
     int dsize = ((size1 >= size2) ? size2 :size1);
     char data[dsize];
 	ofstream result_file;
@@ -408,7 +408,7 @@ int Hamming_Distance(struct Item *item)
 			" and " << item->input_PUF_name << ": " << item->ones << ", Fractional Distance: " << item->frd << endl;
 	}
 	result_file.close();
-    printf("hamming distance: %ld \t fractional Distance: %.3f\n", item->ones, item->frd);
+    printf("Hamming Distance: %ld \t Fractional Distance: %.3f\n", item->ones, item->frd);
     printf("\n");
 
 error:
@@ -568,7 +568,7 @@ int IntraHD(struct Item *item, int option)
             }
 
 			//set fractional distance
-			item->frd = (float)counter/item->input_length;
+			item->frd = (float)counter/(item->input_length*8);
 
             free(file2);
             fclose(fd2);
@@ -813,7 +813,7 @@ int InterHD(struct Item *item, int option)
             }
 
 			//set fractional distance
-			item->frd = (float)counter/item->input_length;
+			item->frd = (float)counter/(item->input_length*8);
             free(file2);
             fclose(fd2);
 
@@ -3302,9 +3302,9 @@ int Jaccard_Index(struct Item *item)
     unsigned int error = 0;
     //set the filesize based on the offsets begin and end
     SetInputLen(item, 0);
-    size1 = item->input_length;
+    size1 = item->input_length * 8;
     SetInputLen(item, 1);
-    size2 = item->input_length;
+    size2 = item->input_length * 8;
 
     char *f1data = readfile(item->input_file_name, item->offset_begin, size1);
     char *f2data = readfile(item->input_PUF_name, item->offset_begin, size2);
@@ -3328,7 +3328,7 @@ int Jaccard_Index(struct Item *item)
     printf("wt1: %d\nwt2: %d\nwt3: %d\n", wt1, wt2, wt3);
     jindex = (float) wt3 / (wt1 + wt2 - wt3) ;
 	frd_jindex = jindex / dsize;
-    printf("jaccards index: %.3f \t Fractional Distance: %.3f \n", jindex, frd_jindex);
+    printf("Jaccard Index: %.3f \t Fractional Distance: %.3f \n", jindex, frd_jindex);
     printf("\n");
 
 error:
